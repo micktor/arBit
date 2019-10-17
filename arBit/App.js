@@ -1,75 +1,98 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {
   StyleSheet,
   View,
   SafeAreaView,
   Text,
   Alert,
+  Modal,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
 
-import {
-  Button
-} from 'react-native-elements';
-
-import * as firebase from 'firebase';
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDHMs6x7NbFFZh0l1h4wXOolei9dqmqxEs",
-  authDomain: "arbit-a3d71.firebaseapp.com",
-  databaseURL: "https://arbit-a3d71.firebaseio.com",
-  projectId: "arbit-a3d71",
-  storageBucket: "arbit-a3d71.appspot.com",
-  messagingSenderId: "525569159710",
-  appId: "1:525569159710:web:875f439e842961832a740f",
-  measurementId: "G-202R2PZ94C"
-};
-
-// initialize firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
- }
-
+import {Button} from 'react-native-elements';
 
 function Separator() {
   return <View style={styles.separator} />;
 }
 
-export default function App() {
-  return (
-    <SafeAreaView style={styles.container}>
+export default class App extends Component {
+  state = {
+    display: false,
+    roomName: '',
+  };
 
-      <View>
-        <Text style={styles.title}>
-          arBit
-        </Text>
-      </View>
+  triggerModal() {
+    this.setState(prevState => {
+      return {
+        display: true,
+      };
+    });
+  }
 
-      <View>
-        <Button
-          title="Create Event"
-          onPress={() => Alert.alert('Event Button pressed')}
-        />
-      </View>
+  closeModal = () => {
+    this.setState(prevState => {
+      return {
+        display: false,
+      };
+    });
+  };
 
-      <Separator />
-      <View>
-        <Button
-          title="Join Event"
-          onPress={() => Alert.alert('Join Event pressed')}
-        />
-      </View>
-      <Separator />
-  
-    </SafeAreaView>
-  );
+  handleRoomName = text => {
+    this.setState({roomName: text});
+  };
+
+  CheckRoomName() {
+    if (this.state.roomName != ''){
+      alert('Success');
+      console.log(this.state.roomName)
+    } 
+    else alert('Please Enter Room Name');
+  }
+
+  render() {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Text style={styles.title}>arBit</Text>
+        </View>
+
+        <View>
+          <TouchableOpacity onPress={() => this.triggerModal()}>
+            <Text style={styles.button}>Create Event</Text> 
+          </TouchableOpacity>
+          <Modal visible={this.state.display} animationType="slide">
+            <View>
+              <TextInput
+                placeholder="Name"
+                style={styles.title}
+                onChangeText={this.handleRoomName}
+              />
+              <TouchableOpacity onPress={() => this.CheckRoomName()}>
+                <Text style={styles.button}>Enter</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.closeModal()}>
+                <Text style={styles.button}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
+
+        <Separator />
+        <View>
+        <TouchableOpacity>
+            <Text style={styles.button}>Join Event</Text> 
+          </TouchableOpacity>
+        </View>
+        <Separator />
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //  marginTop: Constants.statusBarHeight,
     marginHorizontal: 16,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -84,5 +107,17 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  button: {
+    backgroundColor: '#247ba0',
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 12,
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    padding: 12,
+    textAlign: 'center',
   },
 });
