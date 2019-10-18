@@ -46,7 +46,7 @@ export default class CreateModal extends Component {
           <Button title="Enter" onPress={() => this.CheckRoomName()} />
           <Button
             style={createModalStyle.button}
-            title="Close"
+            title="Cancel"
             onPress={() => this.props.toggleCreateModal()}
           />
         </View>
