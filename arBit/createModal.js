@@ -1,22 +1,38 @@
 // DisplayModal.js
 
 import React, {Component} from 'react';
-import {Modal, View, Text, StyleSheet} from 'react-native';
+import {Modal, View, Text, StyleSheet, TextInput} from 'react-native';
 import {Button} from 'react-native-elements';
 
 export default class CreateModal extends Component {
+  state = {
+    roomName: '',
+  };
+
   constructor(props) {
     super(props);
+  }
+
+  handleRoomName = text => {
+    this.setState({roomName: text});
+  };
+
+  CheckRoomName() {
+    if (this.state.roomName != '') {
+      alert('Success');
+      console.log(this.state.roomName);
+    } else alert('Please Enter Room Name');
   }
 
   render() {
     return (
       <Modal
-        visible={this.props.createModal}
+        visible={this.props.displayCreate}
         animationType="slide"
         onRequestClose={() => console.log('closed')}>
         <View>
-          <Text style={styles.text}>{this.props.data}</Text>
+          <TextInput placeholder="Name" onChangeText={this.handleRoomName} />
+          <Button title="Enter" onPress={() => this.CheckRoomName()} />
           <Button
             style={styles.button}
             title="Close"

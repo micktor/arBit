@@ -1,18 +1,9 @@
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  Text,
-  Alert,
-  Modal,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, View, SafeAreaView, Text, Alert} from 'react-native';
 
 import {Button} from 'react-native-elements';
 
-import CreateModal from './createModal'
+import CreateModal from './createModal';
 
 function Separator() {
   return <View style={styles.separator} />;
@@ -24,19 +15,8 @@ export default class App extends Component {
   };
 
   toggleCreateModal = () => {
-    this.setState({...this.state, displayCreate: !this.state.displayCreate });
+    this.setState({...this.state, displayCreate: !this.state.displayCreate});
   };
-
-  handleRoomName = text => {
-    this.setState({roomName: text});
-  };
-
-  CheckRoomName() {
-    if (this.state.roomName != '') {
-      alert('Success');
-      console.log(this.state.roomName);
-    } else alert('Please Enter Room Name');
-  }
 
   render() {
     return (
@@ -44,24 +24,21 @@ export default class App extends Component {
         <View>
           <Text style={styles.title}>arBit</Text>
         </View>
-
         <View>
           <Button
             title="Create Event"
             onPress={() => this.toggleCreateModal()}
           />
           <CreateModal
-            data="test"
             displayCreate={this.state.displayCreate}
-            toggleCreateModal = {this.toggleCreateModal}
+            toggleCreateModal={this.toggleCreateModal}
           />
         </View>
         <Separator />
-        
         <View>
           <Button
             title="Join Event"
-            onPress={() => Alert.alert('Join Event pressed')}
+            onPress={() => Alert.alert('Event created')}
           />
         </View>
         <Separator />
