@@ -12,30 +12,19 @@ import {
 
 import {Button} from 'react-native-elements';
 
+import CreateModal from './createModal'
+
 function Separator() {
   return <View style={styles.separator} />;
 }
 
 export default class App extends Component {
   state = {
-    display: false,
-    roomName: '',
+    displayCreate: false,
   };
 
-  triggerModal() {
-    this.setState(prevState => {
-      return {
-        display: true,
-      };
-    });
-  }
-
-  closeModal = () => {
-    this.setState(prevState => {
-      return {
-        display: false,
-      };
-    });
+  toggleCreateModal = () => {
+    this.setState({...this.state, displayCreate: !this.state.displayCreate });
   };
 
   handleRoomName = text => {
@@ -43,11 +32,10 @@ export default class App extends Component {
   };
 
   CheckRoomName() {
-    if (this.state.roomName != ''){
+    if (this.state.roomName != '') {
       alert('Success');
-      console.log(this.state.roomName)
-    } 
-    else alert('Please Enter Room Name');
+      console.log(this.state.roomName);
+    } else alert('Please Enter Room Name');
   }
 
   render() {
@@ -58,31 +46,23 @@ export default class App extends Component {
         </View>
 
         <View>
-          <TouchableOpacity onPress={() => this.triggerModal()}>
-            <Text style={styles.button}>Create Event</Text> 
-          </TouchableOpacity>
-          <Modal visible={this.state.display} animationType="slide">
-            <View>
-              <TextInput
-                placeholder="Name"
-                style={styles.title}
-                onChangeText={this.handleRoomName}
-              />
-              <TouchableOpacity onPress={() => this.CheckRoomName()}>
-                <Text style={styles.button}>Enter</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.closeModal()}>
-                <Text style={styles.button}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
+          <Button
+            title="Create Event"
+            onPress={() => this.toggleCreateModal()}
+          />
+          <CreateModal
+            data="test"
+            displayCreate={this.state.displayCreate}
+            toggleCreateModal = {this.toggleCreateModal}
+          />
         </View>
-
         <Separator />
+        
         <View>
-        <TouchableOpacity>
-            <Text style={styles.button}>Join Event</Text> 
-          </TouchableOpacity>
+          <Button
+            title="Join Event"
+            onPress={() => Alert.alert('Join Event pressed')}
+          />
         </View>
         <Separator />
       </SafeAreaView>
@@ -107,17 +87,5 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  button: {
-    backgroundColor: '#247ba0',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 12,
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
-    overflow: 'hidden',
-    padding: 12,
-    textAlign: 'center',
   },
 });
