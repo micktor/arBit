@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>logFormatVersion</key>
+	<integer>10</integer>
+	<key>logs</key>
+	<dict>
+		<key>DB0A351D-99DC-4340-9C12-AB83747CB864</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>DB0A351D-99DC-4340-9C12-AB83747CB864.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>arBit project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>arBit</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace arBit with scheme arBit and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>593115635.72757697</real>
+			<key>timeStoppedRecording</key>
+			<real>593115637.47564006</real>
+			<key>title</key>
+			<string>Building workspace arBit with scheme arBit and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>DB0A351D-99DC-4340-9C12-AB83747CB864</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

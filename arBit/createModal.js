@@ -62,7 +62,7 @@ const createModalStyle = StyleSheet.create({
     marginTop: 300,
   },
   button: {
-    marginTop: 300,
+    // marginTop: 300,
   },
   container: {
     flex: 1,
