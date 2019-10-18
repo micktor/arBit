@@ -1,7 +1,14 @@
 // DisplayModal.js
 
 import React, {Component} from 'react';
-import {Modal, View, Text, StyleSheet, TextInput} from 'react-native';
+import {
+  Modal,
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  SafeAreaView,
+} from 'react-native';
 import {Button} from 'react-native-elements';
 
 export default class CreateModal extends Component {
@@ -31,10 +38,14 @@ export default class CreateModal extends Component {
         animationType="slide"
         onRequestClose={() => console.log('closed')}>
         <View>
-          <TextInput placeholder="Name" onChangeText={this.handleRoomName} />
+          <TextInput
+            placeholder="Name"
+            onChangeText={this.handleRoomName}
+            style={createModalStyle.text}
+          />
           <Button title="Enter" onPress={() => this.CheckRoomName()} />
           <Button
-            style={styles.button}
+            style={createModalStyle.button}
             title="Close"
             onPress={() => this.props.toggleCreateModal()}
           />
@@ -44,13 +55,25 @@ export default class CreateModal extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const createModalStyle = StyleSheet.create({
   text: {
-    fontSize: 20,
-    marginLeft: 180,
+    fontSize: 30,
+    marginLeft: 150,
     marginTop: 300,
   },
   button: {
     marginTop: 300,
+  },
+  container: {
+    flex: 1,
+    marginHorizontal: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    marginVertical: 8,
+    marginTop: 45,
+    fontSize: 45,
   },
 });
