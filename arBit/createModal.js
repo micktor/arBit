@@ -4,11 +4,21 @@ import React, {Component} from 'react';
 import {Modal, View, Text, StyleSheet, TextInput} from 'react-native';
 import {Button} from 'react-native-elements';
 import {addRoom} from './roomService';
+import AddPersonModal from './addPersonModal';
 
 export default class CreateModal extends Component {
   state = {
     roomName: '',
+    displayName: false,
   };
+
+  toggleNameModal = () => {
+    if (this.state.roomName != '') {
+      addRoom(this.state.roomName);
+      this.setState({...this.state, displayName: !this.state.displayName});
+    } else alert('Please Enter Room Name');
+
+  }
 
   constructor(props) {
     super(props);
@@ -18,11 +28,6 @@ export default class CreateModal extends Component {
     this.setState({roomName: text});
   };
 
-  CheckRoomName() {
-    if (this.state.roomName != '') {
-      addRoom(this.state.roomName);
-    } else alert('Please Enter Room Name');
-  }
 
   render() {
     return (
@@ -36,7 +41,11 @@ export default class CreateModal extends Component {
             onChangeText={this.handleRoomName}
             style={createModalStyle.text}
           />
-          <Button title="Enter" onPress={() => this.CheckRoomName()} />
+          <Button title="Enter" onPress={() => this.toggleNameModal()} />
+          <AddPersonModal
+            displayName={this.state.displayName}
+            toggleNameModal={this.toggleNameModal}
+          />
           <Button
             style={createModalStyle.button}
             title="Cancel"

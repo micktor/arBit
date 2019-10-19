@@ -1,57 +1,16 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, Text, View, FlatList, SafeAreaView} from 'react-native';
-import * as firebase from 'firebase';
+import {StyleSheet, TextInput, Text, View, FlatList, SafeAreaView, Modal} from 'react-native';
 
-// var firebaseConfig = {
-//   apiKey: "AIzaSyAQ4LPfjNUM8WCx2Zzv2qj1rQJ9UpRS9g4",
-//   authDomain: "arbit-46505.firebaseapp.com",
-//   databaseURL: "https://arbit-46505.firebaseio.com",
-//   projectId: "arbit-46505",
-// };
-
-// if (!firebase.apps.length) {
-//   firebase.initializeApp(firebaseConfig);
-// };
 
 import { Container, Content, Header, Form, Input, Item, Button, Label, List, ListItem } from 'native-base'
 
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
 
-
-// firebase.database().ref('/Events/Friday-night/Persons/Yasin').set({
-
-// })
-
-
-
-export default class App extends Component {
+export default class AddPersonModal extends Component {
 
   constructor(props) {
     super(props);
-    this.firebaseConfig = {
-      apiKey: "AIzaSyAQ4LPfjNUM8WCx2Zzv2qj1rQJ9UpRS9g4",
-      authDomain: "arbit-46505.firebaseapp.com",
-      databaseURL: "https://arbit-46505.firebaseio.com",
-      projectId: "arbit-46505",
-      
-    };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(this.firebaseConfig);
-    }
+    
     this.state = {
       name: '',
       option: '',
@@ -79,6 +38,10 @@ export default class App extends Component {
 
   render() {
     return (
+      <Modal 
+      visible={this.props.displayName}
+      animationType="slide"
+      onRequestClose={() => console.log('closed')}>
         <Container style={styles.container}>
           <View>
             <Text style={styles.bigBlack}>Hello There</Text>
@@ -106,6 +69,7 @@ export default class App extends Component {
             </Button>
           </Form>
         </Container>
+      </Modal>
     );
   }
 }
