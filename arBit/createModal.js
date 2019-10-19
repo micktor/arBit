@@ -10,6 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {Button} from 'react-native-elements';
+import { addRoom } from './roomService'
 
 export default class CreateModal extends Component {
   state = {
@@ -26,7 +27,7 @@ export default class CreateModal extends Component {
 
   CheckRoomName() {
     if (this.state.roomName != '') {
-      alert('Success');
+      addRoom(this.state.roomName)
       console.log(this.state.roomName);
     } else alert('Please Enter Room Name');
   }
