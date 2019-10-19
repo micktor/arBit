@@ -1,7 +1,7 @@
-import { db } from './db';
+import {db} from './db';
 
-export const addRoom =  (room) => {
-    db.ref('/rooms').push({
-        name: room,
-    });
-}
+export const addRoom = room => {
+  db.add({
+    name: room,
+  });
+};

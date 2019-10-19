@@ -1,16 +1,9 @@
 // DisplayModal.js
 
 import React, {Component} from 'react';
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  SafeAreaView,
-} from 'react-native';
+import {Modal, View, Text, StyleSheet, TextInput} from 'react-native';
 import {Button} from 'react-native-elements';
-import { addRoom } from './roomService'
+import {addRoom} from './roomService';
 
 export default class CreateModal extends Component {
   state = {
@@ -27,8 +20,7 @@ export default class CreateModal extends Component {
 
   CheckRoomName() {
     if (this.state.roomName != '') {
-      addRoom(this.state.roomName)
-      console.log(this.state.roomName);
+      addRoom(this.state.roomName);
     } else alert('Please Enter Room Name');
   }
 
