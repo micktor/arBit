@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/jason/arbit/arBit/node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp \
-  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/React-jsi/React-jsi-prefix.pch \
-  /Users/jason/arbit/arBit/ios/Pods/Headers/Private/React-jsi/jsi/instrumentation.h \
-  /Users/jason/arbit/arBit/ios/Pods/Headers/Private/React-jsi/jsi/jsi.h \
-  /Users/jason/arbit/arBit/ios/Pods/Headers/Private/React-jsi/jsi/jsi-inl.h
+  /Users/yasinaikebaier/Desktop/arbit/arBit/node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp \
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/React-jsi/React-jsi-prefix.pch \
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Headers/Private/React-jsi/jsi/instrumentation.h \
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Headers/Private/React-jsi/jsi/jsi.h \
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Headers/Private/React-jsi/jsi/jsi-inl.h
