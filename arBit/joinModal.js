@@ -49,18 +49,18 @@ export default class JoinModal extends Component{
 
 
     render(){
+     
       return(
         <Modal visible={ this.props.displayJoin } animationType = "slide" 
                  onRequestClose={ () => console.log('closed') }>
             <View style = {styles.button}>
-             
-             {this.state.roomList.map((name) => 
+             {this.state.roomList.length  > 0 ? this.state.roomList.map((name) => 
              <Button 
              key ={name}
              title ={name.toString()}
              onPress = {() => (this.state.roomName = name.toString())}>
              {name}
-             </Button>)}
+             </Button>) : <Text style = {styles.text}>There are no Events currently active</Text>}
     
               <Button title="Join" onPress={() => this.toggleJoinModal()} />
               <AddPersonModal
@@ -81,10 +81,11 @@ export default class JoinModal extends Component{
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 20,
-    marginLeft: 180,
-    marginTop: 300,
-    marginBottom: 250
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 50,
+    textAlign: 'center',
+    marginBottom: 50,
   },
   button:{
     marginTop:300
