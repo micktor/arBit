@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>DB0A351D-99DC-4340-9C12-AB83747CB864</key>
+		<key>497B5EA1-95BF-4D28-A07E-550FC28059BB</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,13 +15,13 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>DB0A351D-99DC-4340-9C12-AB83747CB864.xcactivitylog</string>
+			<string>497B5EA1-95BF-4D28-A07E-550FC28059BB.xcactivitylog</string>
 			<key>hasPrimaryLog</key>
 			<true/>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
-				<string>E</string>
+				<string>W</string>
 			</dict>
 			<key>schemeIdentifier-containerName</key>
 			<string>arBit project</string>
@@ -32,13 +32,13 @@
 			<key>signature</key>
 			<string>Building workspace arBit with scheme arBit and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>593115635.72757697</real>
+			<real>593221084.55841804</real>
 			<key>timeStoppedRecording</key>
-			<real>593115637.47564006</real>
+			<real>593221085.59012198</real>
 			<key>title</key>
 			<string>Building workspace arBit with scheme arBit and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>DB0A351D-99DC-4340-9C12-AB83747CB864</string>
+			<string>497B5EA1-95BF-4D28-A07E-550FC28059BB</string>
 		</dict>
 	</dict>
 </dict>
