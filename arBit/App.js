@@ -4,6 +4,7 @@ import {StyleSheet, View, SafeAreaView, Text, Alert} from 'react-native';
 import {Button} from 'react-native-elements';
 
 import CreateModal from './createModal';
+import JoinModal from './joinModal';
 
 function Separator() {
   return <View style={styles.separator} />;
@@ -12,6 +13,10 @@ function Separator() {
 export default class App extends Component {
   state = {
     displayCreate: false,
+    displayJoin: false
+  };
+  toggleJoinModal = () => {
+    this.setState({...this.state, displayJoin: !this.state.displayJoin });
   };
 
   toggleCreateModal = () => {
@@ -36,9 +41,14 @@ export default class App extends Component {
         </View>
         <Separator />
         <View>
-          <Button
+        <Button
             title="Join Event"
-            onPress={() => Alert.alert('Event created')}
+            onPress={() => this.toggleJoinModal()}
+          />
+          <JoinModal
+            data="Test"
+            displayJoin={this.state.displayJoin}
+            toggleJoinModal = {this.toggleJoinModal}
           />
         </View>
         <Separator />

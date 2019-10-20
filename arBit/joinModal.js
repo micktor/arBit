@@ -53,6 +53,7 @@ export default class JoinModal extends Component{
         <Modal visible={ this.props.displayJoin } animationType = "slide" 
                  onRequestClose={ () => console.log('closed') }>
             <View style = {styles.button}>
+             
              {this.state.roomList.map((name) => 
              <Button 
              key ={name}
