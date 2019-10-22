@@ -67,6 +67,13 @@ export default class AddPersonModal extends Component {
             <Button onPress={() => this.checkInputs()} style = {styles.button} full rounded success>
               <Text>Submit</Text>
             </Button>
+
+            <Button
+              style={styles.button}
+              title="Cancel"
+              onPress={() => this.props.toggleNameModal()} style={styles.button} full rounded danger>
+              <Text>Cancel</Text>
+            </Button>
           </Form>
         </Container>
       </Modal>
