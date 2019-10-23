@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, SafeAreaView, Text, Alert} from 'react-native';
 
-import {Button} from 'react-native-elements';
-
 import CreateModal from './createModal';
 import JoinModal from './joinModal';
+
+import { Container, Content, Header, Form, Input, Item, Button, Label, List, ListItem } from 'native-base'
 
 function Separator() {
   return <View style={styles.separator} />;
@@ -25,34 +25,33 @@ export default class App extends Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+
+      <Container style={styles.container}>
         <View>
           <Text style={styles.title}>arBit</Text>
         </View>
         <View>
-          <Button
-            title="Create Event"
-            onPress={() => this.toggleCreateModal()}
-          />
+          <Button onPress={() => this.toggleCreateModal()} style = {styles.button} full rounded success>
+            <Text>Create Room</Text>
+          </Button>
           <CreateModal
             displayCreate={this.state.displayCreate}
             toggleCreateModal={this.toggleCreateModal}
           />
         </View>
-        <Separator />
         <View>
-        <Button
-            title="Join Event"
-            onPress={() => this.toggleJoinModal()}
-          />
+        <Button onPress={() => this.toggleJoinModal()} style = {styles.button} full rounded success>
+
+          <Text>Join Room</Text>
+
+        </Button>
           <JoinModal
             data="Test"
             displayJoin={this.state.displayJoin}
             toggleJoinModal = {this.toggleJoinModal}
           />
         </View>
-        <Separator />
-      </SafeAreaView>
+      </Container>
     );
   }
 }
@@ -60,19 +59,21 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 16,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    padding: 30,
   },
+
+
   title: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 50,
     textAlign: 'center',
-    marginVertical: 8,
-    marginTop: 45,
-    fontSize: 45,
+    marginBottom: 50,
   },
-  separator: {
-    marginVertical: 8,
-    borderBottomColor: '#737373',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
+
+  button: {
+    marginTop: 50
+  }
 });
