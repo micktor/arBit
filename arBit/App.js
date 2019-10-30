@@ -46,7 +46,6 @@ export default class App extends Component {
 
         </Button>
           <JoinModal
-            data="Test"
             displayJoin={this.state.displayJoin}
             toggleJoinModal = {this.toggleJoinModal}
           />
