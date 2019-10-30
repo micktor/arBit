@@ -1,5 +1,4 @@
-import * as firebase from 'firebase';
-import 'firebase/firestore';
+import Firebase from 'firebase';
 
 let config = {
   apiKey: 'AIzaSyAvZMR61AaJG91sN_4eY1iUrajzOY-OOVA',
@@ -12,6 +11,5 @@ let config = {
   measurementId: 'G-HS9FWQZLD1',
 };
 
-firebase.initializeApp(config);
-let app = firebase.firestore().collection('rooms');
-export const db = app;
+let app = Firebase.initializeApp(config);
+export const db = app.database().ref('/Events');
