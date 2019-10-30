@@ -21,7 +21,7 @@ export default class OptionsModal extends Component {
       <Modal visible={this.props.displayOptions} animationType="slide">
           <Header span>
             <Body>
-              <Title style={styles.title}>Welcome to {this.props.roomName}</Title>
+              <Title style={styles.title}>{this.props.personName},   Welcome to {this.props.roomName}</Title>
             </Body>
           </Header>
 

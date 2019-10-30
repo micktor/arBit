@@ -66,6 +66,7 @@ export default class AddPersonModal extends Component {
               displayOptions={this.state.displayOptions}
               toggleOptionsModal={this.toggleOptionsModal}
               roomName= {this.state.roomName}
+              personName = {this.state.PersonName}
             />
 
             <Button
