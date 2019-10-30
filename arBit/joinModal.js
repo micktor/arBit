@@ -19,17 +19,31 @@ import {
 } from 'native-base';
 
 export default class JoinModal extends Component {
-  state = {
-    roomName: '',
-    displayName: false,
-    roomList: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      roomName: '',
+      displayName: false,
+      roomList: [],
+    };
+  }
 
   componentDidMount() {
+    console.log('COMPONENT DID MOUNT GOT CALLED');
     db.once('value').then(snapshot => {
       const data = snapshot.val();
+      if (data != null) {
+        this.setState({roomList: Object.keys(data.Events)});
+      }
+    });
+
+    db.on('child_changed', snapshot => {
+      const data = snapshot.val();
       if (data) {
-        this.state.roomList.push(Object.keys(data));
+        console.log('Object.keys(data)', Object.keys(data));
+        console.log('before set state', this.state.roomList);
+        this.setState({roomList: Object.keys(data)});
+        console.log('after setting state', this.state.roomList);
       }
     });
   }
@@ -40,7 +54,9 @@ export default class JoinModal extends Component {
     } else alert('Please Enter Room Name');
   };
   toggleJoinModal = () => {
-    var found = this.state.roomList[0].includes(this.state.roomName);
+    console.log('MADE IT HERE IN TOGGLE JOIN MODAL');
+    console.log(this.state.roomList);
+    var found = this.state.roomList.includes(this.state.roomName);
 
     console.log(found);
     console.log(this.state.roomList);
@@ -55,9 +71,6 @@ export default class JoinModal extends Component {
   handleRoomName = text => {
     this.setState({roomName: text});
   };
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

@@ -12,4 +12,4 @@ let config = {
 };
 
 let app = Firebase.initializeApp(config);
-export const db = app.database().ref('/Events');
+export const db = app.database().ref();
