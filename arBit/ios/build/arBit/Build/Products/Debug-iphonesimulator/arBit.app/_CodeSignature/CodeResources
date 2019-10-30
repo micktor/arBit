@@ -10,11 +10,11 @@
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/objects-13.0+.nib</key>
 		<data>
-		vUAUJCt1GdkKBjDbOP75umgZC0Y=
+		N1dzW1/plU6yr7CSCo70ZfQZWGM=
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<data>
-		6+Bfj/vN7hQTfRKdv6NlEGjmhMI=
+		y1QNDDIOXtxveSX2m4zVIubLoT4=
 		</data>
 		<key>Entypo.ttf</key>
 		<data>
@@ -52,6 +52,55 @@
 		<data>
 		SyvObHkkk6SlcWtv7C2+/olJLD8=
 		</data>
+		<key>Frameworks/XCTAutomationSupport.framework/Info.plist</key>
+		<data>
+		Zb+apFirYLFzWl3DKgehHpx6d4Y=
+		</data>
+		<key>Frameworks/XCTAutomationSupport.framework/XCTAutomationSupport</key>
+		<data>
+		4YzGccrfZmsK+5vkiTU4eZbJgek=
+		</data>
+		<key>Frameworks/XCTAutomationSupport.framework/_CodeSignature/CodeResources</key>
+		<data>
+		Rfk1cUPoXItLY6FPVnxPdTnn2cg=
+		</data>
+		<key>Frameworks/XCTAutomationSupport.framework/version.plist</key>
+		<data>
+		cX36RXdDl3EMAMV0lOhi0RGEkTc=
+		</data>
+		<key>Frameworks/XCTest.framework/Info.plist</key>
+		<data>
+		MkLBcTrGZP0m49TO8MT9Kpg2XvA=
+		</data>
+		<key>Frameworks/XCTest.framework/XCTest</key>
+		<data>
+		vMfIMwmSj/2qw5EHG3a3JxnndiU=
+		</data>
+		<key>Frameworks/XCTest.framework/_CodeSignature/CodeResources</key>
+		<data>
+		/CDR7ItbsxtlIc2/6/P1CG134lY=
+		</data>
+		<key>Frameworks/XCTest.framework/en.lproj/InfoPlist.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			TuBj57ZP6zBqcL9HttO2Rucaw9E=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>Frameworks/XCTest.framework/version.plist</key>
+		<data>
+		cX36RXdDl3EMAMV0lOhi0RGEkTc=
+		</data>
+		<key>Frameworks/libXCTestBundleInject.dylib</key>
+		<data>
+		fB296Ag0IpaSx1cD5EZR/4MmG7k=
+		</data>
+		<key>Frameworks/libXCTestSwiftSupport.dylib</key>
+		<data>
+		rmWK27yJybEJGDK0ycNnvd6CQAA=
+		</data>
 		<key>Info.plist</key>
 		<data>
 		Q2jvKxCAaaV0A6KBF2nSyBoOKh8=
@@ -75,6 +124,26 @@
 		<key>PkgInfo</key>
 		<data>
 		n57qDP4tZfLD1rCS43W0B4LQjzE=
+		</data>
+		<key>PlugIns/arBitTests.xctest.dSYM/Contents/Info.plist</key>
+		<data>
+		SgnXIxfha7mX/LLoRxskVIsWuks=
+		</data>
+		<key>PlugIns/arBitTests.xctest.dSYM/Contents/Resources/DWARF/arBitTests</key>
+		<data>
+		t3eedlhVaEnQFnofhtfgVBaCIHY=
+		</data>
+		<key>PlugIns/arBitTests.xctest/Info.plist</key>
+		<data>
+		Eei3KX5ZLk88wV4A+TlqJQooRYc=
+		</data>
+		<key>PlugIns/arBitTests.xctest/_CodeSignature/CodeResources</key>
+		<data>
+		c0Zy20LGc6XVLiYtxFSoGXDdvno=
+		</data>
+		<key>PlugIns/arBitTests.xctest/arBitTests</key>
+		<data>
+		lKV1EDp7Lp7ck/YYnCl99CJPHAo=
 		</data>
 		<key>SimpleLineIcons.ttf</key>
 		<data>
@@ -102,22 +171,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			vUAUJCt1GdkKBjDbOP75umgZC0Y=
+			N1dzW1/plU6yr7CSCo70ZfQZWGM=
 			</data>
 			<key>hash2</key>
 			<data>
-			uwtSCLAPA0NW/7z2M3Vjk2vXFw8NiUYLMJzANc/jQ/Q=
+			QnHKIaxhVCsLO5NMpiFJgQjMP7qhz+BUC2yXd1Zm6DM=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			6+Bfj/vN7hQTfRKdv6NlEGjmhMI=
+			y1QNDDIOXtxveSX2m4zVIubLoT4=
 			</data>
 			<key>hash2</key>
 			<data>
-			+jZYj2wYf+PrvLsXKnWKOIXugnD/V5cJ9E/3/r3FrpU=
+			qMSZFPlR0pI7kBKxEWtDZKRg2GkqLFF8dOYFH1LyZew=
 			</data>
 		</dict>
 		<key>Entypo.ttf</key>
@@ -219,6 +288,129 @@
 			fh3QPdTOkLZYBSVUzXRZ3xZxZxc4mlUvpMbVal+JM+Y=
 			</data>
 		</dict>
+		<key>Frameworks/XCTAutomationSupport.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Zb+apFirYLFzWl3DKgehHpx6d4Y=
+			</data>
+			<key>hash2</key>
+			<data>
+			mlcCbqQ3H7kz8t6TgQk3KVBU9PhhXAyPDBUnX8OXB24=
+			</data>
+		</dict>
+		<key>Frameworks/XCTAutomationSupport.framework/XCTAutomationSupport</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			4YzGccrfZmsK+5vkiTU4eZbJgek=
+			</data>
+			<key>hash2</key>
+			<data>
+			xlwgvdY0uJcATp76HzTsg6zAqwbDrQIhTLjM00KoOGk=
+			</data>
+		</dict>
+		<key>Frameworks/XCTAutomationSupport.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Rfk1cUPoXItLY6FPVnxPdTnn2cg=
+			</data>
+			<key>hash2</key>
+			<data>
+			k7eZxRWa9BBJKcnLKurg39rmYNdWSb8gJ06lOsWFh0A=
+			</data>
+		</dict>
+		<key>Frameworks/XCTAutomationSupport.framework/version.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			cX36RXdDl3EMAMV0lOhi0RGEkTc=
+			</data>
+			<key>hash2</key>
+			<data>
+			LJGBUe6yDOXNn8XrkeMKS8lRIc3fsgjTGuMvwbVbIMg=
+			</data>
+		</dict>
+		<key>Frameworks/XCTest.framework/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			MkLBcTrGZP0m49TO8MT9Kpg2XvA=
+			</data>
+			<key>hash2</key>
+			<data>
+			uVJpv1942A2T6rNIuittFKQAfVw6Uue3e+F4hxfzvEw=
+			</data>
+		</dict>
+		<key>Frameworks/XCTest.framework/XCTest</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			vMfIMwmSj/2qw5EHG3a3JxnndiU=
+			</data>
+			<key>hash2</key>
+			<data>
+			5aBCak4iD8oHZg40XESOghUyj67gIu31DlPLDInjoqY=
+			</data>
+		</dict>
+		<key>Frameworks/XCTest.framework/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			/CDR7ItbsxtlIc2/6/P1CG134lY=
+			</data>
+			<key>hash2</key>
+			<data>
+			FwSmW6fzW8XWsh7LYlQmyUhCY45tdc2BKLzbHBENmT8=
+			</data>
+		</dict>
+		<key>Frameworks/XCTest.framework/en.lproj/InfoPlist.strings</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			TuBj57ZP6zBqcL9HttO2Rucaw9E=
+			</data>
+			<key>hash2</key>
+			<data>
+			89RGkjZaKuewYnjpzwhIswhqfrU8+pcEXqM/DHVrUmo=
+			</data>
+			<key>optional</key>
+			<true/>
+		</dict>
+		<key>Frameworks/XCTest.framework/version.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			cX36RXdDl3EMAMV0lOhi0RGEkTc=
+			</data>
+			<key>hash2</key>
+			<data>
+			LJGBUe6yDOXNn8XrkeMKS8lRIc3fsgjTGuMvwbVbIMg=
+			</data>
+		</dict>
+		<key>Frameworks/libXCTestBundleInject.dylib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			fB296Ag0IpaSx1cD5EZR/4MmG7k=
+			</data>
+			<key>hash2</key>
+			<data>
+			RtvoAiXdlzkUNEz1CHmWHKZADzBhy3bp8nZt88RtFFc=
+			</data>
+		</dict>
+		<key>Frameworks/libXCTestSwiftSupport.dylib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rmWK27yJybEJGDK0ycNnvd6CQAA=
+			</data>
+			<key>hash2</key>
+			<data>
+			J26tg7W6/N1SB92U5a35RkjGIOa5NLg0AxGShpThn8Y=
+			</data>
+		</dict>
 		<key>Ionicons.ttf</key>
 		<dict>
 			<key>hash</key>
@@ -261,6 +453,61 @@
 			<key>hash2</key>
 			<data>
 			ua3cE7d8ZyDNSM0Y8PSoyuWJsbkQNjDCSd5gq3Lf1r4=
+			</data>
+		</dict>
+		<key>PlugIns/arBitTests.xctest.dSYM/Contents/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			SgnXIxfha7mX/LLoRxskVIsWuks=
+			</data>
+			<key>hash2</key>
+			<data>
+			+yCfhYguPnQP1x0mBZCzxHACb4pJvH4CrAw9MRB5/9U=
+			</data>
+		</dict>
+		<key>PlugIns/arBitTests.xctest.dSYM/Contents/Resources/DWARF/arBitTests</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			t3eedlhVaEnQFnofhtfgVBaCIHY=
+			</data>
+			<key>hash2</key>
+			<data>
+			eYuxOekUGLDJ28U29xrivqUJzE0+sRQhBFONgOM6UhI=
+			</data>
+		</dict>
+		<key>PlugIns/arBitTests.xctest/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Eei3KX5ZLk88wV4A+TlqJQooRYc=
+			</data>
+			<key>hash2</key>
+			<data>
+			+x63LvGRCNWgDEYJ2B9u6r+Vsq00S5G2n0OA7cf+3+k=
+			</data>
+		</dict>
+		<key>PlugIns/arBitTests.xctest/_CodeSignature/CodeResources</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			c0Zy20LGc6XVLiYtxFSoGXDdvno=
+			</data>
+			<key>hash2</key>
+			<data>
+			WXBYvebnfWs0dqdcYcX/ijR9E7woqXz9fj/8u8FG2VM=
+			</data>
+		</dict>
+		<key>PlugIns/arBitTests.xctest/arBitTests</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			lKV1EDp7Lp7ck/YYnCl99CJPHAo=
+			</data>
+			<key>hash2</key>
+			<data>
+			XHGtWTsBn3U+LddEe+PAx+9wrd2s4t3pEKa5Udufgo8=
 			</data>
 		</dict>
 		<key>SimpleLineIcons.ttf</key>
