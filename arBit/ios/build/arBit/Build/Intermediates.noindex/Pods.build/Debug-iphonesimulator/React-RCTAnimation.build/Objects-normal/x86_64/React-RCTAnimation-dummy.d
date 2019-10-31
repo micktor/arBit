@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTAnimation/React-RCTAnimation-dummy.m \
-  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTAnimation/React-RCTAnimation-prefix.pch
+  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTAnimation/React-RCTAnimation-dummy.m \
+  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTAnimation/React-RCTAnimation-prefix.pch
