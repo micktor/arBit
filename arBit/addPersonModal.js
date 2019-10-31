@@ -51,25 +51,10 @@ export default class AddPersonModal extends Component {
     }
   }
   insertUser() {
-    console.log("IN HERE\n")
-    console.log(this.props.roomName)
-    db.child('Events/' + this.props.roomName + '/optionList/optionList')
-      .push({
-        votes: 0,
-        url: '',
-      })
-      .then(() => {
-        console.log('INSERTED OPTIONLIST!');
-        console.log(this.state);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
     db.child('Events/' + this.props.roomName)
       .push({
         name: this.state.personName,
-        options: ['optoin1'],
+        options: ['option1'],
         url: '',
         hasVoted: false,
         votes: 0,

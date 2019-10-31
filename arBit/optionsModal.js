@@ -1,35 +1,69 @@
-import React, { Component } from "react";
-import { Form, Container, Item, Input, Header, Button, Content, Toast, Text, Left, Body, Right, Title, Label, Spinner } from "native-base";
-import { StyleSheet, Modal, View } from "react-native";
-var BUTTONS = ["Option 0", "Option 1", "Option 2", "Delete", "Cancel"];
+import React, {Component} from 'react';
+import {
+  Form,
+  Container,
+  Item,
+  Input,
+  Header,
+  Button,
+  Content,
+  Toast,
+  Text,
+  Left,
+  Body,
+  Right,
+  Title,
+  Label,
+  Spinner,
+} from 'native-base';
+import {StyleSheet, Modal, View} from 'react-native';
+var BUTTONS = ['Option 0', 'Option 1', 'Option 2', 'Delete', 'Cancel'];
 var DESTRUCTIVE_INDEX = 3;
 var CANCEL_INDEX = 4;
 
-import AddPersonModal from './addPersonModal'
+import AddPersonModal from './addPersonModal';
+import {db} from './db';
 
 export default class OptionsModal extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
       optionList: [],
-      option: ''
+      option: '',
     };
   }
 
-  addOption = () =>{
-      console.log()
+  handleOption = text => {
+    this.setState({option: text});
+  };
 
-  }
-
+  
+  addOption = () => {
+    if (this.state.option == '') alert('Invalid Input');
+    else {
+      db.child('Events/' + this.props.roomName + '/optionList/optionList')
+        .push({
+          option: this.state.option,
+          votes: 0,
+        })
+        .then(() => {
+          console.log('INSERTED OPTIONLIST!');
+          console.log(this.state);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
 
   render() {
     return (
       <Modal visible={this.props.displayOptions} animationType="slide">
         <Header span>
           <Body>
-            <Title style={styles.title}>{this.props.personName},   Welcome to {this.props.roomName}</Title>
+            <Title style={styles.title}>
+              {this.props.personName}, Welcome to {this.props.roomName}
+            </Title>
           </Body>
         </Header>
 
@@ -40,9 +74,9 @@ export default class OptionsModal extends Component {
                 placeholder="Enter your option"
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText = {this.state.option}
+                onChangeText={this.handleOption}
               />
-              <Button>
+              <Button onPress={() => this.addOption()}>
                 <Text>Submit</Text>
               </Button>
             </Item>
@@ -83,6 +117,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginTop: 50
-  }
+    marginTop: 50,
+  },
 });
