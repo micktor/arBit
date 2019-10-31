@@ -1,54 +1,99 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, Text, View, FlatList, SafeAreaView, Modal} from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  Text,
+  View,
+  FlatList,
+  SafeAreaView,
+  Modal,
+} from 'react-native';
 
+import {
+  Container,
+  Content,
+  Header,
+  Form,
+  Input,
+  Item,
+  Button,
+  Label,
+  List,
+  ListItem,
+} from 'native-base';
 
-import { Container, Content, Header, Form, Input, Item, Button, Label, List, ListItem } from 'native-base'
-
-import OptionsModal from './optionsModal';
-
-
+import {db} from './db';
 
 export default class AddPersonModal extends Component {
-
   constructor(props) {
     super(props);
-    
+
     this.state = {
-      PersonName: '',
+      name: '',
+      option: '',
       roomName: '',
-      displayOptions: false,
     };
   }
 
   handlePersonName = text => {
-    this.setState({PersonName:text})
-  }
+    this.setState({name: text});
+  };
 
+  handleOption = text => {
+    this.setState({option: text});
+  };
 
-  toggleOptionsModal() {
-    if(this.state.PersonName != ''){
-      this.setState({...this.state, displayOptions: !this.state.displayOptions});
-      this.setState({roomName:this.props.roomName})
-
-      // console.log("name: ", this.state.name);
-      // console.log("option: ", this.state.option);
+  checkInputs() {
+    if (this.state.name != '' && this.state.option != '') {
+      console.log('name: ', this.state.name);
+      console.log('option: ', this.state.option);
     } else {
-      alert('Please enter some stuff!')
+      alert('Please enter some stuff!');
     }
   }
 
+  insertUser() {
+    db.child('Events/' + this.props.roomName + '/optionList/optionList')
+      .push({
+        option: this.state.option,
+        votes: 0,
+        url: '',
+      })
+      .then(() => {
+        console.log('INSERTED OPTIONLIST!');
+        console.log(this.state);
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
+    db.child('Events/' + this.props.roomName)
+      .push({
+        name: this.state.name,
+        options: ['optoin1'],
+        url: '',
+        hasVoted: false,
+        votes: 0,
+      })
+      .then(() => {
+        console.log('INSERTED!');
+        console.log(this.state);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   render() {
     return (
-      <Modal 
-      visible={this.props.displayName}
-      animationType="slide"
-      onRequestClose={() => console.log('closed')}>
+      <Modal
+        visible={this.props.displayName}
+        animationType="slide"
+        onRequestClose={() => console.log('closed')}>
         <Container style={styles.container}>
           <View>
             <Text style={styles.bigBlack}>Hello There</Text>
-          </View> 
+          </View>
           <Form>
             <Item>
               <Label>Name</Label>
@@ -56,23 +101,34 @@ export default class AddPersonModal extends Component {
                 autoCorrect={false}
                 autoCapitalize="none"
                 onChangeText={this.handlePersonName}
-                />
+              />
             </Item>
 
-            <Button onPress={() => this.toggleOptionsModal()} style={styles.button} full rounded success>
+            <Item>
+              <Label>What you wanna eat? </Label>
+              <Input
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={this.handleOption}
+              />
+            </Item>
+            <Button
+              onPress={() => this.insertUser()}
+              style={styles.button}
+              full
+              rounded
+              success>
               <Text>Submit</Text>
             </Button>
-            <OptionsModal
-              displayOptions={this.state.displayOptions}
-              toggleOptionsModal={this.toggleOptionsModal}
-              roomName= {this.state.roomName}
-              personName = {this.state.PersonName}
-            />
 
             <Button
               style={styles.button}
               title="Cancel"
-              onPress={() => this.props.toggleNameModal()} style={styles.button} full rounded danger>
+              onPress={() => this.props.toggleNameModal()}
+              style={styles.button}
+              full
+              rounded
+              danger>
               <Text>Cancel</Text>
             </Button>
           </Form>
@@ -107,6 +163,6 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginTop: 50
-  }
+    marginTop: 50,
+  },
 });
