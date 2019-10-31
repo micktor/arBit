@@ -16,11 +16,7 @@ import {
   Label,
   Spinner,
 } from 'native-base';
-import {StyleSheet, Modal, View} from 'react-native';
-var BUTTONS = ['Option 0', 'Option 1', 'Option 2', 'Delete', 'Cancel'];
-var DESTRUCTIVE_INDEX = 3;
-var CANCEL_INDEX = 4;
-
+import {StyleSheet, Modal, View, SafeAreaView, FlatList} from 'react-native';
 import AddPersonModal from './addPersonModal';
 import {db} from './db';
 
@@ -37,7 +33,6 @@ export default class OptionsModal extends Component {
     this.setState({option: text});
   };
 
-  
   addOption = () => {
     if (this.state.option == '') alert('Invalid Input');
     else {
@@ -81,6 +76,13 @@ export default class OptionsModal extends Component {
               </Button>
             </Item>
           </Form>
+          <SafeAreaView>
+            <FlatList
+              data={this.state.optionList}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item}) => <Text style={styles.list}>{item}</Text>}
+            />
+          </SafeAreaView>
           {/* <Button full rounded danger style={styles.button}>
             <Text>Go Back to Home</Text>
           </Button> */}
@@ -103,6 +105,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     marginBottom: 50,
+  },
+  list: {
+    padding: 15,
   },
 
   smallBlack: {
