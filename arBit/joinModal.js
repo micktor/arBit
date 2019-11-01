@@ -25,6 +25,7 @@ export default class JoinModal extends Component {
       roomName: '',
       displayName: false,
       roomList: [],
+      userList: [],
     };
   }
 

@@ -1,38 +1,91 @@
-import React, { Component } from "react";
-import { Container, Header, Button, Content, Toast, Text, Left, Body, Right, Title, Label, Spinner } from "native-base";
-import { StyleSheet, Modal, View } from "react-native";
-var BUTTONS = ["Option 0", "Option 1", "Option 2", "Delete", "Cancel"];
-var DESTRUCTIVE_INDEX = 3;
-var CANCEL_INDEX = 4;
-
-import AddPersonModal from './addPersonModal'
+import React, {Component} from 'react';
+import {
+  Form,
+  Container,
+  Item,
+  Input,
+  Header,
+  Button,
+  Content,
+  Toast,
+  Text,
+  Left,
+  Body,
+  Right,
+  Title,
+  Label,
+  Spinner,
+} from 'native-base';
+import {StyleSheet, Modal, View, SafeAreaView, FlatList} from 'react-native';
+import AddPersonModal from './addPersonModal';
+import {db} from './db';
 
 export default class OptionsModal extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
-    }; 
+      optionList: [],
+      option: '',
+    };
   }
+
+  handleOption = text => {
+    this.setState({option: text});
+  };
+
+  addOption = () => {
+    if (this.state.option == '') alert('Invalid Input');
+    else {
+      db.child('Events/' + this.props.roomName + '/optionList/optionList')
+        .push({
+          option: this.state.option,
+          votes: 0,
+        })
+        .then(() => {
+          console.log('INSERTED OPTIONLIST!');
+          console.log(this.state);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  };
 
   render() {
     return (
       <Modal visible={this.props.displayOptions} animationType="slide">
-          <Header span>
-            <Body>
-              <Title style={styles.title}>{this.props.personName},   Welcome to {this.props.roomName}</Title>
-            </Body>
-          </Header>
+        <Header span>
+          <Body>
+            <Title style={styles.title}>
+              {this.props.personName}, Welcome to {this.props.roomName}
+            </Title>
+          </Body>
+        </Header>
 
         <Container style={styles.container}>
-          <Button bordered rounded primary>
-            <Text>Add</Text>
-          </Button>
-
-          <Button full rounded danger style={styles.button}>
+          <Form>
+            <Item>
+              <Input
+                placeholder="Enter your option"
+                autoCorrect={false}
+                autoCapitalize="none"
+                onChangeText={this.handleOption}
+              />
+              <Button onPress={() => this.addOption()}>
+                <Text>Submit</Text>
+              </Button>
+            </Item>
+          </Form>
+          <SafeAreaView>
+            <FlatList
+              data={this.state.optionList}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item}) => <Text style={styles.list}>{item}</Text>}
+            />
+          </SafeAreaView>
+          {/* <Button full rounded danger style={styles.button}>
             <Text>Go Back to Home</Text>
-          </Button>
+          </Button> */}
         </Container>
       </Modal>
     );
@@ -43,7 +96,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
     padding: 30,
   },
 
@@ -54,6 +106,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 50,
   },
+  list: {
+    padding: 15,
+  },
 
   smallBlack: {
     color: 'black',
@@ -62,12 +117,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 25,
   },
-
   title: {
     justifyContent: 'center',
   },
 
   button: {
-    marginTop: 50
-  }
+    marginTop: 50,
+  },
 });

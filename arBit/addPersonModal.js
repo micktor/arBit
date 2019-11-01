@@ -23,54 +23,38 @@ import {
 } from 'native-base';
 
 import {db} from './db';
-
+import OptionsModal from './optionsModal';
 export default class AddPersonModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
-      option: '',
+      personName: '',
       roomName: '',
+      displayOptions: false,
     };
   }
 
   handlePersonName = text => {
-    this.setState({name: text});
+    this.setState({personName: text});
   };
 
-  handleOption = text => {
-    this.setState({option: text});
-  };
 
-  checkInputs() {
-    if (this.state.name != '' && this.state.option != '') {
-      console.log('name: ', this.state.name);
-      console.log('option: ', this.state.option);
-    } else {
+
+
+  toggleOptionsModal() {
+    if(this.state.personName != ''){
+      this.setState({...this.state, displayOptions: !this.state.displayOptions});
+      this.setState({roomName:this.props.roomName})}
+    else {
       alert('Please enter some stuff!');
     }
   }
-
   insertUser() {
-    db.child('Events/' + this.props.roomName + '/optionList/optionList')
-      .push({
-        option: this.state.option,
-        votes: 0,
-        url: '',
-      })
-      .then(() => {
-        console.log('INSERTED OPTIONLIST!');
-        console.log(this.state);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
     db.child('Events/' + this.props.roomName)
       .push({
-        name: this.state.name,
-        options: ['optoin1'],
+        name: this.state.personName,
+        options: ['option1'],
         url: '',
         hasVoted: false,
         votes: 0,
@@ -104,23 +88,23 @@ export default class AddPersonModal extends Component {
               />
             </Item>
 
-            <Item>
-              <Label>What you wanna eat? </Label>
-              <Input
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={this.handleOption}
-              />
-            </Item>
             <Button
-              onPress={() => this.insertUser()}
+              onPress={() => {
+                this.insertUser();
+                this.toggleOptionsModal();
+                }}
               style={styles.button}
               full
               rounded
               success>
               <Text>Submit</Text>
             </Button>
-
+            <OptionsModal
+              displayOptions={this.state.displayOptions}
+              toggleOptionsModal={this.toggleOptionsModal}
+              roomName= {this.state.roomName}
+              personName = {this.state.personName}
+            />
             <Button
               style={styles.button}
               title="Cancel"
