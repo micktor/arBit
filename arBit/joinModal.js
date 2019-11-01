@@ -25,12 +25,10 @@ export default class JoinModal extends Component {
       roomName: '',
       displayName: false,
       roomList: [],
-      userList: [],
     };
   }
 
   componentDidMount() {
-    console.log('COMPONENT DID MOUNT GOT CALLED');
     db.once('value').then(snapshot => {
       const data = snapshot.val();
       if (data != null) {

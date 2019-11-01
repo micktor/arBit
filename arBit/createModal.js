@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {Modal, View, Text, StyleSheet, TextInput} from 'react-native';
-// import {Button} from 'react-native-elements';
 import AddPersonModal from './addPersonModal';
 import {db} from './db';
 import {
@@ -51,7 +50,7 @@ export default class CreateModal extends Component {
         <Container style={createModalStyle.container}>
           <View>
             <Item style={createModalStyle.bigBlack}>
-              <Label>Name: </Label>
+              <Label>Enter Room Name: </Label>
               <Input
                 onChangeText={this.handleRoomName}
                 style={createModalStyle.text}

@@ -39,6 +39,7 @@ export default class OptionsModal extends Component {
       db.child('Events/' + this.props.roomName + '/optionList/optionList')
         .push({
           option: this.state.option,
+          author: this.props.userName,
           votes: 0,
         })
         .then(() => {
@@ -57,7 +58,7 @@ export default class OptionsModal extends Component {
         <Header span>
           <Body>
             <Title style={styles.title}>
-              {this.props.personName}, Welcome to {this.props.roomName}
+              {this.props.userName}, Welcome to {this.props.roomName}
             </Title>
           </Body>
         </Header>
