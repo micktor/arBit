@@ -26,13 +26,32 @@ export default class CreateModal extends Component {
     db.child(room).push({});
   }
 
+  componentDidMount() {
+    db.once('value').then(snapshot => {
+      const data = snapshot.val();
+      if (data != null) {
+        this.setState({roomList: Object.keys(data.Events)});
+      }
+    });
+    db.on('child_changed', snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        this.setState({roomList: Object.keys(data)});
+      }
+    });
+  }
   toggleNameModal = () => {
-    if (this.state.roomName != '') {
+    var found = this.state.roomList.includes(this.state.roomName);
+    if (found) {
+      alert(
+        'Room is already created, please create another room or join this one',
+      );
+    } else if (this.state.roomName != '') {
       this.addRoom(this.state.roomName);
       this.setState({...this.state, displayName: !this.state.displayName});
     } else alert('Please Enter Room Name');
   };
-
+  
   constructor(props) {
     super(props);
   }
