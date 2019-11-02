@@ -29,43 +29,65 @@ export default class AddPersonModal extends Component {
     super(props);
 
     this.state = {
-      personName: '',
+      userName: '',
       roomName: '',
+      users: new Set(),
       displayOptions: false,
     };
   }
 
-  handlePersonName = text => {
-    this.setState({personName: text});
+  handleUserName = text => {
+    this.setState({userName: text});
   };
 
-
-
-
   toggleOptionsModal() {
-    if(this.state.personName != ''){
-      this.setState({...this.state, displayOptions: !this.state.displayOptions});
-      this.setState({roomName:this.props.roomName})}
-    else {
+    if (this.state.userName != '') {
+      this.setState({
+        ...this.state,
+        displayOptions: !this.state.displayOptions,
+      });
+      this.setState({roomName: this.props.roomName});
+    } else {
       alert('Please enter some stuff!');
     }
   }
-  insertUser() {
-    db.child('Events/' + this.props.roomName)
-      .push({
-        name: this.state.personName,
-        options: ['option1'],
-        url: '',
-        hasVoted: false,
-        votes: 0,
-      })
-      .then(() => {
-        console.log('INSERTED!');
-        console.log(this.state);
-      })
-      .catch(error => {
-        console.log(error);
+
+  setUserList() {
+    let currentState = this.state.users;
+    db.child('Events/' + this.props.roomName).once('value', snapshot => {
+      snapshot.forEach(data => {
+        const currentUser = data.val();
+        currentState.add(currentUser.userName);
       });
+      this.setState({
+        users: currentState,
+      });
+    });
+  }
+
+  insertUser() {
+    this.setUserList();
+
+    if (this.state.users.has(this.state.userName)) {
+      alert('Username already taken!');
+      return -1;
+    } else {
+      db.child('Events/' + this.props.roomName)
+        .push({
+          userName: this.state.userName,
+          options: ['option1'],
+          url: '',
+          hasVoted: false,
+          votes: 0,
+        })
+        .then(() => {
+          // console.log('INSERTED!');
+          // console.log(this.state);
+        })
+        .catch(error => {
+          // console.log(error);
+        });
+    }
   }
 
   render() {
@@ -80,19 +102,18 @@ export default class AddPersonModal extends Component {
           </View>
           <Form>
             <Item>
-              <Label>Name</Label>
+              <Label>Enter a Username</Label>
               <Input
                 autoCorrect={false}
                 autoCapitalize="none"
-                onChangeText={this.handlePersonName}
+                onChangeText={this.handleUserName}
               />
             </Item>
 
             <Button
               onPress={() => {
-                this.insertUser();
-                this.toggleOptionsModal();
-                }}
+                if (this.insertUser() != -1) this.toggleOptionsModal();
+              }}
               style={styles.button}
               full
               rounded
@@ -102,8 +123,8 @@ export default class AddPersonModal extends Component {
             <OptionsModal
               displayOptions={this.state.displayOptions}
               toggleOptionsModal={this.toggleOptionsModal}
-              roomName= {this.state.roomName}
-              personName = {this.state.personName}
+              roomName={this.state.roomName}
+              userName={this.state.userName}
             />
             <Button
               style={styles.button}
