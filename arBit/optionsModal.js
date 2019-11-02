@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Form,
   Container,
@@ -6,19 +6,13 @@ import {
   Input,
   Header,
   Button,
-  Content,
-  Toast,
   Text,
-  Left,
   Body,
-  Right,
   Title,
-  Label,
-  Spinner,
 } from 'native-base';
-import {StyleSheet, Modal, View, SafeAreaView, FlatList} from 'react-native';
+import { StyleSheet, Modal, View, SafeAreaView, FlatList } from 'react-native';
 import AddPersonModal from './addPersonModal';
-import {db} from './db';
+import { db } from './db';
 
 export default class OptionsModal extends Component {
   constructor(props) {
@@ -26,11 +20,26 @@ export default class OptionsModal extends Component {
     this.state = {
       optionList: [],
       option: '',
-    };
+    }
+  }
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.roomName != prevProps.roomName) {
+      db
+      .child('Events/' + this.props.roomName + '/optionList/optionList')
+      .on("child_added", snapshot => {
+        const data = snapshot.val()
+        if (data) {
+          this.setState(prevState => ({
+            optionList: [data.option, ...prevState.optionList]
+          }))
+        }
+      })
+    }
   }
 
   handleOption = text => {
-    this.setState({option: text});
+    this.setState({ option: text });
   };
 
   addOption = () => {
@@ -43,7 +52,6 @@ export default class OptionsModal extends Component {
           votes: 0,
         })
         .then(() => {
-          console.log('INSERTED OPTIONLIST!');
           console.log(this.state);
         })
         .catch(error => {
@@ -81,7 +89,7 @@ export default class OptionsModal extends Component {
             <FlatList
               data={this.state.optionList}
               keyExtractor={(item, index) => index.toString()}
-              renderItem={({item}) => <Text style={styles.list}>{item}</Text>}
+              renderItem={({ item }) => <Text style={styles.list}>{item}</Text>}
             />
           </SafeAreaView>
           {/* <Button full rounded danger style={styles.button}>
