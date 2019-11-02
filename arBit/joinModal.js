@@ -64,6 +64,7 @@ export default class JoinModal extends Component {
   };
 
   render() {
+    console.log(this.state.roomList);
     return (
       <Modal
         visible={this.props.displayJoin}

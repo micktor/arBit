@@ -21,6 +21,7 @@ export default class CreateModal extends Component {
   state = {
     roomName: '',
     displayName: false,
+    roomList: []
   };
   addRoom(room) {
     db.child(room).push({});
@@ -42,6 +43,7 @@ export default class CreateModal extends Component {
   }
   toggleNameModal = () => {
     var found = this.state.roomList.includes(this.state.roomName);
+    
     if (found) {
       alert(
         'Room is already created, please create another room or join this one',
