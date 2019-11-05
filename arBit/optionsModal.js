@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import {
+  List,
+  ListItem,
   Form,
   Container,
   Item,
   Input,
   Header,
   Button,
+  Content,
+  Toast,
   Text,
+  Left,
+  Center,
   Body,
+  Right,
   Title,
+  Label,
+  Spinner,
+  Picker,
 } from 'native-base';
 import { StyleSheet, Modal, View, SafeAreaView, FlatList } from 'react-native';
 import AddPersonModal from './addPersonModal';
@@ -85,13 +95,39 @@ export default class OptionsModal extends Component {
               </Button>
             </Item>
           </Form>
-          <SafeAreaView>
+          <Container style={styles.container}>
             <FlatList
               data={this.state.optionList}
               keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => <Text style={styles.list}>{item}</Text>}
+              renderItem={({item}) => 
+              <ListItem selected>
+              <Left>
+                <Text>{item}</Text>
+              </Left>
+            
+              
+              <Item picker>
+                <Picker
+                  mode="dropdown"
+                  placeholder="Vote"
+                  placeholderStyle={{ color: "#2874F0" }}
+                >
+                  <Picker.Item label="*" value="key0" />
+                  <Picker.Item label="**" value="key1" />
+                  <Picker.Item label="***" value="key2" />
+                  <Picker.Item label="****" value="key3" />
+                  <Picker.Item label="*****" value="key4" />
+                </Picker>
+              </Item>
+      
+          
+          
+              <Right>
+                <Button danger rounded><Text>X</Text></Button>
+              </Right>
+            </ListItem> }
             />
-          </SafeAreaView>
+          </Container>
           {/* <Button full rounded danger style={styles.button}>
             <Text>Go Back to Home</Text>
           </Button> */}
