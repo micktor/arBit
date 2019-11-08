@@ -87,8 +87,15 @@ export default class AddPersonModal extends Component {
         .catch(error => {
           // console.log(error);
         });
+      var ref = db.child('Events/' + this.props.roomName+'/roominfo/users')
+     ref.transaction(function(users){
+     if(users || (users === 0 )){
+            users = users +1
+        }
+        return users
+      });
+      }
     }
-  }
 
   render() {
     return (
