@@ -90,14 +90,13 @@ export default class OptionsModal extends Component {
   pushUserOptionstoUsers(){
     this.removeRoomNamesFromUserSet()
     for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
-      db.child('Events/' + this.props.roomName + `/${val}/options`)
-        .set({
-          options: this.state.optionList.reduce((acc, elem) =>{
-            acc[elem]=0
-            return acc
-          },{})
-        });
-    }
+      for(i = 0; i<this.state.optionList.length; i++){
+             var option = this.state.optionList[i]
+          db.child('Events/' + this.props.roomName + `/${val}/options`)
+            .update({
+             [option]: 0
+          });
+    }}
   }
 
   showform = () => {
