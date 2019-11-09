@@ -84,7 +84,10 @@ export default class OptionsModal extends Component {
     for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
       db.child('Events/' + this.props.roomName + `/${val}/options`)
         .set({
-          options: Object.assign({}, this.state.optionList),
+          options: this.state.optionList.reduce((acc, elem) =>{
+            acc[elem]=0
+            return acc
+          },{})
         });
     }
   }
