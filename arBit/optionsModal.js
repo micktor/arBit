@@ -25,6 +25,7 @@ export default class OptionsModal extends Component {
       voted: 0,
       users: 0,
       voteButton: false,
+      userSetKeys: new Set(),
     }
   }
 
@@ -44,6 +45,15 @@ export default class OptionsModal extends Component {
         })
         
     }
+
+    db.child('Events/' + this.props.roomName).once('value', snapshot => {
+      snapshot.forEach(data => {
+        const currentKey = data.key;
+        if(currentKey != "optionList" && currentKey != "roominfo"){
+          this.state.userSetKeys.add(currentKey);
+        }
+      });
+    });
   }
 
 
@@ -70,6 +80,14 @@ export default class OptionsModal extends Component {
 
   }
 
+  pushUserOptionstoUsers(){
+    for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
+      db.child('Events/' + this.props.roomName + `/${val}/options`)
+        .set({
+          options: Object.assign({}, this.state.optionList),
+        });
+    }
+  }
 
   showform = () => {
     this.setState({ formShow: !this.state.formShow })
@@ -86,17 +104,16 @@ export default class OptionsModal extends Component {
         .on("child_added", snapshot => {
           var key = snapshot.key
           var val = snapshot.val()
-          console.log("KEY = ",key ,"Value = ", val)
+          //console.log("KEY = ",key ,"Value = ", val)
           this.setState({ [key]: val }, function(){
-            console.log("AFTER setting state = ",this.state)
+            //console.log("AFTER setting state = ",this.state)
             if (this.state.submitted != 0 && (this.state.submitted == this.state.users)) {
-              console.log('WE ARE SETTING STATE')
+              this.pushUserOptionstoUsers();
+              //console.log('WE ARE SETTING STATE')
               this.setState({ ...this.state, voteButton: true })
             }
-            
           })
         })
-
   }
 
   handleOption = text => {
@@ -116,7 +133,7 @@ export default class OptionsModal extends Component {
           // console.log(this.state);
         })
         .catch(error => {
-          console.log(error);
+          //console.log(error);
         });
     }
     this.setState({option :''})

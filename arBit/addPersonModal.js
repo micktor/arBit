@@ -75,7 +75,6 @@ export default class AddPersonModal extends Component {
       db.child('Events/' + this.props.roomName)
         .push({
           userName: this.state.userName,
-          options: ['option1'],
           url: '',
           hasVoted: false,
           votes: 0,
