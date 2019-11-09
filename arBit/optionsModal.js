@@ -49,7 +49,7 @@ export default class OptionsModal extends Component {
     db.child('Events/' + this.props.roomName).once('value', snapshot => {
       snapshot.forEach(data => {
         const currentKey = data.key;
-        if(currentKey != "optionList" && currentKey != "roominfo"){
+        if(currentKey != "optionList" && currentKey != "roominfo" && currentKey != this.props.roomName){
           this.state.userSetKeys.add(currentKey);
         }
       });
@@ -80,7 +80,15 @@ export default class OptionsModal extends Component {
 
   }
 
+  removeRoomNamesFromUserSet(){
+    let b = new Set(this.props.roomList)
+    let difference = new Set(
+      [...this.state.userSetKeys].filter(x => !b.has(x)));
+      this.state.userSetKeys = difference
+  }
+
   pushUserOptionstoUsers(){
+    this.removeRoomNamesFromUserSet()
     for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
       db.child('Events/' + this.props.roomName + `/${val}/options`)
         .set({

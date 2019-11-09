@@ -96,6 +96,7 @@ export default class CreateModal extends Component {
               displayName={this.state.displayName}
               toggleNameModal={this.toggleNameModal}
               roomName={this.state.roomName}
+              roomList = {this.state.roomList}
             />
             <Button
               style={createModalStyle.button}
