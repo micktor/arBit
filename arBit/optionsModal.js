@@ -33,7 +33,7 @@ export default class OptionsModal extends Component {
 
     if (this.props.roomName != prevProps.roomName) {
       db
-        .child('Events/' + this.props.roomName + '/optionList/optionList')
+        .child('Events/' + this.props.roomName + '/optionList')
         .on("child_added", snapshot => {
           const data = snapshot.val()
           if (data) {
@@ -133,7 +133,7 @@ export default class OptionsModal extends Component {
   addOption = () => {
     if (this.state.option == '') alert('Invalid Input');
     else {
-      db.child('Events/' + this.props.roomName + '/optionList/optionList')
+      db.child('Events/' + this.props.roomName + '/optionList')
         .push({
           option: this.state.option,
           author: this.props.userName,
