@@ -10,11 +10,11 @@
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/objects-13.0+.nib</key>
 		<data>
-		h7f5mEkDvkoB7/ScKNsYoqPL+n4=
+		hRiCqr93ZsOHq8ldF05ku48zWj0=
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<data>
-		L+c1Cvc/atLXp12SdquPNneAIUs=
+		ox+neRV9WyCTeV1BPZdKjNm5cIM=
 		</data>
 		<key>Entypo.ttf</key>
 		<data>
@@ -135,15 +135,15 @@
 		</data>
 		<key>PlugIns/arBitTests.xctest/Info.plist</key>
 		<data>
-		Eei3KX5ZLk88wV4A+TlqJQooRYc=
+		Qbis1Bbxh5cQAW01iFvKiTdJXTk=
 		</data>
 		<key>PlugIns/arBitTests.xctest/_CodeSignature/CodeResources</key>
 		<data>
-		c0Zy20LGc6XVLiYtxFSoGXDdvno=
+		7KjRZx0Gq8/YLMCzoaopZj0IgwI=
 		</data>
 		<key>PlugIns/arBitTests.xctest/arBitTests</key>
 		<data>
-		ynMecmALEipvrAmXep1yvPqC1EY=
+		yHsMKyrUQECqVN7OKRNOfmOHHhs=
 		</data>
 		<key>SimpleLineIcons.ttf</key>
 		<data>
@@ -171,22 +171,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			h7f5mEkDvkoB7/ScKNsYoqPL+n4=
+			hRiCqr93ZsOHq8ldF05ku48zWj0=
 			</data>
 			<key>hash2</key>
 			<data>
-			UR9Xtqw7EiH/LyW665v3VafnPqYpV16vWfOVTH+zRv4=
+			u6tFX7r+AOc9oGPq7zxvIAjrcDdUvCW6GCkVPNcs81s=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			L+c1Cvc/atLXp12SdquPNneAIUs=
+			ox+neRV9WyCTeV1BPZdKjNm5cIM=
 			</data>
 			<key>hash2</key>
 			<data>
-			aQ2GJHD9RMXxjVF6yNbcn8FMCmYT7SjJVQB/1loxBzc=
+			RSDDE6dgUGZtkZ4i6b5qWfccRApeL01rxLSlchAHspo=
 			</data>
 		</dict>
 		<key>Entypo.ttf</key>
@@ -481,33 +481,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Eei3KX5ZLk88wV4A+TlqJQooRYc=
+			Qbis1Bbxh5cQAW01iFvKiTdJXTk=
 			</data>
 			<key>hash2</key>
 			<data>
-			+x63LvGRCNWgDEYJ2B9u6r+Vsq00S5G2n0OA7cf+3+k=
+			3VTJ24AA+nplY5Cn+gvvAl5jLz/Cow+yY2RK1ctK8Wg=
 			</data>
 		</dict>
 		<key>PlugIns/arBitTests.xctest/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			c0Zy20LGc6XVLiYtxFSoGXDdvno=
+			7KjRZx0Gq8/YLMCzoaopZj0IgwI=
 			</data>
 			<key>hash2</key>
 			<data>
-			WXBYvebnfWs0dqdcYcX/ijR9E7woqXz9fj/8u8FG2VM=
+			3L68pndf3jDpg+EszRlSxGaEDIHDyg/zSlS9r/vfyQM=
 			</data>
 		</dict>
 		<key>PlugIns/arBitTests.xctest/arBitTests</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ynMecmALEipvrAmXep1yvPqC1EY=
+			yHsMKyrUQECqVN7OKRNOfmOHHhs=
 			</data>
 			<key>hash2</key>
 			<data>
-			EHTBEh6TQZ4UDOWj/HdyP4uOxW8F7P6EXq8DdLli57k=
+			vkvo4lml3KoMD0R05h+65OrZepmYLCkwzOrOjrXsWJA=
 			</data>
 		</dict>
 		<key>SimpleLineIcons.ttf</key>

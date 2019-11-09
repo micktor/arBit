@@ -33,7 +33,7 @@ export default class OptionsModal extends Component {
 
     if (this.props.roomName != prevProps.roomName) {
       db
-        .child('Events/' + this.props.roomName + '/optionList/optionList')
+        .child('Events/' + this.props.roomName + '/optionList')
         .on("child_added", snapshot => {
           const data = snapshot.val()
           if (data) {
@@ -90,14 +90,13 @@ export default class OptionsModal extends Component {
   pushUserOptionstoUsers(){
     this.removeRoomNamesFromUserSet()
     for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
-      db.child('Events/' + this.props.roomName + `/${val}/options`)
-        .set({
-          options: this.state.optionList.reduce((acc, elem) =>{
-            acc[elem]=0
-            return acc
-          },{})
-        });
-    }
+      for(i = 0; i<this.state.optionList.length; i++){
+             var option = this.state.optionList[i]
+          db.child('Events/' + this.props.roomName + `/${val}/options`)
+            .update({
+             [option]: 0
+          });
+    }}
   }
 
   showform = () => {
@@ -134,7 +133,7 @@ export default class OptionsModal extends Component {
   addOption = () => {
     if (this.state.option == '') alert('Invalid Input');
     else {
-      db.child('Events/' + this.props.roomName + '/optionList/optionList')
+      db.child('Events/' + this.props.roomName + '/optionList')
         .push({
           option: this.state.option,
           author: this.props.userName,
