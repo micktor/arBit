@@ -5,6 +5,7 @@ import {
   Form,
   Container,
   Item,
+  Icon,
   Input,
   Header,
   Button,
@@ -20,7 +21,7 @@ import {
   Spinner,
   Picker,
 } from 'native-base';
-import { StyleSheet, Modal, View, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Modal, View, SafeAreaView, FlatList, Image } from 'react-native';
 import AddPersonModal from './addPersonModal';
 import { db } from './db';
 
@@ -80,7 +81,6 @@ export default class OptionsModal extends Component {
             </Title>
           </Body>
         </Header>
-
         <Container style={styles.container}>
           <Form>
             <Item>
@@ -105,25 +105,34 @@ export default class OptionsModal extends Component {
                 <Text>{item}</Text>
               </Left>
             
-              
               <Item picker>
                 <Picker
                   mode="dropdown"
-                  placeholder="Vote"
-                  placeholderStyle={{ color: "#2874F0" }}
+                  iosIcon={ 
+                    <Image
+                      style={{width: 65, height: 65, marginRight:25,}}
+                      source={require('./assets/images/vote-icon.png')}
+                    />}
+                  // placeholder = "Vote"
+                  // placeholderStyle={{ color: "#2874F0" }}
                 >
-                  <Picker.Item label="*" value="key0" />
-                  <Picker.Item label="**" value="key1" />
-                  <Picker.Item label="***" value="key2" />
-                  <Picker.Item label="****" value="key3" />
-                  <Picker.Item label="*****" value="key4" />
+                  <Picker.Item label="⭐" value="key0" />
+                  <Picker.Item label="⭐⭐" value="key1" />
+                  <Picker.Item label="⭐⭐⭐" value="key2" />
+                  <Picker.Item label="⭐⭐⭐⭐" value="key3" />
+                  <Picker.Item label="⭐⭐⭐⭐⭐" value="key4" />
                 </Picker>
               </Item>
       
           
           
               <Right>
-                <Button danger rounded><Text>X</Text></Button>
+                <Button danger rounded>
+                <Image
+                  style={{width: 25, height: 25, marginLeft: 10, marginRight: 10,}}
+                  source={require('./assets/images/trash2.png')}
+                />
+                </Button>
               </Right>
             </ListItem> }
             />
