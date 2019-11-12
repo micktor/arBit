@@ -31,22 +31,110 @@ export default class OptionsModal extends Component {
     this.state = {
       optionList: [],
       option: '',
+      formShow: true,
+      submitted: 0,
+      voted: 0,
+      users: 0,
+      voteButton: false,
+      userSetKeys: new Set(),
     }
   }
 
   componentDidUpdate = (prevProps) => {
+
     if (this.props.roomName != prevProps.roomName) {
       db
-      .child('Events/' + this.props.roomName + '/optionList/optionList')
-      .on("child_added", snapshot => {
-        const data = snapshot.val()
-        if (data) {
-          this.setState(prevState => ({
-            optionList: [data.option, ...prevState.optionList]
-          }))
-        }
-      })
+        .child('Events/' + this.props.roomName + '/optionList')
+        .on("child_added", snapshot => {
+          const data = snapshot.val()
+          if (data) {
+            
+            this.setState(prevState => ({
+              optionList: [data.option, ...prevState.optionList]
+            }))
+          }
+        })
+        
     }
+
+    db.child('Events/' + this.props.roomName).once('value', snapshot => {
+      snapshot.forEach(data => {
+        const currentKey = data.key;
+        if(currentKey != "optionList" && currentKey != "roominfo" && currentKey != this.props.roomName){
+          this.state.userSetKeys.add(currentKey);
+        }
+      });
+    });
+  }
+
+
+  submitButton = () => {
+    let buttonStyle = this.state.formShow ? { backgroundColor: 'orange' } : { backgroundColor: 'teal' }
+    let text = this.state.formShow ? "Done with options" : "Click to enter more options"
+
+
+    return (
+      <Button style={Object.assign({}, buttonStyle, styles.bottomButton)}
+        onPress={() => this.showform()}>
+        <Text>{text}</Text>
+      </Button>
+    )
+  }
+
+  voteButton = () => {
+
+    return (
+      <Button style={styles.bottomButton}>
+        <Text>Vote</Text>
+      </Button>
+    )
+
+  }
+
+  removeRoomNamesFromUserSet(){
+    let b = new Set(this.props.roomList)
+    let difference = new Set(
+      [...this.state.userSetKeys].filter(x => !b.has(x)));
+      this.state.userSetKeys = difference
+  }
+
+  pushUserOptionstoUsers(){
+    this.removeRoomNamesFromUserSet()
+    for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
+      for(i = 0; i<this.state.optionList.length; i++){
+             var option = this.state.optionList[i]
+          db.child('Events/' + this.props.roomName + `/${val}/options`)
+            .update({
+             [option]: 0
+          });
+    }}
+  }
+
+  showform = () => {
+    this.setState({ formShow: !this.state.formShow })
+    var ref = db.child('Events/' + this.props.roomName + '/roominfo/submitted')
+    action = this.state.formShow
+    ref.transaction(function (submitted) {
+      if (submitted || (submitted === 0)) {
+        submitted = action ? submitted + 1 : submitted - 1
+      }
+      return submitted
+    });
+    db
+        .child('Events/' + this.props.roomName + '/roominfo')
+        .on("child_added", snapshot => {
+          var key = snapshot.key
+          var val = snapshot.val()
+          //console.log("KEY = ",key ,"Value = ", val)
+          this.setState({ [key]: val }, function(){
+            //console.log("AFTER setting state = ",this.state)
+            if (this.state.submitted != 0 && (this.state.submitted == this.state.users)) {
+              this.pushUserOptionstoUsers();
+              //console.log('WE ARE SETTING STATE')
+              this.setState({ ...this.state, voteButton: true })
+            }
+          })
+        })
   }
 
   handleOption = text => {
@@ -61,22 +149,24 @@ export default class OptionsModal extends Component {
   addOption = () => {
     if (this.state.option == '') alert('Invalid Input');
     else {
-      db.child('Events/' + this.props.roomName + '/optionList/optionList')
+      db.child('Events/' + this.props.roomName + '/optionList')
         .push({
           option: this.state.option,
           author: this.props.userName,
           votes: 0,
         })
         .then(() => {
-          console.log(this.state);
+          // console.log(this.state);
         })
         .catch(error => {
-          console.log(error);
+          //console.log(error);
         });
     }
+    this.setState({option :''})
   };
 
   render() {
+    // console.log(this.state)
     return (
       <Modal visible={this.props.displayOptions} animationType="slide">
         <Header span>
@@ -87,19 +177,24 @@ export default class OptionsModal extends Component {
           </Body>
         </Header>
         <Container style={styles.container}>
-          <Form>
-            <Item>
-              <Input
-                placeholder="Enter your option"
-                autoCorrect={false}
-                autoCapitalize="none"
-                onChangeText={this.handleOption}
-              />
-              <Button onPress={() => this.addOption()}>
-                <Text>Submit</Text>
-              </Button>
-            </Item>
-          </Form>
+          {(!this.state.formShow && !this.state.voteButton) ?
+          <Text style={styles.textWrapper}>Waiting for other members to finish...</Text> :
+            (this.state.formShow && !this.state.voteButton) ?
+            <Form>
+              <Item>
+                <Input
+                  placeholder="Enter your option"
+                  autoCorrect={false}
+                  autoCapitalize="none"
+                  onChangeText={this.handleOption}
+                  value = {this.state.option}
+                />
+                <Button onPress={() => this.addOption()}>
+                  <Text>Submit</Text>
+                </Button>
+              </Item>
+            </Form> :
+            <Text style={styles.textWrapper}>Rank you choices, high to low</Text>}
           <Container style={styles.container}>
             <FlatList
               data={this.state.optionList}
@@ -146,6 +241,9 @@ export default class OptionsModal extends Component {
             <Text>Go Back to Home</Text>
           </Button> */}
         </Container>
+
+        {!this.state.voteButton ? this.submitButton() : this.voteButton()}
+
       </Modal>
     );
   }
@@ -156,6 +254,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     padding: 30,
+  },
+
+  textWrapper: {
+    marginBottom: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 
   bigBlack: {
@@ -179,6 +283,22 @@ const styles = StyleSheet.create({
   title: {
     justifyContent: 'center',
   },
+
+  bottomButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '7.5%',
+    fontSize: 30,
+    marginBottom: 100,
+  },
+  show: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '7.5%',
+    fontSize: 30,
+    marginBottom: 100,
+  },
+
 
   button: {
     marginTop: 50,

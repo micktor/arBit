@@ -25,6 +25,12 @@ export default class CreateModal extends Component {
   };
   addRoom(room) {
     db.child(room).push({});
+    db.child('Events/'+room+'/roominfo')
+     .set({
+       users: 0,
+       numbervoted: 0,
+       submitted: 0,
+     })
   }
 
   componentDidMount() {
@@ -90,6 +96,7 @@ export default class CreateModal extends Component {
               displayName={this.state.displayName}
               toggleNameModal={this.toggleNameModal}
               roomName={this.state.roomName}
+              roomList = {this.state.roomList}
             />
             <Button
               style={createModalStyle.button}
