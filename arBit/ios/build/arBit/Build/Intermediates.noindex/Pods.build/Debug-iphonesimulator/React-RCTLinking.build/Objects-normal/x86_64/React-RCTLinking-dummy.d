@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTLinking/React-RCTLinking-dummy.m \
-  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTLinking/React-RCTLinking-prefix.pch
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTLinking/React-RCTLinking-dummy.m \
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTLinking/React-RCTLinking-prefix.pch

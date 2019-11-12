@@ -53,6 +53,11 @@ export default class OptionsModal extends Component {
     this.setState({ option: text });
   };
 
+  checkLenOfList = () => {
+    console.log("vote button is pressed")
+    console.log(this.state.optionList.length)
+  }
+
   addOption = () => {
     if (this.state.option == '') alert('Invalid Input');
     else {
@@ -105,8 +110,8 @@ export default class OptionsModal extends Component {
                 <Text>{item}</Text>
               </Left>
             
-              <Item picker>
-                <Picker
+              <Item picker >
+                <Picker onValueChange={() => this.checkLenOfList()}
                   mode="dropdown"
                   iosIcon={ 
                     <Image
