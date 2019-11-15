@@ -10,7 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/geolocation": "^2.0.2",
     "firebase": "^7.2.0",
     "native-base": "^2.13.8",
     "react": "16.9.0",

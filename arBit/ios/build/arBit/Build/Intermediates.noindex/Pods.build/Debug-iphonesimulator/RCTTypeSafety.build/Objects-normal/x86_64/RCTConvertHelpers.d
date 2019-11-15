@@ -1,29 +1,29 @@
 dependencies: \
-  /Users/micktor/Documents/arbit/arBit/node_modules/react-native/Libraries/TypeSafety/RCTConvertHelpers.mm \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Target\ Support\ Files/RCTTypeSafety/RCTTypeSafety-prefix.pch \
-  /Users/micktor/Documents/arbit/arBit/node_modules/react-native/Libraries/TypeSafety/RCTConvertHelpers.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/FBLazyVector/FBLazyVector/FBLazyVector.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/FBLazyVector/FBLazyVector/FBLazyIterator.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/Optional.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/Portability.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/portability/Config.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/CPortability.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/Traits.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/Utility.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/lang/Exception.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Folly/folly/CppAttributes.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTConvert.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTAnimationType.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTBorderStyle.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTDefines.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTInspectorDevServerHelper.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTPackagerConnection.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTLog.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTAssert.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTUtils.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTPointerEvents.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTTextDecorationLineType.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/Yoga.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/YGEnums.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/YGMacros.h \
-  /Users/micktor/Documents/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/YGValue.h
+  /Users/jason/arbit/arBit/node_modules/react-native/Libraries/TypeSafety/RCTConvertHelpers.mm \
+  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/RCTTypeSafety/RCTTypeSafety-prefix.pch \
+  /Users/jason/arbit/arBit/node_modules/react-native/Libraries/TypeSafety/RCTConvertHelpers.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/FBLazyVector/FBLazyVector/FBLazyVector.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/FBLazyVector/FBLazyVector/FBLazyIterator.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/Optional.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/Portability.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/portability/Config.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/CPortability.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/Traits.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/Utility.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/lang/Exception.h \
+  /Users/jason/arbit/arBit/ios/Pods/Folly/folly/CppAttributes.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTConvert.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTAnimationType.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTBorderStyle.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTDefines.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTInspectorDevServerHelper.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTPackagerConnection.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTLog.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTAssert.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTUtils.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTPointerEvents.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTTextDecorationLineType.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/Yoga.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/YGEnums.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/YGMacros.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/Yoga/yoga/YGValue.h
