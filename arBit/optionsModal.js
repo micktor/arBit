@@ -59,6 +59,18 @@ export default class OptionsModal extends Component {
 
     if (this.props.roomName != prevProps.roomName) {
       Geolocation.getCurrentPosition(info => this.setState({location: info}));
+      
+      db
+      .child('Events/' + this.props.roomName + '/roominfo')
+      .on("child_changed", snapshot => {
+        const data = snapshot.val()
+        if(data == this.state.users){
+          this.pushUserOptionstoUsers();
+          this.setState({ ...this.state, voteButton: true })
+          
+        }
+      })
+     
 
 
       db
@@ -71,9 +83,9 @@ export default class OptionsModal extends Component {
           }))
         }
       })
-
     }
 
+    
     db.child('Events/' + this.props.roomName).once('value', snapshot => {
       snapshot.forEach(data => {
         const currentKey = data.key;
@@ -219,30 +231,6 @@ export default class OptionsModal extends Component {
     console.log("vote button is pressed")
     console.log(this.state.optionList.length)
   }
-// //   async  requestLocationPermission(){
-// //   try {
-// //     const granted = await PermissionsAndroid.request(
-// //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-// //       {
-// //         'title': 'Example App',
-// //         'message': 'Example App access to your location '
-// //       }
-// //     )
-// //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-// //       console.log("You can use the location")
-// //       alert("You can use the location");
-// //     } else {
-// //       console.log("location permission denied")
-// //       alert("Location permission denied");
-// //     }
-// //   } catch (err) {
-// //     console.warn(err)
-// //   }
-// // }
-
-//  async componentDidMount() {
-//    await this.requestLocationPermission()
-//   }
 
   addOption = () => {
     if (this.state.option == '') alert('Invalid Input');
