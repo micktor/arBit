@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
+
+
 import {
+  List,
+  ListItem,
   Form,
   Container,
   Item,
+  Icon,
   Input,
   Header,
   Button,
+  Content,
+  Toast,
   Text,
+  Left,
+  Center,
   Body,
+  Right,
   Title,
+  Label,
+  Spinner,
+  Picker,
+  TouchableHighlight,
 } from 'native-base';
-import { StyleSheet, Modal, View, SafeAreaView, FlatList} from 'react-native';
+import { StyleSheet, Modal, View, SafeAreaView, FlatList, Image } from 'react-native';
 import AddPersonModal from './addPersonModal';
 import { db } from './db';
 
@@ -29,7 +43,16 @@ export default class OptionsModal extends Component {
       users: 0,
       voteButton: false,
       userSetKeys: new Set(),
+      pickerSelection: '0',
     }
+  }
+
+  setPickerValue(newValue) {
+    this.setState({
+      pickerSelection: newValue
+    })
+
+    this.togglePicker();
   }
 
   componentDidUpdate = (prevProps) => {
@@ -76,14 +99,71 @@ export default class OptionsModal extends Component {
   }
 
   voteButton = () => {
-
     return (
       <Button style={styles.bottomButton}>
       <Text>Vote</Text>
       </Button>
       )
-
   }
+
+  showOptionsWithoutVote = (item) => {
+    return (
+        <Container style={styles.container}>
+          <FlatList
+            data={this.state.optionList}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => 
+              <ListItem selected>
+                <Left>
+                  <Text>{item}</Text>
+                </Left> 
+                <Text></Text>
+            </ListItem>}
+          />
+        </Container>
+
+    )
+  }
+  showOptionsWithVote = (item) => {
+    return (
+          <Container style={styles.container}>
+              <FlatList
+                data={this.state.optionList}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => 
+                  <ListItem selected>
+                    <Left>
+                      <Text>{item}</Text>
+                    </Left> 
+                    <Text></Text>
+                  <Item picker >
+                    <Picker
+                      iosIcon={ <Image
+                                  style={{width: 65, height: 65, marginRight:25,}}
+                                  source={require('./assets/images/vote-icon.png')}
+                                />}
+                      selectedValue={ this.state.pickerSelection }
+                      onValueChange={(itemValue, itemIndex) => {this.setState({pickerSelction: itemValue})}
+                      }>
+                      <Picker.Item label="1" value="1" />
+                      <Picker.Item label="2" value="2" />
+                      <Picker.Item label="3" value="3" />
+                    </Picker> 
+                  </Item>
+                  <Right>
+                    <Button danger rounded>
+                    <Image
+                      style={{width: 25, height: 25, marginLeft: 10, marginRight: 10,}}
+                      source={require('./assets/images/trash2.png')}
+                    />
+                    </Button>
+                  </Right>
+                </ListItem>}
+              />
+            </Container>
+            )
+  }
+
 
   removeRoomNamesFromUserSet(){
     let b = new Set(this.props.roomList)
@@ -135,6 +215,10 @@ export default class OptionsModal extends Component {
     this.setState({ option: text });
   };
 
+  checkLenOfList = () => {
+    console.log("vote button is pressed")
+    console.log(this.state.optionList.length)
+  }
 // //   async  requestLocationPermission(){
 // //   try {
 // //     const granted = await PermissionsAndroid.request(
@@ -201,7 +285,7 @@ export default class OptionsModal extends Component {
   };
 
   render() {
-    // console.log(this.state)
+    // votes = [1, 2, 3, 4, 5];
     return (
       <Modal visible={this.props.displayOptions} animationType="slide">
       <Header span>
@@ -217,30 +301,23 @@ export default class OptionsModal extends Component {
         <Text style={styles.textWrapper}>Waiting for other members to finish...</Text> :
         (this.state.formShow && !this.state.voteButton) ?
         <Form>
-        <Item>
-        <Input
-        placeholder="Enter your option"
-        autoCorrect={false}
-        autoCapitalize="none"
-        onChangeText={this.handleOption}
-        value = {this.state.option}
-        />
-        <Button onPress={() => this.addOption()}>
-        <Text>Submit</Text>
-        </Button>
-        </Item>
+          <Item>
+            <Input
+              placeholder="Enter your option"
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChangeText={this.handleOption}
+              value = {this.state.option}
+              />
+              <Button onPress={() => this.addOption()}>
+                <Text>Submit</Text>
+              </Button>
+          </Item>
         </Form> :
         <Text style={styles.textWrapper}>Rank you choices, high to low</Text>}
-        <SafeAreaView>
-        <FlatList
-        data={this.state.optionList}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Text style={styles.list}>{item}</Text>}
-        />
-        </SafeAreaView>
-        {/* <Button full rounded danger style={styles.button}>
-        <Text>Go Back to Home</Text>
-      </Button> */}
+        
+        {!this.state.voteButton ? this.showOptionsWithoutVote(): this.showOptionsWithVote()}
+            
       </Container>
 
       {!this.state.voteButton ? this.submitButton() : this.voteButton()}

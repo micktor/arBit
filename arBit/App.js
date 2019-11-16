@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, SafeAreaView, Text, Alert} from 'react-native';
+import {StyleSheet, View, SafeAreaView, Text, Alert, Image} from 'react-native';
 
 import CreateModal from './createModal';
 import JoinModal from './joinModal';
@@ -40,6 +40,10 @@ export default class App extends Component {
         <View>
           <Text style={styles.title}>arBit</Text>
         </View>
+        <Image
+          style={styles.icon}
+          source={require('./assets/images/group-icon.png')}
+        />
         <View>
           <Button
             onPress={() => this.toggleCreateModal()}
@@ -78,6 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 30,
   },
 
@@ -86,10 +91,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 50,
     textAlign: 'center',
-    marginBottom: 50,
+    marginBottom: 5,
   },
 
   button: {
     marginTop: 50,
+    width: 180,
+  },
+
+  icon: {
+    width: 125,
+    height: 125,
+    justifyContent: "center",
   },
 });

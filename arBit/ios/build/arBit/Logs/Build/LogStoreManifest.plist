@@ -5,41 +5,6 @@
 	<key>logFormatVersion</key>
 	<integer>10</integer>
 	<key>logs</key>
-	<dict>
-		<key>DC3FA401-AC5B-4133-9714-B14F7CF27B15</key>
-		<dict>
-			<key>className</key>
-			<string>IDECommandLineBuildLog</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
-			<key>fileName</key>
-			<string>DC3FA401-AC5B-4133-9714-B14F7CF27B15.xcactivitylog</string>
-			<key>hasPrimaryLog</key>
-			<true/>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>W</string>
-			</dict>
-			<key>schemeIdentifier-containerName</key>
-			<string>arBit project</string>
-			<key>schemeIdentifier-schemeName</key>
-			<string>arBit</string>
-			<key>schemeIdentifier-sharedScheme</key>
-			<integer>1</integer>
-			<key>signature</key>
-			<string>Building workspace arBit with scheme arBit and configuration Debug</string>
-			<key>timeStartedRecording</key>
-			<real>595558959.59827304</real>
-			<key>timeStoppedRecording</key>
-			<real>595558960.42440701</real>
-			<key>title</key>
-			<string>Building workspace arBit with scheme arBit and configuration Debug</string>
-			<key>uniqueIdentifier</key>
-			<string>DC3FA401-AC5B-4133-9714-B14F7CF27B15</string>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>
