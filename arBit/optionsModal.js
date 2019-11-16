@@ -10,7 +10,7 @@ import {
   Body,
   Title,
 } from 'native-base';
-import { StyleSheet, Modal, View, SafeAreaView, FlatList, PermissionsAndroid } from 'react-native';
+import { StyleSheet, Modal, View, SafeAreaView, FlatList} from 'react-native';
 import AddPersonModal from './addPersonModal';
 import { db } from './db';
 
@@ -135,30 +135,30 @@ export default class OptionsModal extends Component {
     this.setState({ option: text });
   };
 
-  async  requestLocationPermission(){
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        'title': 'Example App',
-        'message': 'Example App access to your location '
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the location")
-      alert("You can use the location");
-    } else {
-      console.log("location permission denied")
-      alert("Location permission denied");
-    }
-  } catch (err) {
-    console.warn(err)
-  }
-}
+// //   async  requestLocationPermission(){
+// //   try {
+// //     const granted = await PermissionsAndroid.request(
+// //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+// //       {
+// //         'title': 'Example App',
+// //         'message': 'Example App access to your location '
+// //       }
+// //     )
+// //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+// //       console.log("You can use the location")
+// //       alert("You can use the location");
+// //     } else {
+// //       console.log("location permission denied")
+// //       alert("Location permission denied");
+// //     }
+// //   } catch (err) {
+// //     console.warn(err)
+// //   }
+// // }
 
- async componentDidMount() {
-   await this.requestLocationPermission()
-  }
+//  async componentDidMount() {
+//    await this.requestLocationPermission()
+//   }
 
   addOption = () => {
     if (this.state.option == '') alert('Invalid Input');
@@ -194,8 +194,8 @@ export default class OptionsModal extends Component {
         console.error(error);
       });
 
-      console.log(this.state.location.coords.latitude);
-      console.log(this.state.location.coords.longitude);
+      // console.log(this.state.location.coords.latitude);
+      // console.log(this.state.location.coords.longitude);
 
     }
   };
