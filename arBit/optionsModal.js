@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+
 import {
   List,
   ListItem,
@@ -20,6 +22,7 @@ import {
   Label,
   Spinner,
   Picker,
+  TouchableHighlight,
 } from 'native-base';
 import { StyleSheet, Modal, View, SafeAreaView, FlatList, Image } from 'react-native';
 import AddPersonModal from './addPersonModal';
@@ -37,7 +40,16 @@ export default class OptionsModal extends Component {
       users: 0,
       voteButton: false,
       userSetKeys: new Set(),
+      pickerSelection: '0',
     }
+  }
+
+  setPickerValue(newValue) {
+    this.setState({
+      pickerSelection: newValue
+    })
+
+    this.togglePicker();
   }
 
   componentDidUpdate = (prevProps) => {
@@ -50,7 +62,7 @@ export default class OptionsModal extends Component {
           if (data) {
             
             this.setState(prevState => ({
-              optionList: [data.option, ...prevState.optionList]
+              optionList: [data.option, ...prevState.optionList],
             }))
           }
         })
@@ -166,7 +178,7 @@ export default class OptionsModal extends Component {
   };
 
   render() {
-    // console.log(this.state)
+    // votes = [1, 2, 3, 4, 5];
     return (
       <Modal visible={this.props.displayOptions} animationType="slide">
         <Header span>
@@ -200,46 +212,36 @@ export default class OptionsModal extends Component {
               data={this.state.optionList}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({item}) => 
-              <ListItem selected>
-              <Left>
-                <Text>{item}</Text>
-              </Left>
-            
-              <Item picker >
-                <Picker onValueChange={() => this.checkLenOfList()}
-                  mode="dropdown"
-                  iosIcon={ 
+                <ListItem selected>
+                  <Left>
+                    <Text>{item}</Text>
+                  </Left>
+                  <Text></Text>
+                  <Item picker >
+                    <Picker
+                      iosIcon={ <Image
+                                  style={{width: 65, height: 65, marginRight:25,}}
+                                  source={require('./assets/images/vote-icon.png')}
+                                />}
+                      selectedValue={ this.state.pickerSelection }
+                      onValueChange={(itemValue, itemIndex) => {this.setState({pickerSelction: itemValue})}
+                      }>
+                      <Picker.Item label="1" value="1" />
+                      <Picker.Item label="2" value="2" />
+                      <Picker.Item label="3" value="3" />
+                    </Picker> 
+                    </Item>
+                  <Right>
+                    <Button danger rounded>
                     <Image
-                      style={{width: 65, height: 65, marginRight:25,}}
-                      source={require('./assets/images/vote-icon.png')}
-                    />}
-                  // placeholder = "Vote"
-                  // placeholderStyle={{ color: "#2874F0" }}
-                >
-                  <Picker.Item label="⭐" value="key0" />
-                  <Picker.Item label="⭐⭐" value="key1" />
-                  <Picker.Item label="⭐⭐⭐" value="key2" />
-                  <Picker.Item label="⭐⭐⭐⭐" value="key3" />
-                  <Picker.Item label="⭐⭐⭐⭐⭐" value="key4" />
-                </Picker>
-              </Item>
-      
-          
-          
-              <Right>
-                <Button danger rounded>
-                <Image
-                  style={{width: 25, height: 25, marginLeft: 10, marginRight: 10,}}
-                  source={require('./assets/images/trash2.png')}
-                />
-                </Button>
-              </Right>
-            </ListItem> }
+                      style={{width: 25, height: 25, marginLeft: 10, marginRight: 10,}}
+                      source={require('./assets/images/trash2.png')}
+                    />
+                    </Button>
+                  </Right>
+                </ListItem> }
             />
           </Container>
-          {/* <Button full rounded danger style={styles.button}>
-            <Text>Go Back to Home</Text>
-          </Button> */}
         </Container>
 
         {!this.state.voteButton ? this.submitButton() : this.voteButton()}
