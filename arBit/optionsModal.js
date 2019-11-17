@@ -51,6 +51,7 @@ export default class OptionsModal extends Component {
       userSetKeys: new Set(),
       pickers: [],
       voteValueList: [],
+      buttonDisabled: false
     };
   }
 
@@ -118,6 +119,7 @@ export default class OptionsModal extends Component {
   };
 
   pushVotes() {
+    this.setState({buttonDisabled:true})
     {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
@@ -130,7 +132,9 @@ export default class OptionsModal extends Component {
 
   voteButton = () => {
     return (
-      <Button style={styles.bottomButton} onPress={() => this.pushVotes()}>
+      <Button style={styles.bottomButton}
+              disabled = {this.state.buttonDisabled}
+         onPress={() => this.pushVotes()}>
         <Text>Vote</Text>
       </Button>
     );
