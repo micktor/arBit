@@ -50,7 +50,7 @@ export default class OptionsModal extends Component {
       voteButton: false,
       userSetKeys: new Set(),
       pickers: [],
-      voteValueList: ['0'],
+      voteValueList: [],
     };
   }
 
@@ -69,6 +69,7 @@ export default class OptionsModal extends Component {
         },
       );
 
+      //
       db.child('Events/' + this.props.roomName + '/optionList').on(
         'child_added',
         snapshot => {
@@ -82,6 +83,7 @@ export default class OptionsModal extends Component {
       );
     }
 
+    // gets user keys
     db.child('Events/' + this.props.roomName).once('value', snapshot => {
       snapshot.forEach(data => {
         const currentKey = data.key;
@@ -217,6 +219,10 @@ export default class OptionsModal extends Component {
         db.child('Events/' + this.props.roomName + `/${val}/options`).update({
           [option]: 0,
         });
+        if(!this.state.voteValueList.includes(i.toString())){
+          this.state.voteValueList.push(i + '');
+          this.state.pickers.push(i);
+        }
       }
     }
   }
@@ -290,10 +296,6 @@ export default class OptionsModal extends Component {
               votes: 0,
             })
             .then(() => {
-              this.state.voteValueList.push(
-                this.state.voteValueList.length + '',
-              );
-              this.state.pickers.push('0');
               // console.log(this.state);
             })
             .catch(error => {
