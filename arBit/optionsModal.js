@@ -49,15 +49,9 @@ export default class OptionsModal extends Component {
       users: 0,
       voteButton: false,
       userSetKeys: new Set(),
-      pickerSelection: '0',
-      voteValueList: [],
+      pickers: [],
+      voteValueList: ['0'],
     };
-  }
-
-  setPickerValue(newValue) {
-    this.setState({
-      pickerSelection: newValue,
-    });
   }
 
   componentDidUpdate = prevProps => {
@@ -119,9 +113,25 @@ export default class OptionsModal extends Component {
     );
   };
 
+  pushVotes() {
+    this.removeRoomNamesFromUserSet();
+    for (
+      var it = this.state.userSetKeys.values(), val = null;
+      (val = it.next().value);
+
+    ) {
+      for (i = 0; i < this.state.optionList.length; i++) {
+        var option = this.state.optionList[i];
+        db.child('Events/' + this.props.roomName + `/${val}/options`).update({
+          [option]: this.state.pickers[i],
+        });
+      }
+    }
+  }
+
   voteButton = () => {
     return (
-      <Button style={styles.bottomButton}>
+      <Button style={styles.bottomButton} onPress={() => this.pushVotes()}>
         <Text>Vote</Text>
       </Button>
     );
@@ -145,25 +155,36 @@ export default class OptionsModal extends Component {
       </Container>
     );
   };
+
+  handlePickerSelection(value, index) {
+    let markers = [...this.state.pickers];
+    for (var j = 0; j < markers.length; j++) {
+      if (j == index) {
+        markers[index] = value;
+      } else {
+        markers[j] = markers[j];
+      }
+    }
+    this.setState({pickers: markers});
+  }
+
   showOptionsWithVote = item => {
     return (
       <Container style={styles.container}>
         <FlatList
           data={this.state.optionList}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item}) => (
+          renderItem={({item, index}) => (
             <ListItem selected>
               <Left>
                 <Text>{item}</Text>
               </Left>
               <Text></Text>
               <Picker
-                selectedValue={this.state.pickerSelection}
-                onValueChange={() => {
-                  this.setPickerValue();
-                }}>
+                selectedValue={this.state.pickers[index]}
+                onValueChange={v => this.handlePickerSelection(v, index)}>
                 {this.state.voteValueList.map((item, index) => {
-                  return <Picker.Item label={item} value={index} key={index} />;
+                  return <Picker.Item label={item} value={index} />;
                 })}
               </Picker>
               <Right>
@@ -270,8 +291,9 @@ export default class OptionsModal extends Component {
             })
             .then(() => {
               this.state.voteValueList.push(
-                this.state.voteValueList.length + 1 + '',
+                this.state.voteValueList.length + '',
               );
+              this.state.pickers.push('0');
               // console.log(this.state);
             })
             .catch(error => {
