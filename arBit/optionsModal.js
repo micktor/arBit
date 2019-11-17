@@ -36,6 +36,7 @@ import {db} from './db';
 import DisplayWinner from './DisplayWinner';
 import { Dropdown } from 'react-native-material-dropdown';
 import Geolocation from '@react-native-community/geolocation';
+import { throwStatement } from '@babel/types';
 navigator.geolocation = require('@react-native-community/geolocation');
 
 export default class OptionsModal extends Component {
@@ -50,6 +51,7 @@ export default class OptionsModal extends Component {
       users: 0,
       voteButton: false,
       userSetKeys: new Set(),
+      optionKeys: new Set(),
       pickers: [],
       voteValueList: [],
       buttonDisabled: false,
@@ -102,9 +104,48 @@ export default class OptionsModal extends Component {
         }
       });
     });
+
+      // Obtains keys for options under optionList
+      db.child('Events/' + this.props.roomName + '/optionList/').once('value', snapshot => {
+        snapshot.forEach(data => {
+          const currentKey = data.key;
+          // console.log(" data.key: ", data.key)
+          this.state.optionKeys.add(currentKey); 
+          // console.log("Option = ",currentKey)
+        });
+      });
   };
 
+  // pulls votes for each option and uses optionVote to map "option key" to it's vote value
+  pullVotes(){
+    const optionVote = {};
+    for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
+      for (i = 0; i < this.state.optionList.length; i++) {
+        var option = this.state.optionList[i];
+        db.child('Events/' + this.props.roomName + `/${val}/options/${option}`)
+        .once('value', function(snapshot) {
+          if(optionVote[option] == null){
+            optionVote[option] = snapshot.val()
+          }
+          else{
+            optionVote[option] = optionVote[option] + snapshot.val()
+          }
+        })
+      }
+    }
+    // Testing only: prints out options and votes for each (can be deleted, only for testing)
+    for (i = 0; i < this.state.optionList.length; i++) {
+      var option = this.state.optionList[i];
+      console.log("option: ", option)
+      console.log("vote: ", optionVote[option])
+    }
+  }
+  
+
   submitButton = () => {
+    // just for testing pullVotes 
+    this.pullVotes();
+
     let buttonStyle = this.state.formShow
       ? {backgroundColor: 'orange'}
       : {backgroundColor: 'teal'};
