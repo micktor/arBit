@@ -145,11 +145,14 @@ export default class OptionsModal extends Component {
       }
       this.setState({voted: true});
     } else {
-      alert('Used vote value twice or more, use value value only once');
+      alert('Every option must be voted for with a unique number');
     }
   }
 
   areValidVotes() {
+    if(this.state.pickers.includes(0)){
+      return false
+    }
     for(i = 0; i < this.state.optionList.length; i++){
       var voteValue = this.state.pickers[i]
       if(voteValue == 0){
@@ -256,7 +259,7 @@ export default class OptionsModal extends Component {
         });
         if (!this.state.voteValueList.includes((i + 1).toString())) {
           this.state.voteValueList.push(i + 1 + '');
-          this.state.pickers.push(i);
+          this.state.pickers.push(0);
         }
       }
     }
