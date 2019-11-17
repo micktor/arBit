@@ -33,6 +33,7 @@ import {
 } from 'react-native';
 import AddPersonModal from './addPersonModal';
 import {db} from './db';
+import DisplayWinner from './DisplayWinner';
 
 import Geolocation from '@react-native-community/geolocation';
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -51,6 +52,8 @@ export default class OptionsModal extends Component {
       userSetKeys: new Set(),
       pickers: [],
       voteValueList: [],
+      buttonDisabled: false,
+      doneVote: false
     };
   }
 
@@ -62,9 +65,14 @@ export default class OptionsModal extends Component {
         'child_changed',
         snapshot => {
           const data = snapshot.val();
-          if (data == this.state.users) {
+          const key = snapshot.key;
+          key.toString()
+          if (key ==='submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
+          }
+          else if(key === 'numbervoted' && data == this.state.users){
+            this.setState({doneVote:true})
           }
         },
       );
@@ -118,6 +126,14 @@ export default class OptionsModal extends Component {
   };
 
   pushVotes() {
+    this.setState({buttonDisabled:true})
+    var ref = db.child('Events/' + this.props.roomName + '/roominfo/numbervoted');
+    ref.transaction(function(numbervoted) {
+      if (numbervoted|| numbervoted === 0) {
+        numbervoted= numbervoted + 1 
+      }
+      return numbervoted
+    });
     {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
@@ -129,12 +145,17 @@ export default class OptionsModal extends Component {
   }
 
   voteButton = () => {
-    return (
-      <Button style={styles.bottomButton} onPress={() => this.pushVotes()}>
-        <Text>Vote</Text>
-      </Button>
-    );
-  };
+    if(!this.state.doneVote){
+      return (
+        <Button style={styles.bottomButton}
+              disabled = {this.state.buttonDisabled}
+              onPress={() => this.pushVotes()}>
+         <Text>Vote</Text>
+       </Button>
+       );}
+  
+  }
+
 
   showOptionsWithoutVote = item => {
     return (
@@ -319,7 +340,7 @@ export default class OptionsModal extends Component {
             </Title>
           </Body>
         </Header>
-
+        {!this.state.doneVote ? ( 
         <Container style={styles.container}>
           {!this.state.formShow && !this.state.voteButton ? (
             <Text style={styles.textWrapper}>
@@ -349,7 +370,9 @@ export default class OptionsModal extends Component {
           {!this.state.voteButton
             ? this.showOptionsWithoutVote()
             : this.showOptionsWithVote()}
-        </Container>
+        </Container>) : <DisplayWinner>
+
+</DisplayWinner>}
 
         {!this.state.voteButton ? this.submitButton() : this.voteButton()}
       </Modal>
