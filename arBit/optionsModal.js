@@ -122,7 +122,7 @@ export default class OptionsModal extends Component {
   };
 
   pushVotes() {
-    if (this.checkIfVotesAreUnique()) {
+    if (this.areValidVotes()) {
       this.setState({buttonDisabled: true});
       var ref = db.child(
         'Events/' + this.props.roomName + '/roominfo/numbervoted',
@@ -149,7 +149,13 @@ export default class OptionsModal extends Component {
     }
   }
 
-  checkIfVotesAreUnique() {
+  areValidVotes() {
+    for(i = 0; i < this.state.optionList.length; i++){
+      var voteValue = this.state.pickers[i]
+      if(voteValue == 0){
+        return false;
+      }
+    }
     return this.state.pickers.length === new Set(this.state.pickers).size;
   }
 
