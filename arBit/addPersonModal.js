@@ -33,6 +33,7 @@ export default class AddPersonModal extends Component {
       roomName: '',
       users: new Set(),
       displayOptions: false,
+      userKey: ''
     };
   }
 
@@ -76,7 +77,8 @@ export default class AddPersonModal extends Component {
         .push({
           userName: this.state.userName,
         })
-        .then(() => {
+        .then((snap) => {
+          this.setState({userKey:snap.key})
           // console.log('INSERTED!');
           // console.log(this.state);
         })
@@ -124,6 +126,7 @@ export default class AddPersonModal extends Component {
               <Text>Submit</Text>
             </Button>
             <OptionsModal
+              userKey = {this.state.userKey}
               displayOptions={this.state.displayOptions}
               toggleOptionsModal={this.toggleOptionsModal}
               roomName={this.state.roomName}
