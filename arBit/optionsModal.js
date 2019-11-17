@@ -56,6 +56,7 @@ export default class OptionsModal extends Component {
       voteValueList: [],
       buttonDisabled: false,
       doneVote: false,
+      winner: ''
     };
   }
 
@@ -73,6 +74,7 @@ export default class OptionsModal extends Component {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
           } else if (key === 'numbervoted' && data == this.state.users) {
+            this.pullVotes();
             this.setState({doneVote: true});
           }
         },
@@ -125,26 +127,38 @@ export default class OptionsModal extends Component {
         db.child('Events/' + this.props.roomName + `/${val}/options/${option}`)
         .once('value', function(snapshot) {
           if(optionVote[option] == null){
+            console.log("Snapshot = " ,snapshot)
             optionVote[option] = snapshot.val()
+            console.log(optionVote[option])
           }
           else{
             optionVote[option] = optionVote[option] + snapshot.val()
+         
           }
         })
       }
     }
+   
+   
+    var option = this.state.optionList[0]
+    var max = optionVote[option]
+    var win = option
+
     // Testing only: prints out options and votes for each (can be deleted, only for testing)
     for (i = 0; i < this.state.optionList.length; i++) {
       var option = this.state.optionList[i];
-      console.log("option: ", option)
-      console.log("vote: ", optionVote[option])
+      if(optionVote[option] > max){
+        max = optionVote[option]
+        win = option
+      }
     }
+    this.setState({winner:win})
   }
   
 
   submitButton = () => {
     // just for testing pullVotes 
-    this.pullVotes();
+    
 
     let buttonStyle = this.state.formShow
       ? {backgroundColor: 'orange'}
@@ -247,8 +261,6 @@ export default class OptionsModal extends Component {
               data={data}
                
                onChangeText={(value)=> {
-                 console.log("MADE IT HERE")
-                 console.log(this.state.doneVote)
                 this.handleDropDownSelection(index,value)
              }}
                
@@ -418,7 +430,7 @@ export default class OptionsModal extends Component {
               : this.showOptionsWithVote()}
           </Container>
         ) : (
-          <DisplayWinner></DisplayWinner>
+          <DisplayWinner winner = {this.state.winner}/>
         )}
 
         {!this.state.voteButton ? this.submitButton() : this.voteButton()}

@@ -15,7 +15,7 @@ render()   {
     return(
         <Modal>
         <Container style={styles.container}>
-        <Text>And the Winner is .....</Text>
+        <Text>And the Winner is {this.props.winner}</Text>
         </Container>
         </Modal>
     )
