@@ -46,7 +46,7 @@ export default class OptionsModal extends Component {
       option: '',
       formShow: true,
       submitted: 0,
-      voted: 0,
+      voted: false,
       users: 0,
       voteButton: false,
       userSetKeys: new Set(),
@@ -142,6 +142,7 @@ export default class OptionsModal extends Component {
         });
       }
     }
+    this.setState({voted:true})
   }
 
   voteButton = () => {
@@ -177,7 +178,7 @@ export default class OptionsModal extends Component {
   };
 
 
-  handleDropDownSelection(item, index,vote){
+  handleDropDownSelection(index,vote){
     let markers = [...this.state.pickers];
     markers[index]=vote;
     this.setState({pickers: markers})
@@ -201,12 +202,13 @@ export default class OptionsModal extends Component {
               <Text></Text>
               <Dropdown
               containerStyle={styles.dropdown}
-             
-               data={data}
+              disabled = {this.state.voted}
+              data={data}
                
                onChangeText={(value)=> {
                  console.log("MADE IT HERE")
-                this.handleDropDownSelection(item,index,value)
+                 console.log(this.state.doneVote)
+                this.handleDropDownSelection(index,value)
              }}
                
                 />
