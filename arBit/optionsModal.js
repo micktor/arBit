@@ -325,12 +325,13 @@ export default class OptionsModal extends Component {
       )
         .then(response => response.json())
         .then(responseJson => {
+          console.log("Total Yelp results: " + responseJson.total);
           db.child('Events/' + this.props.roomName + '/optionList')
             .push({
               option: this.state.option,
               author: this.props.userName,
-              url: responseJson.businesses[0].url,
-              image_url: responseJson.businesses[0].image_url,
+              url: responseJson.total == 0 ? '' : responseJson.businesses[0].url,
+              image_url: responseJson.total == 0 ? '' : responseJson.businesses[0].image_url,
               votes: 0,
             })
             .then(() => {
