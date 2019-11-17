@@ -34,7 +34,7 @@ import {
 import AddPersonModal from './addPersonModal';
 import {db} from './db';
 import DisplayWinner from './DisplayWinner';
-
+import { Dropdown } from 'react-native-material-dropdown';
 import Geolocation from '@react-native-community/geolocation';
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -138,7 +138,7 @@ export default class OptionsModal extends Component {
         db.child(
           'Events/' + this.props.roomName + `/${this.props.userKey}/options`,
         ).update({
-          [option]: this.state.pickers[i] + 1,
+          [option]: this.state.pickers[i],
         });
       }
     }
@@ -176,19 +176,18 @@ export default class OptionsModal extends Component {
     );
   };
 
-  handlePickerSelection(value, index) {
+
+  handleDropDownSelection(item, index,vote){
     let markers = [...this.state.pickers];
-    for (var j = 0; j < markers.length; j++) {
-      if (j == index) {
-        markers[index] = value;
-      } else {
-        markers[j] = markers[j];
-      }
-    }
-    this.setState({pickers: markers});
+    markers[index]=vote;
+    this.setState({pickers: markers})
   }
 
   showOptionsWithVote = item => {
+    let data = []
+    for(var i =0; i<this.state.optionList.length; i++){
+        data.push({value:i+1})
+    }
     return (
       <Container style={styles.container}>
         <FlatList
@@ -200,13 +199,17 @@ export default class OptionsModal extends Component {
                 <Text>{item}</Text>
               </Left>
               <Text></Text>
-              <Picker
-                selectedValue={this.state.pickers[index]}
-                onValueChange={v => this.handlePickerSelection(v, index)}>
-                {this.state.voteValueList.map((item, index) => {
-                  return <Picker.Item label={item} value={index} />;
-                })}
-              </Picker>
+              <Dropdown
+              containerStyle={styles.dropdown}
+             
+               data={data}
+               
+               onChangeText={(value)=> {
+                 console.log("MADE IT HERE")
+                this.handleDropDownSelection(item,index,value)
+             }}
+               
+                />
               <Right>
                 <Button danger rounded></Button>
               </Right>
@@ -429,6 +432,10 @@ const styles = StyleSheet.create({
     height: '7.5%',
     fontSize: 30,
     marginBottom: 100,
+  },
+
+  dropdown:{
+    width:'20%'
   },
 
   button: {
