@@ -63,9 +63,14 @@ export default class OptionsModal extends Component {
         'child_changed',
         snapshot => {
           const data = snapshot.val();
-          if (data == this.state.users) {
+          const key = snapshot.key;
+          key.toString()
+          if (key ==='submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
+          }
+          else if(key === 'numbervoted' && data == this.state.users){
+            console.log("made it here")
           }
         },
       );
@@ -120,6 +125,13 @@ export default class OptionsModal extends Component {
 
   pushVotes() {
     this.setState({buttonDisabled:true})
+    var ref = db.child('Events/' + this.props.roomName + '/roominfo/numbervoted');
+    ref.transaction(function(numbervoted) {
+      if (numbervoted|| numbervoted === 0) {
+        numbervoted= numbervoted + 1 
+      }
+      return numbervoted
+    });
     {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
