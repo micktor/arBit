@@ -34,7 +34,7 @@ import {
 import AddPersonModal from './addPersonModal';
 import {db} from './db';
 import DisplayWinner from './DisplayWinner';
-
+import { Dropdown } from 'react-native-material-dropdown';
 import Geolocation from '@react-native-community/geolocation';
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -46,14 +46,14 @@ export default class OptionsModal extends Component {
       option: '',
       formShow: true,
       submitted: 0,
-      voted: 0,
+      voted: false,
       users: 0,
       voteButton: false,
       userSetKeys: new Set(),
       pickers: [],
       voteValueList: [],
       buttonDisabled: false,
-      doneVote: false
+      doneVote: false,
     };
   }
 
@@ -66,18 +66,16 @@ export default class OptionsModal extends Component {
         snapshot => {
           const data = snapshot.val();
           const key = snapshot.key;
-          key.toString()
-          if (key ==='submitted' && data == this.state.users) {
+          key.toString();
+          if (key === 'submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
-          }
-          else if(key === 'numbervoted' && data == this.state.users){
-            this.setState({doneVote:true})
+          } else if (key === 'numbervoted' && data == this.state.users) {
+            this.setState({doneVote: true});
           }
         },
       );
 
-      //
       db.child('Events/' + this.props.roomName + '/optionList').on(
         'child_added',
         snapshot => {
@@ -106,8 +104,6 @@ export default class OptionsModal extends Component {
     });
   };
 
-
-
   submitButton = () => {
     let buttonStyle = this.state.formShow
       ? {backgroundColor: 'orange'}
@@ -126,36 +122,41 @@ export default class OptionsModal extends Component {
   };
 
   pushVotes() {
-    this.setState({buttonDisabled:true})
-    var ref = db.child('Events/' + this.props.roomName + '/roominfo/numbervoted');
+    this.setState({buttonDisabled: true});
+    var ref = db.child(
+      'Events/' + this.props.roomName + '/roominfo/numbervoted',
+    );
     ref.transaction(function(numbervoted) {
-      if (numbervoted|| numbervoted === 0) {
-        numbervoted= numbervoted + 1 
+      if (numbervoted || numbervoted === 0) {
+        numbervoted = numbervoted + 1;
       }
-      return numbervoted
+      return numbervoted;
     });
     {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
-        db.child('Events/' + this.props.roomName + `/${this.props.userKey}/options`).update({
+        db.child(
+          'Events/' + this.props.roomName + `/${this.props.userKey}/options`,
+        ).update({
           [option]: this.state.pickers[i],
         });
       }
     }
+    this.setState({voted:true})
   }
 
   voteButton = () => {
-    if(!this.state.doneVote){
+    if (!this.state.doneVote) {
       return (
-        <Button style={styles.bottomButton}
-              disabled = {this.state.buttonDisabled}
-              onPress={() => this.pushVotes()}>
-         <Text>Vote</Text>
-       </Button>
-       );}
-  
-  }
-
+        <Button
+          style={styles.bottomButton}
+          disabled={this.state.buttonDisabled}
+          onPress={() => this.pushVotes()}>
+          <Text>Vote</Text>
+        </Button>
+      );
+    }
+  };
 
   showOptionsWithoutVote = item => {
     return (
@@ -176,19 +177,18 @@ export default class OptionsModal extends Component {
     );
   };
 
-  handlePickerSelection(value, index) {
+
+  handleDropDownSelection(index,vote){
     let markers = [...this.state.pickers];
-    for (var j = 0; j < markers.length; j++) {
-      if (j == index) {
-        markers[index] = value;
-      } else {
-        markers[j] = markers[j];
-      }
-    }
-    this.setState({pickers: markers});
+    markers[index]=vote;
+    this.setState({pickers: markers})
   }
 
   showOptionsWithVote = item => {
+    let data = []
+    for(var i =0; i<this.state.optionList.length; i++){
+        data.push({value:i+1})
+    }
     return (
       <Container style={styles.container}>
         <FlatList
@@ -200,13 +200,18 @@ export default class OptionsModal extends Component {
                 <Text>{item}</Text>
               </Left>
               <Text></Text>
-              <Picker
-                selectedValue={this.state.pickers[index]}
-                onValueChange={v => this.handlePickerSelection(v, index)}>
-                {this.state.voteValueList.map((item, index) => {
-                  return <Picker.Item label={item} value={index} />;
-                })}
-              </Picker>
+              <Dropdown
+              containerStyle={styles.dropdown}
+              disabled = {this.state.voted}
+              data={data}
+               
+               onChangeText={(value)=> {
+                 console.log("MADE IT HERE")
+                 console.log(this.state.doneVote)
+                this.handleDropDownSelection(index,value)
+             }}
+               
+                />
               <Right>
                 <Button danger rounded></Button>
               </Right>
@@ -237,8 +242,8 @@ export default class OptionsModal extends Component {
         db.child('Events/' + this.props.roomName + `/${val}/options`).update({
           [option]: 0,
         });
-        if(!this.state.voteValueList.includes(i.toString())){
-          this.state.voteValueList.push(i + '');
+        if (!this.state.voteValueList.includes((i + 1).toString())) {
+          this.state.voteValueList.push(i + 1 + '');
           this.state.pickers.push(i);
         }
       }
@@ -340,39 +345,40 @@ export default class OptionsModal extends Component {
             </Title>
           </Body>
         </Header>
-        {!this.state.doneVote ? ( 
-        <Container style={styles.container}>
-          {!this.state.formShow && !this.state.voteButton ? (
-            <Text style={styles.textWrapper}>
-              Waiting for other members to finish...
-            </Text>
-          ) : this.state.formShow && !this.state.voteButton ? (
-            <Form>
-              <Item>
-                <Input
-                  placeholder="Enter your option"
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  onChangeText={this.handleOption}
-                  value={this.state.option}
-                />
-                <Button onPress={() => this.addOption()}>
-                  <Text>Submit</Text>
-                </Button>
-              </Item>
-            </Form>
-          ) : (
-            <Text style={styles.textWrapper}>
-              Rank you choices, high to low
-            </Text>
-          )}
+        {!this.state.doneVote ? (
+          <Container style={styles.container}>
+            {!this.state.formShow && !this.state.voteButton ? (
+              <Text style={styles.textWrapper}>
+                Waiting for other members to finish...
+              </Text>
+            ) : this.state.formShow && !this.state.voteButton ? (
+              <Form>
+                <Item>
+                  <Input
+                    placeholder="Enter your option"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    onChangeText={this.handleOption}
+                    value={this.state.option}
+                  />
+                  <Button onPress={() => this.addOption()}>
+                    <Text>Submit</Text>
+                  </Button>
+                </Item>
+              </Form>
+            ) : (
+              <Text style={styles.textWrapper}>
+                Rank you choices, high to low
+              </Text>
+            )}
 
-          {!this.state.voteButton
-            ? this.showOptionsWithoutVote()
-            : this.showOptionsWithVote()}
-        </Container>) : <DisplayWinner>
-
-</DisplayWinner>}
+            {!this.state.voteButton
+              ? this.showOptionsWithoutVote()
+              : this.showOptionsWithVote()}
+          </Container>
+        ) : (
+          <DisplayWinner></DisplayWinner>
+        )}
 
         {!this.state.voteButton ? this.submitButton() : this.voteButton()}
       </Modal>
@@ -428,6 +434,10 @@ const styles = StyleSheet.create({
     height: '7.5%',
     fontSize: 30,
     marginBottom: 100,
+  },
+
+  dropdown:{
+    width:'20%'
   },
 
   button: {
