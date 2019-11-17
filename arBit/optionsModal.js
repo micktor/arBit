@@ -98,6 +98,8 @@ export default class OptionsModal extends Component {
     });
   };
 
+
+
   submitButton = () => {
     let buttonStyle = this.state.formShow
       ? {backgroundColor: 'orange'}
@@ -116,15 +118,10 @@ export default class OptionsModal extends Component {
   };
 
   pushVotes() {
-    this.removeRoomNamesFromUserSet();
-    for (
-      var it = this.state.userSetKeys.values(), val = null;
-      (val = it.next().value);
-
-    ) {
+    {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
-        db.child('Events/' + this.props.roomName + `/${val}/options`).update({
+        db.child('Events/' + this.props.roomName + `/${this.props.userKey}/options`).update({
           [option]: this.state.pickers[i],
         });
       }
