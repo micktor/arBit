@@ -34,7 +34,7 @@ import {
 import AddPersonModal from './addPersonModal';
 import {db} from './db';
 import DisplayWinner from './DisplayWinner';
-import { Dropdown } from 'react-native-material-dropdown';
+import {Dropdown} from 'react-native-material-dropdown';
 import Geolocation from '@react-native-community/geolocation';
 import { throwStatement } from '@babel/types';
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -199,32 +199,53 @@ export default class OptionsModal extends Component {
 
 
   pushVotes() {
-    this.setState({buttonDisabled: true});
-    var ref = db.child(
-      'Events/' + this.props.roomName + '/roominfo/numbervoted',
-    );
-    ref.transaction(function(numbervoted) {
-      if (numbervoted || numbervoted === 0) {
-        numbervoted = numbervoted + 1;
+    if (this.areValidVotes()) {
+      this.setState({buttonDisabled: true});
+      var ref = db.child(
+        'Events/' + this.props.roomName + '/roominfo/numbervoted',
+      );
+      ref.transaction(function(numbervoted) {
+        if (numbervoted || numbervoted === 0) {
+          numbervoted = numbervoted + 1;
+        }
+        return numbervoted;
+      });
+      {
+        for (i = 0; i < this.state.optionList.length; i++) {
+          var option = this.state.optionList[i];
+          db.child(
+            'Events/' + this.props.roomName + `/${this.props.userKey}/options`,
+          ).update({
+            [option]: this.state.pickers[i],
+          });
+        }
       }
-      return numbervoted;
-    });
-    {
-      for (i = 0; i < this.state.optionList.length; i++) {
-        var option = this.state.optionList[i];
-        db.child(
-          'Events/' + this.props.roomName + `/${this.props.userKey}/options`,
-        ).update({
-          [option]: this.state.pickers[i],
-        });
+      this.setState({voted: true});
+    } else {
+      alert('Every option must be voted for with a unique number');
+    }
+  }
+
+  areValidVotes() {
+    if(this.state.pickers.includes(0)){
+      return false
+    }
+    for(i = 0; i < this.state.optionList.length; i++){
+      var voteValue = this.state.pickers[i]
+      if(voteValue == 0){
+        return false;
       }
     }
+<<<<<<< HEAD
     this.setState({voted:true})
     this.setState({haveIvoted:true})
     if(this.state.iamlast){
       this.pullVotes();
       this.setState({doneVote: true});
     }
+=======
+    return this.state.pickers.length === new Set(this.state.pickers).size;
+>>>>>>> master
   }
 
   voteButton = () => {
@@ -259,17 +280,17 @@ export default class OptionsModal extends Component {
     );
   };
 
-
-  handleDropDownSelection(index,vote){
+  handleDropDownSelection(index, vote) {
     let markers = [...this.state.pickers];
-    markers[index]=vote;
-    this.setState({pickers: markers})
+    markers[index] = vote;
+    this.setState({pickers: markers});
+    console.log(this.state.pickers);
   }
 
   showOptionsWithVote = item => {
-    let data = []
-    for(var i =0; i<this.state.optionList.length; i++){
-        data.push({value:i+1})
+    let data = [];
+    for (var i = 0; i < this.state.optionList.length; i++) {
+      data.push({value: i + 1});
     }
     return (
       <Container style={styles.container}>
@@ -283,6 +304,7 @@ export default class OptionsModal extends Component {
               </Left>
               <Text></Text>
               <Dropdown
+<<<<<<< HEAD
               containerStyle={styles.dropdown}
               disabled = {this.state.voted}
               data={data}
@@ -292,6 +314,17 @@ export default class OptionsModal extends Component {
              }}
                
                 />
+=======
+                containerStyle={styles.dropdown}
+                disabled={this.state.voted}
+                data={data}
+                onChangeText={value => {
+                  console.log('MADE IT HERE');
+                  console.log(this.state.doneVote);
+                  this.handleDropDownSelection(index, value);
+                }}
+              />
+>>>>>>> master
               <Right>
                 <Button danger rounded></Button>
               </Right>
@@ -324,7 +357,7 @@ export default class OptionsModal extends Component {
         });
         if (!this.state.voteValueList.includes((i + 1).toString())) {
           this.state.voteValueList.push(i + 1 + '');
-          this.state.pickers.push(i);
+          this.state.pickers.push(0);
         }
       }
     }
@@ -516,8 +549,8 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
 
-  dropdown:{
-    width:'20%'
+  dropdown: {
+    width: '20%',
   },
 
   button: {
