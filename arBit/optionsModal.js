@@ -77,7 +77,7 @@ export default class OptionsModal extends Component {
           if (key === 'submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
-          } else if (key === 'numbervoted' && data === this.state.users - 1) {
+          } else if (key === 'numbervoted' && data === this.state.users - 1 && !this.state.haveIvoted) {
             console.log("in numbervotes")
             this.setState({iamlast:true})}
             else if(key === 'winner'){
@@ -169,7 +169,7 @@ export default class OptionsModal extends Component {
       }
     }
     db.child('Events/'+this.props.roomName+'/roominfo')
-     .set({
+     .update({
        winner: win
      })
   }
