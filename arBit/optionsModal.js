@@ -78,10 +78,8 @@ export default class OptionsModal extends Component {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
           } else if (key === 'numbervoted' && data === this.state.users - 1 && !this.state.haveIvoted) {
-            console.log("in numbervotes")
             this.setState({iamlast:true})}
             else if(key === 'winner'){
-              console.log("In winner")
               this.setState({winner:data})
 
             }
@@ -129,7 +127,6 @@ export default class OptionsModal extends Component {
 
   // pulls votes for each option and uses optionVote to map "option key" to it's vote value
   pullVotes(){
-    console.log("I am last")
     let b = new Set(this.props.userKey);
     let difference = new Set(
       [...this.state.userSetKeys].filter(x => !b.has(x)),
@@ -144,9 +141,7 @@ export default class OptionsModal extends Component {
         db.child('Events/' + this.props.roomName + `/${val}/options/${option}`)
         .once('value', function(snapshot) {
           if(optionVote[option] == null){
-            console.log("Snapshot = " ,snapshot)
             optionVote[option] = snapshot.val()
-            console.log(optionVote[option])
           }
           else{
             optionVote[option] = optionVote[option] + snapshot.val()
@@ -162,8 +157,6 @@ export default class OptionsModal extends Component {
       option = array[idx]
       return num + optionVote[option];
     });
-
-    console.log(sum)
 
     var option = this.state.optionList[0]
     var max = sum[0]
