@@ -36,12 +36,15 @@ import {db} from './db';
 import DisplayWinner from './DisplayWinner';
 import {Dropdown} from 'react-native-material-dropdown';
 import Geolocation from '@react-native-community/geolocation';
+import { throwStatement } from '@babel/types';
 navigator.geolocation = require('@react-native-community/geolocation');
 
 export default class OptionsModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      iamlast:false,
+      haveIvoted:false,
       optionList: [],
       option: '',
       formShow: true,
@@ -50,10 +53,12 @@ export default class OptionsModal extends Component {
       users: 0,
       voteButton: false,
       userSetKeys: new Set(),
+      optionKeys: new Set(),
       pickers: [],
       voteValueList: [],
       buttonDisabled: false,
       doneVote: false,
+      winner: ''
     };
   }
 
@@ -61,18 +66,24 @@ export default class OptionsModal extends Component {
     if (this.props.roomName != prevProps.roomName) {
       Geolocation.getCurrentPosition(info => this.setState({location: info}));
 
+
       db.child('Events/' + this.props.roomName + '/roominfo').on(
         'child_changed',
         snapshot => {
           const data = snapshot.val();
           const key = snapshot.key;
+          console.log(key, data)
           key.toString();
           if (key === 'submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
-          } else if (key === 'numbervoted' && data == this.state.users) {
-            this.setState({doneVote: true});
-          }
+          } else if (key === 'numbervoted' && data === this.state.users - 1 && !this.state.haveIvoted) {
+            this.setState({iamlast:true})}
+            else if(key === 'winner'){
+              this.setState({winner:data})
+
+            }
+          
         },
       );
 
@@ -102,9 +113,74 @@ export default class OptionsModal extends Component {
         }
       });
     });
+
+      // Obtains keys for options under optionList
+      db.child('Events/' + this.props.roomName + '/optionList/').once('value', snapshot => {
+        snapshot.forEach(data => {
+          const currentKey = data.key;
+          // console.log(" data.key: ", data.key)
+          this.state.optionKeys.add(currentKey); 
+          // console.log("Option = ",currentKey)
+        });
+      });
   };
 
+  // pulls votes for each option and uses optionVote to map "option key" to it's vote value
+  pullVotes(){
+    let b = new Set(this.props.userKey);
+    let difference = new Set(
+      [...this.state.userSetKeys].filter(x => !b.has(x)),
+    );
+    this.state.userSetKeys = difference;
+
+
+    const optionVote = {};
+    for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
+      for (i = 0; i < this.state.optionList.length; i++) {
+        var option = this.state.optionList[i];
+        db.child('Events/' + this.props.roomName + `/${val}/options/${option}`)
+        .once('value', function(snapshot) {
+          if(optionVote[option] == null){
+            optionVote[option] = snapshot.val()
+          }
+          else{
+            optionVote[option] = optionVote[option] + snapshot.val()
+         
+          }
+        })
+      }
+    }
+
+    var array = this.state.optionList
+    
+    var sum =  this.state.pickers.map(function (num, idx) {
+      option = array[idx]
+      return num + optionVote[option];
+    });
+
+    var option = this.state.optionList[0]
+    var max = sum[0]
+    var win = option
+
+    // Testing only: prints out options and votes for each (can be deleted, only for testing)
+    for (i = 0; i < this.state.optionList.length; i++) {
+      var option = this.state.optionList[i];
+      if(sum[i] > max){
+        max = optionVote[option]
+        win = option
+      }
+    }
+    db.child('Events/'+this.props.roomName+'/roominfo')
+     .update({
+       winner: win
+     })
+  }
+  
+
   submitButton = () => {
+    // just for testing pullVotes 
+    
+
     let buttonStyle = this.state.formShow
       ? {backgroundColor: 'orange'}
       : {backgroundColor: 'teal'};
@@ -120,6 +196,7 @@ export default class OptionsModal extends Component {
       </Button>
     );
   };
+
 
   pushVotes() {
     if (this.areValidVotes()) {
@@ -159,7 +236,16 @@ export default class OptionsModal extends Component {
         return false;
       }
     }
+<<<<<<< HEAD
+    this.setState({voted:true})
+    this.setState({haveIvoted:true})
+    if(this.state.iamlast){
+      this.pullVotes();
+      this.setState({doneVote: true});
+    }
+=======
     return this.state.pickers.length === new Set(this.state.pickers).size;
+>>>>>>> master
   }
 
   voteButton = () => {
@@ -218,6 +304,17 @@ export default class OptionsModal extends Component {
               </Left>
               <Text></Text>
               <Dropdown
+<<<<<<< HEAD
+              containerStyle={styles.dropdown}
+              disabled = {this.state.voted}
+              data={data}
+               
+               onChangeText={(value)=> {
+                this.handleDropDownSelection(index,value)
+             }}
+               
+                />
+=======
                 containerStyle={styles.dropdown}
                 disabled={this.state.voted}
                 data={data}
@@ -227,6 +324,7 @@ export default class OptionsModal extends Component {
                   this.handleDropDownSelection(index, value);
                 }}
               />
+>>>>>>> master
               <Right>
                 <Button danger rounded></Button>
               </Right>
@@ -393,7 +491,7 @@ export default class OptionsModal extends Component {
               : this.showOptionsWithVote()}
           </Container>
         ) : (
-          <DisplayWinner></DisplayWinner>
+          <DisplayWinner winner = {this.state.winner}/>
         )}
 
         {!this.state.voteButton ? this.submitButton() : this.voteButton()}
