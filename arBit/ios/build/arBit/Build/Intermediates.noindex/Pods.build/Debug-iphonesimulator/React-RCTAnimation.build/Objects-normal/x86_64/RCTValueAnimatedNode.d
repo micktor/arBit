@@ -1,5 +1,5 @@
 dependencies: \
-  /Users/yasinaikebaier/Desktop/arbit/arBit/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTValueAnimatedNode.m \
-  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTAnimation/React-RCTAnimation-prefix.pch \
-  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTValueAnimatedNode.h \
-  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTAnimatedNode.h
+  /Users/jason/arbit/arBit/node_modules/react-native/Libraries/NativeAnimation/Nodes/RCTValueAnimatedNode.m \
+  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/React-RCTAnimation/React-RCTAnimation-prefix.pch \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTValueAnimatedNode.h \
+  /Users/jason/arbit/arBit/ios/Pods/Headers/Public/React-Core/React/RCTAnimatedNode.h

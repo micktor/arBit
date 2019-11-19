@@ -77,12 +77,16 @@ export default class OptionsModal extends Component {
           if (key === 'submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
-          } else if (key === 'numbervoted' && data === this.state.users - 1 && !this.state.haveIvoted) {
+          } 
+          else if (key === 'numbervoted' && data === this.state.users - 1 && !this.state.haveIvoted) {
             this.setState({iamlast:true})}
-            else if(key === 'winner'){
+          else if(key === 'winner'){
               this.setState({winner:data})
-
             }
+          else if(key == 'numbervoted' && data === this.state.users){
+            this.setState({doneVote:true})
+          }
+          
           
         },
       );
@@ -186,10 +190,11 @@ export default class OptionsModal extends Component {
       : {backgroundColor: 'teal'};
     let text = this.state.formShow
       ? 'Done with options'
-      : 'Click to enter more options';
+      : 'Waiting for others to finish';
 
     return (
       <Button
+        disabled={!this.state.formShow}
         style={Object.assign({}, buttonStyle, styles.bottomButton)}
         onPress={() => this.showform()}>
         <Text>{text}</Text>
