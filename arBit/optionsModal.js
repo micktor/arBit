@@ -43,6 +43,8 @@ export default class OptionsModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      iamlast:false,
+      haveIvoted:false,
       optionList: [],
       option: '',
       formShow: true,
@@ -64,19 +66,26 @@ export default class OptionsModal extends Component {
     if (this.props.roomName != prevProps.roomName) {
       Geolocation.getCurrentPosition(info => this.setState({location: info}));
 
+
       db.child('Events/' + this.props.roomName + '/roominfo').on(
         'child_changed',
         snapshot => {
           const data = snapshot.val();
           const key = snapshot.key;
+          console.log(key, data)
           key.toString();
           if (key === 'submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
-          } else if (key === 'numbervoted' && data == this.state.users) {
-            this.pullVotes();
-            this.setState({doneVote: true});
-          }
+          } else if (key === 'numbervoted' && data === this.state.users - 1) {
+            console.log("in numbervotes")
+            this.setState({iamlast:true})}
+            else if(key === 'winner'){
+              console.log("In winner")
+              this.setState({winner:data})
+
+            }
+          
         },
       );
 
@@ -120,6 +129,7 @@ export default class OptionsModal extends Component {
 
   // pulls votes for each option and uses optionVote to map "option key" to it's vote value
   pullVotes(){
+    console.log("I am last")
     const optionVote = {};
     for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
       for (i = 0; i < this.state.optionList.length; i++) {
@@ -138,21 +148,30 @@ export default class OptionsModal extends Component {
         })
       }
     }
-   
-   
+
+    var array = this.state.optionList
+    
+    var sum =  this.state.pickers.map(function (num, idx) {
+      option = array[idx]
+      return num + optionVote[option];
+    });
+
     var option = this.state.optionList[0]
-    var max = optionVote[option]
+    var max = sum[0]
     var win = option
 
     // Testing only: prints out options and votes for each (can be deleted, only for testing)
     for (i = 0; i < this.state.optionList.length; i++) {
       var option = this.state.optionList[i];
-      if(optionVote[option] > max){
+      if(sum[i] > max){
         max = optionVote[option]
         win = option
       }
     }
-    this.setState({winner:win})
+    db.child('Events/'+this.props.roomName+'/roominfo')
+     .set({
+       winner: win
+     })
   }
   
 
@@ -176,6 +195,7 @@ export default class OptionsModal extends Component {
     );
   };
 
+
   pushVotes() {
     this.setState({buttonDisabled: true});
     var ref = db.child(
@@ -191,13 +211,18 @@ export default class OptionsModal extends Component {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
         db.child(
-          'Events/' + this.props.roomName + `/${this.props.userKey}/options`,
+          'Events/' + this.props.roomName + `/${this.props.userKey}/options}`,
         ).update({
           [option]: this.state.pickers[i],
         });
       }
     }
     this.setState({voted:true})
+    this.setState({haveIvoted:true})
+    if(this.state.iamlast){
+      this.pullVotes();
+      this.setState({doneVote: true});
+    }
   }
 
   voteButton = () => {
