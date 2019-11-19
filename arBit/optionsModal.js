@@ -77,12 +77,16 @@ export default class OptionsModal extends Component {
           if (key === 'submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
             this.setState({...this.state, voteButton: true});
-          } else if (key === 'numbervoted' && data === this.state.users - 1 && !this.state.haveIvoted) {
+          } 
+          else if (key === 'numbervoted' && data === this.state.users - 1 && !this.state.haveIvoted) {
             this.setState({iamlast:true})}
-            else if(key === 'winner'){
+          else if(key === 'winner'){
               this.setState({winner:data})
-
             }
+          else if(key == 'numbervoted' && data === this.state.users){
+            this.setState({doneVote:true})
+          }
+          
           
         },
       );
@@ -127,12 +131,14 @@ export default class OptionsModal extends Component {
 
   // pulls votes for each option and uses optionVote to map "option key" to it's vote value
   pullVotes(){
-    let b = new Set(this.props.userKey);
-    let difference = new Set(
-      [...this.state.userSetKeys].filter(x => !b.has(x)),
-    );
-    this.state.userSetKeys = difference;
-
+    // let b = new Set(this.props.userKey);
+    // let difference = new Set(
+    //   [...this.state.userSetKeys].filter(x => !b.has(x)),
+    // );
+    // this.state.userSetKeys = difference;
+    // console.log("difference = ", difference)
+    // console.log("user key = ", this.props.userKey)
+    // console.log("User set =", this.state.userSetKeys)
 
     const optionVote = {};
     for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
@@ -151,21 +157,23 @@ export default class OptionsModal extends Component {
       }
     }
 
-    var array = this.state.optionList
+    // var array = this.state.optionList
     
-    var sum =  this.state.pickers.map(function (num, idx) {
-      option = array[idx]
-      return num + optionVote[option];
-    });
-
+    // var sum =  this.state.pickers.map(function (num, idx) {
+    //   option = array[idx]
+    //   return num + optionVote[option];
+    // });
+    console.log("Pickers=",this.state.pickers)
+    // console.log("Sum=",sum)
+    console.log("Optionvote=",optionVote)
     var option = this.state.optionList[0]
-    var max = sum[0]
+    var max = optionVote[option]
     var win = option
 
     // Testing only: prints out options and votes for each (can be deleted, only for testing)
     for (i = 0; i < this.state.optionList.length; i++) {
       var option = this.state.optionList[i];
-      if(sum[i] > max){
+      if(optionVote[option] > max){
         max = optionVote[option]
         win = option
       }
@@ -186,10 +194,11 @@ export default class OptionsModal extends Component {
       : {backgroundColor: 'teal'};
     let text = this.state.formShow
       ? 'Done with options'
-      : 'Click to enter more options';
+      : 'Waiting for others to finish';
 
     return (
       <Button
+        disabled={!this.state.formShow}
         style={Object.assign({}, buttonStyle, styles.bottomButton)}
         onPress={() => this.showform()}>
         <Text>{text}</Text>
