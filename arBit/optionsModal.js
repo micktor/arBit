@@ -130,6 +130,13 @@ export default class OptionsModal extends Component {
   // pulls votes for each option and uses optionVote to map "option key" to it's vote value
   pullVotes(){
     console.log("I am last")
+    let b = new Set(this.props.userKey);
+    let difference = new Set(
+      [...this.state.userSetKeys].filter(x => !b.has(x)),
+    );
+    this.state.userSetKeys = difference;
+
+
     const optionVote = {};
     for (var it = this.state.userSetKeys.values(), val= null; val=it.next().value; ) {
       for (i = 0; i < this.state.optionList.length; i++) {
@@ -155,6 +162,8 @@ export default class OptionsModal extends Component {
       option = array[idx]
       return num + optionVote[option];
     });
+
+    console.log(sum)
 
     var option = this.state.optionList[0]
     var max = sum[0]
@@ -211,7 +220,7 @@ export default class OptionsModal extends Component {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
         db.child(
-          'Events/' + this.props.roomName + `/${this.props.userKey}/options}`,
+          'Events/' + this.props.roomName + `/${this.props.userKey}/options`,
         ).update({
           [option]: this.state.pickers[i],
         });
