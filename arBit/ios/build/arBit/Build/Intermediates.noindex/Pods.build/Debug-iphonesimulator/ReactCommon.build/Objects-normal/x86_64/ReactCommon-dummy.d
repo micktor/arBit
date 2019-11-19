@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/ReactCommon/ReactCommon-dummy.m \
-  /Users/jason/arbit/arBit/ios/Pods/Target\ Support\ Files/ReactCommon/ReactCommon-prefix.pch
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/ReactCommon/ReactCommon-dummy.m \
+  /Users/yasinaikebaier/Desktop/arbit/arBit/ios/Pods/Target\ Support\ Files/ReactCommon/ReactCommon-prefix.pch

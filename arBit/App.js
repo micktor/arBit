@@ -29,6 +29,10 @@ export default class App extends Component {
   toggleJoinModal = () => {
     this.setState({...this.state, displayJoin: !this.state.displayJoin});
   };
+  componentDidMount = () => {
+    console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+    console.disableYellowBox = true;
+  }
 
   toggleCreateModal = () => {
     this.setState({...this.state, displayCreate: !this.state.displayCreate});
