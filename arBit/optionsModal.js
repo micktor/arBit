@@ -221,6 +221,10 @@ export default class OptionsModal extends Component {
         }
       }
       this.setState({voted: true});
+      this.setState({haveIvoted:true})
+    if(this.state.iamlast){
+        this.pullVotes();
+        this.setState({doneVote: true});}
     } else {
       alert('Every option must be voted for with a unique number');
     }
@@ -236,16 +240,7 @@ export default class OptionsModal extends Component {
         return false;
       }
     }
-<<<<<<< HEAD
-    this.setState({voted:true})
-    this.setState({haveIvoted:true})
-    if(this.state.iamlast){
-      this.pullVotes();
-      this.setState({doneVote: true});
-    }
-=======
     return this.state.pickers.length === new Set(this.state.pickers).size;
->>>>>>> master
   }
 
   voteButton = () => {
@@ -304,7 +299,6 @@ export default class OptionsModal extends Component {
               </Left>
               <Text></Text>
               <Dropdown
-<<<<<<< HEAD
               containerStyle={styles.dropdown}
               disabled = {this.state.voted}
               data={data}
@@ -314,17 +308,6 @@ export default class OptionsModal extends Component {
              }}
                
                 />
-=======
-                containerStyle={styles.dropdown}
-                disabled={this.state.voted}
-                data={data}
-                onChangeText={value => {
-                  console.log('MADE IT HERE');
-                  console.log(this.state.doneVote);
-                  this.handleDropDownSelection(index, value);
-                }}
-              />
->>>>>>> master
               <Right>
                 <Button danger rounded></Button>
               </Right>

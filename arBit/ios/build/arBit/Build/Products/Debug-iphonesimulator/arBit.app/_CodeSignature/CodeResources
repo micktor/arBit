@@ -10,11 +10,11 @@
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/objects-13.0+.nib</key>
 		<data>
-		AaXAgXSY+TA8aUhGf4YtMx3+9g0=
+		9jN6STehYe7epDCRNSGVITdHNuU=
 		</data>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<data>
-		tdVbnh7tembgI1h61QOjboSSCO4=
+		MzNRek4vyIuQ2DdY1rnuMRS5aAI=
 		</data>
 		<key>Entypo.ttf</key>
 		<data>
@@ -131,7 +131,7 @@
 		</data>
 		<key>PlugIns/arBitTests.xctest.dSYM/Contents/Resources/DWARF/arBitTests</key>
 		<data>
-		k5obnkfNs+C6EmJPoxNLWz4IFm8=
+		AHpdaVQF+YqMZwk34RFTzz/koic=
 		</data>
 		<key>PlugIns/arBitTests.xctest/Info.plist</key>
 		<data>
@@ -143,7 +143,7 @@
 		</data>
 		<key>PlugIns/arBitTests.xctest/arBitTests</key>
 		<data>
-		M6XkTiftPqFJGSDFbfXFSTp0x4M=
+		WHQeJNDH5sxnXOe0MLHf1jbRTBU=
 		</data>
 		<key>SimpleLineIcons.ttf</key>
 		<data>
@@ -171,22 +171,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			AaXAgXSY+TA8aUhGf4YtMx3+9g0=
+			9jN6STehYe7epDCRNSGVITdHNuU=
 			</data>
 			<key>hash2</key>
 			<data>
-			y8Uib7GOIccYfokv0On8D28v8ZNVA2WGRVM9kMdEsio=
+			Vyl52tSVCf0uMN3ttFHO13z8RZkFzkV5raMX00ifSxA=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			tdVbnh7tembgI1h61QOjboSSCO4=
+			MzNRek4vyIuQ2DdY1rnuMRS5aAI=
 			</data>
 			<key>hash2</key>
 			<data>
-			woqrKIWOZTv0yzxbAleLNG4U6y+TRYGLWwnl0YoOs2Q=
+			GQDlRZhGuoRAS0Cw7yg0UQKYBaAhfRZ2SC3Jqfpl8Hw=
 			</data>
 		</dict>
 		<key>Entypo.ttf</key>
@@ -470,11 +470,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			k5obnkfNs+C6EmJPoxNLWz4IFm8=
+			AHpdaVQF+YqMZwk34RFTzz/koic=
 			</data>
 			<key>hash2</key>
 			<data>
-			sPfGWkI5DxfJymQBvtu619DKPrCQCRbDbzcBnAftn6E=
+			C8gx6e/tVR2eV1eHfRrUQyTynLt2FgLtkg+TN7WUxFQ=
 			</data>
 		</dict>
 		<key>PlugIns/arBitTests.xctest/Info.plist</key>
@@ -503,11 +503,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			M6XkTiftPqFJGSDFbfXFSTp0x4M=
+			WHQeJNDH5sxnXOe0MLHf1jbRTBU=
 			</data>
 			<key>hash2</key>
 			<data>
-			R3QACk3QdFIYCf9E4Qq+8Tuqca1deIZTKJLcruLSQbQ=
+			dnwVveHJipABobr29oM4wzD718PhyZDqIOqtnsi+mec=
 			</data>
 		</dict>
 		<key>SimpleLineIcons.ttf</key>
