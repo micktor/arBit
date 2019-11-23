@@ -72,7 +72,7 @@ export default class OptionsModal extends Component {
         snapshot => {
           const data = snapshot.val();
           const key = snapshot.key;
-          console.log(key, data)
+          // console.log(key, data)
           key.toString();
           if (key === 'submitted' && data == this.state.users) {
             this.pushUserOptionstoUsers();
@@ -483,7 +483,10 @@ export default class OptionsModal extends Component {
               : this.showOptionsWithVote()}
           </Container>
         ) : (
-          <DisplayWinner winner = {this.state.winner}/>
+          <DisplayWinner 
+          users = {this.state.users}
+          roomName = {this.props.roomName}
+          winner = {this.state.winner}/>
         )}
 
         {!this.state.voteButton ? this.submitButton() : this.voteButton()}
