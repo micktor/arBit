@@ -107,6 +107,18 @@ export default class OptionsModal extends Component {
         },
       );
     }
+    db.child('Events/' + this.props.roomName + '/optionList').on(
+      'child_removed',
+        snapshot => {
+        const data = snapshot.val();
+        console.log("Data '" + data.option+ "' has been deleted");
+        var idx = this.state.optionList.indexOf(data.option);
+        let yourArray = [...this.state.optionList]
+        yourArray.splice(idx, 1)
+        this.setState({optionList: yourArray})
+        console.log(this.state.optionList)
+
+      })
 
     // gets user keys
     db.child('Events/' + this.props.roomName).once('value', snapshot => {
