@@ -112,11 +112,12 @@ export default class OptionsModal extends Component {
         snapshot => {
         const data = snapshot.val();
         console.log("Data '" + data.option+ "' has been deleted");
-        var idx = this.state.optionList.indexOf(data.option);
-        let yourArray = [...this.state.optionList]
-        yourArray.splice(idx, 1)
-        this.setState({optionList: yourArray})
-        console.log(this.state.optionList)
+        if(data){
+          var idx = this.state.optionList.indexOf(data.option);
+         let yourArray = [...this.state.optionList]
+          yourArray.splice(idx, 1)
+          this.setState({optionList: yourArray})
+          console.log(this.state.optionList)}
 
       })
 
