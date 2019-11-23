@@ -25,9 +25,9 @@ export default class App extends Component {
       },
     );
 
-    // if (this.state.exited == this.props.users) {
-    //   db.child('Events/' + this.props.roomName).remove();
-    // }
+    if (this.state.exited == this.props.users) {
+      db.child('Events/' + this.props.roomName).remove();
+    }
   }
 
   clickedExit() {
