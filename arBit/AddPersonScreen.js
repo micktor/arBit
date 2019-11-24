@@ -64,7 +64,7 @@ export default class AddPersonScreen extends Component {
     );
   }
 
-  insertUser = async () => {
+  insertUser() {
     const {navigation} = this.props;
     this.setUserList();
 
@@ -80,8 +80,7 @@ export default class AddPersonScreen extends Component {
           userName: this.state.userName,
         })
         .then(snap => {
-          this.setState({userKey: snap.key}, () => {
-          });
+          this.setState({userKey: snap.key})
         });
       var ref = db.child(
         'Events/' +
@@ -94,8 +93,6 @@ export default class AddPersonScreen extends Component {
         }
         return users;
       });
-
-      // this.goToOptionsScreen();
     }
   };
 
