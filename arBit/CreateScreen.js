@@ -20,7 +20,6 @@ export default class CreateScreen extends Component {
       users: 0,
       numbervoted: 0,
       submitted: 0,
-      exited: 0,
       winner: '',
     });
   }

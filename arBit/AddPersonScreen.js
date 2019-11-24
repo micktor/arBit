@@ -36,8 +36,6 @@ export default class AddPersonScreen extends Component {
     const {navigation} = this.props;
 
     if (this.state.userName != '') {
-      console.log('userKey(goToOptionsScreen): ' + this.state.userKey);
-
       navigate('Options', {
         userKey: this.state.userKey,
         roomName: navigation.getParam('roomName', 'NO-ROOM'),
@@ -70,7 +68,10 @@ export default class AddPersonScreen extends Component {
     const {navigation} = this.props;
     this.setUserList();
 
-    if (this.state.users.has(this.state.userName) || (this.state.userName.match(/^\s+$/) != null || this.state.userName == '')){
+    if (
+      this.state.users.has(this.state.userName) ||
+      this.state.userName.match(/^\s+$/) != null || this.state.userName == ''
+    ) {
       alert('Username already taken or is invalid!');
       return -1;
     } else {
@@ -78,11 +79,10 @@ export default class AddPersonScreen extends Component {
         .push({
           userName: this.state.userName,
         })
-        .then((snap) => {
+        .then(snap => {
           this.setState({userKey: snap.key}, () => {
-            console.log('userKey(insertUser): ' + this.state.userKey);
           });
-        })
+        });
       var ref = db.child(
         'Events/' +
           navigation.getParam('roomName', 'NO-ROOM') +
@@ -97,7 +97,7 @@ export default class AddPersonScreen extends Component {
 
       // this.goToOptionsScreen();
     }
-  }
+  };
 
   render() {
     const {navigate} = this.props.navigation;

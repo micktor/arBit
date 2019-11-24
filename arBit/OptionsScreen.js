@@ -12,7 +12,6 @@ import {
 } from 'native-base';
 import {StyleSheet, FlatList} from 'react-native';
 import {db} from './db';
-import DisplayWinner from './DisplayWinner';
 import {Dropdown} from 'react-native-material-dropdown';
 import Geolocation from '@react-native-community/geolocation';
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -41,6 +40,8 @@ export default class OptionsScreen extends Component {
   }
 
   componentDidMount(prevProps) {
+    console.log("winner: " + this.state.winner)
+
     const {navigation} = this.props;
     Geolocation.getCurrentPosition(info => this.setState({location: info}));
 
@@ -66,16 +67,17 @@ export default class OptionsScreen extends Component {
       }
     });
 
-    db.child(
-      'Events/' + navigation.getParam('roomName') + '/optionList',
-    ).on('child_added', snapshot => {
-      const data = snapshot.val();
-      if (data) {
-        this.setState(prevState => ({
-          optionList: [data.option, ...prevState.optionList],
-        }));
-      }
-    });
+    db.child('Events/' + navigation.getParam('roomName') + '/optionList').on(
+      'child_added',
+      snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          this.setState(prevState => ({
+            optionList: [data.option, ...prevState.optionList],
+          }));
+        }
+      },
+    );
 
     // gets user keys
     db.child('Events/' + navigation.getParam('roomName')).once(
@@ -95,14 +97,15 @@ export default class OptionsScreen extends Component {
     );
 
     // Obtains keys for options under optionList
-    db.child(
-      'Events/' + navigation.getParam('roomName') + '/optionList/',
-    ).once('value', snapshot => {
-      snapshot.forEach(data => {
-        const currentKey = data.key;
-        this.state.optionKeys.add(currentKey);
-      });
-    });
+    db.child('Events/' + navigation.getParam('roomName') + '/optionList/').once(
+      'value',
+      snapshot => {
+        snapshot.forEach(data => {
+          const currentKey = data.key;
+          this.state.optionKeys.add(currentKey);
+        });
+      },
+    );
   }
 
   pullVotes() {
@@ -170,7 +173,7 @@ export default class OptionsScreen extends Component {
 
   pushVotes() {
     const {navigation} = this.props;
-    console.log('userKey: ' + navigation.getParam('userKey'))
+    console.log('userKey: ' + navigation.getParam('userKey'));
     if (this.areValidVotes()) {
       this.setState({buttonDisabled: true});
       var ref = db.child(
@@ -189,8 +192,9 @@ export default class OptionsScreen extends Component {
           var option = this.state.optionList[i];
           db.child(
             'Events/' +
-              navigation.getParam('roomName', 'NO-ROOM') + '/'+
-              `/${ navigation.getParam('userKey', 'NO-ROOM')}/options`
+              navigation.getParam('roomName', 'NO-ROOM') +
+              '/' +
+              `/${navigation.getParam('userKey', 'NO-ROOM')}/options`,
           ).update({
             [option]: this.state.pickers[i],
           });
@@ -420,6 +424,8 @@ export default class OptionsScreen extends Component {
   });
 
   render() {
+    const {navigate} = this.props.navigation;
+    const {navigation} = this.props;
     return (
       <Container style={styles.container}>
         {!this.state.doneVote ? (
@@ -454,11 +460,11 @@ export default class OptionsScreen extends Component {
               : this.showOptionsWithVote()}
           </Container>
         ) : (
-          <DisplayWinner
-            users={this.state.users}
-            roomName={this.props.roomName}
-            winner={this.state.winner}
-          />
+          navigate('Winner',{
+            users : this.state.users,
+            roomName:  navigation.getParam('roomName', 'NO-ROOM'),
+            winner: this.state.winner
+          })
         )}
 
         {!this.state.voteButton ? this.submitButton() : this.voteButton()}

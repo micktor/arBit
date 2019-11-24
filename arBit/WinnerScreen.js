@@ -4,7 +4,7 @@ import {db} from './db';
 import {Text, Container} from 'native-base';
 import {Modal, StyleSheet, Button} from 'react-native';
 
-export default class App extends Component {
+export default class WinnerScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +13,8 @@ export default class App extends Component {
   }
 
   componentDidUpdate() {
-    db.child('Events/' + this.props.roomName + '/roominfo').on(
+    const {navigation} = this.props;
+    db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM')).on(
       'child_changed',
       snapshot => {
         const key = snapshot.key;
@@ -24,34 +25,22 @@ export default class App extends Component {
         }
       },
     );
-
-    if (this.state.exited == this.props.users) {
-      db.child('Events/' + this.props.roomName).remove();
-    }
   }
 
   clickedExit() {
-    var ref = db.child('Events/' + this.props.roomName + '/roominfo/exited');
-
-    var numExited= this.state.exited + 1
-    this.setState({exited: numExited})
-
-    if (
-      this.state.exited ==
-      ref.transaction(function(numExited) {
-        numExited += 1;
-        return numExited;
-      })
-    ) {
-      db.child('Events/' + this.props.roomName).remove();
-    }
+    const {navigation} = this.props;
+    const {navigate} = this.props.navigation;
+    
+    db.child('Events/' +  navigation.getParam('roomName', 'NO-ROOM')).remove();
+    navigate('Home');
   }
 
   render() {
+    const {navigation} = this.props;
     return (
       <Modal>
         <Container style={styles.container}>
-          <Text>And the Winner is {this.props.winner}</Text>
+          <Text>And the Winner is {navigation.getParam('winner', 'NO-WINNER')}</Text>
         </Container>
         <Button onPress={() => this.clickedExit()} title="Exit" />
       </Modal>
