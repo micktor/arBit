@@ -70,8 +70,8 @@ export default class AddPersonScreen extends Component {
     const {navigation} = this.props;
     this.setUserList();
 
-    if (this.state.users.has(this.state.userName)) {
-      alert('Username already taken!');
+    if (this.state.users.has(this.state.userName) || (this.state.userName.match(/^\s+$/) != null || this.state.userName == '')){
+      alert('Username already taken or is invalid!');
       return -1;
     } else {
       db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM'))
