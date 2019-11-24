@@ -42,74 +42,74 @@ export default class OptionsScreen extends Component {
 
   
 
-  componentDidUpdate(prevProps) {
-    // const {navigation} = this.props;
+  componentDidMount(prevProps) {
+    const {navigation} = this.props;
     console.log("current: " + this.props.navigation.getParam('roomName'))
-    console.log("pervious: " + prevProps.navigation.getParam('roomName'))
-    if (this.props.navigation.getParam('roomName') != prevProps.navigation.getParam('roomName')) {
+  
+    
       console.log('here')
-      // Geolocation.getCurrentPosition(info => this.setState({location: info}));
+      Geolocation.getCurrentPosition(info => this.setState({location: info}));
 
-    //   db.child(
-    //     'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',
-    //   ).on('child_changed', snapshot => {
-    //     const data = snapshot.val();
-    //     const key = snapshot.key;
-    //     key.toString();
-    //     if (key === 'submitted' && data == this.state.users) {
-    //       this.pushUserOptionstoUsers();
-    //       this.setState({...this.state, voteButton: true});
-    //     } else if (
-    //       key === 'numbervoted' &&
-    //       data === this.state.users - 1 &&
-    //       !this.state.haveIvoted
-    //     ) {
-    //       this.setState({iamlast: true});
-    //     } else if (key === 'winner') {
-    //       this.setState({winner: data});
-    //     } else if (key == 'numbervoted' && data === this.state.users) {
-    //       this.setState({doneVote: true});
-    //     }
-    //   });
+      db.child(
+        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',
+      ).on('child_changed', snapshot => {
+        const data = snapshot.val();
+        const key = snapshot.key;
+        key.toString();
+        if (key === 'submitted' && data == this.state.users) {
+          this.pushUserOptionstoUsers();
+          this.setState({...this.state, voteButton: true});
+        } else if (
+          key === 'numbervoted' &&
+          data === this.state.users - 1 &&
+          !this.state.haveIvoted
+        ) {
+          this.setState({iamlast: true});
+        } else if (key === 'winner') {
+          this.setState({winner: data});
+        } else if (key == 'numbervoted' && data === this.state.users) {
+          this.setState({doneVote: true});
+        }
+      });
 
-    //   db.child(
-    //     'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
-    //   ).on('child_added', snapshot => {
-    //     const data = snapshot.val();
-    //     if (data) {
-    //       this.setState(prevState => ({
-    //         optionList: [data.option, ...prevState.optionList],
-    //       }));
-    //     }
-    //   });
-    }
+      db.child(
+        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
+      ).on('child_added', snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          this.setState(prevState => ({
+            optionList: [data.option, ...prevState.optionList],
+          }));
+        }
+      });
+  
 
-    // // gets user keys
-    // db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM')).once(
-    //   'value',
-    //   snapshot => {
-    //     snapshot.forEach(data => {
-    //       const currentKey = data.key;
-    //       if (
-    //         currentKey != 'optionList' &&
-    //         currentKey != 'roominfo' &&
-    //         currentKey != navigation.getParam('roomName', 'NO-ROOM')
-    //       ) {
-    //         this.state.userSetKeys.add(currentKey);
-    //       }
-    //     });
-    //   },
-    // );
+    // gets user keys
+    db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM')).once(
+      'value',
+      snapshot => {
+        snapshot.forEach(data => {
+          const currentKey = data.key;
+          if (
+            currentKey != 'optionList' &&
+            currentKey != 'roominfo' &&
+            currentKey != navigation.getParam('roomName', 'NO-ROOM')
+          ) {
+            this.state.userSetKeys.add(currentKey);
+          }
+        });
+      },
+    );
 
-    // // Obtains keys for options under optionList
-    // db.child(
-    //   'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList/',
-    // ).once('value', snapshot => {
-    //   snapshot.forEach(data => {
-    //     const currentKey = data.key;
-    //     this.state.optionKeys.add(currentKey);
-    //   });
-    // });
+    // Obtains keys for options under optionList
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList/',
+    ).once('value', snapshot => {
+      snapshot.forEach(data => {
+        const currentKey = data.key;
+        this.state.optionKeys.add(currentKey);
+      });
+    });
   }
 
   pullVotes() {
