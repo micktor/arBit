@@ -518,7 +518,7 @@ export default class OptionsModal extends Component {
           <Container style={styles.container}>
             {!this.state.formShow && !this.state.voteButton ? (
               <Text style={styles.textWrapper}>
-                Waiting for other members to finish...
+                Waiting for {this.state.users - this.state.submitted} members to finish...
               </Text>
             ) : this.state.formShow && !this.state.voteButton ? (
               <Form>
