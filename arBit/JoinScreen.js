@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import AddPersonModal from './addPersonModal';
 import {db} from './db';
 import {
   Container,
@@ -81,19 +80,19 @@ export default class JoinScreen extends Component {
           </Item>
           <Button
             title="Join"
-            onPress={() => this.toggleJoinModal()}
+            // onPress={() => this.toggleJoinModal()}
             style={createModalStyle.button}
             full
             rounded
             success>
             <Text>Join</Text>
           </Button>
-          <AddPersonModal
+          {/* <AddPersonModal
             displayName={this.state.displayName}
             toggleNameModal={this.toggleNameModal}
             roomName={this.state.roomName}
             roomList={this.state.roomList}
-          />
+          /> */}
           <Button
             style={createModalStyle.button}
             onPress={() => navigate('Home')}

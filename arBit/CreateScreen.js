@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
-import AddPersonModal from './addPersonModal';
 import {db} from './db';
 import {Container, Input, Item, Button, Label} from 'native-base';
 
@@ -40,6 +39,7 @@ export default class CreateScreen extends Component {
     });
   }
   toggleNameModal = () => {
+    const {navigate} = this.props.navigation;
     var found = this.state.roomList.includes(this.state.roomName);
 
     if (found) {
@@ -48,7 +48,11 @@ export default class CreateScreen extends Component {
       );
     } else if (this.state.roomName != '') {
       this.addRoom(this.state.roomName);
-      // this.setState({...this.state, displayName: !this.state.displayName});
+      navigate('AddPerson',{
+        displayName: this.state.displayName,
+        roomName: this.state.roomName,
+        roomList: this.state.roomList
+      })
     } else alert('Please Enter Room Name');
   };
 
@@ -81,11 +85,7 @@ export default class CreateScreen extends Component {
             success>
             <Text>Enter</Text>
           </Button>
-          {/* <AddPersonModal
-            displayName={this.state.displayName}
-            roomName={this.state.roomName}
-            roomList={this.state.roomList}
-          /> */}
+          
           <Button
             style={createModalStyle.button}
             onPress={() => navigate('Home')}
