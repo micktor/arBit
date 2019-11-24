@@ -38,6 +38,8 @@ export default class App extends Component {
     this.setState({...this.state, displayCreate: !this.state.displayCreate});
   };
 
+
+
   render() {
     return (
       <Container style={styles.container}>

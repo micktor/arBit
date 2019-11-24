@@ -6,7 +6,6 @@ import {
   Form,
   Container,
   Item,
-  Icon,
   Input,
   Header,
   Button,
@@ -32,9 +31,12 @@ import {
   Image,
 } from 'react-native';
 import AddPersonModal from './addPersonModal';
+
 import {db} from './db';
 import DisplayWinner from './DisplayWinner';
 import {Dropdown} from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/FontAwesome'
+Icon.loadFont()
 import Geolocation from '@react-native-community/geolocation';
 import { throwStatement } from '@babel/types';
 navigator.geolocation = require('@react-native-community/geolocation');
@@ -51,6 +53,8 @@ export default class OptionsModal extends Component {
       submitted: 0,
       voted: false,
       users: 0,
+      myList: [],
+      myListKeys:[],
       voteButton: false,
       userSetKeys: new Set(),
       optionKeys: new Set(),
@@ -102,7 +106,26 @@ export default class OptionsModal extends Component {
           }
         },
       );
+
+      db.child('Events/' + this.props.roomName + '/optionList').on(
+        'child_removed',
+          snapshot => {
+          const data = snapshot.val();
+          console.log("Data '" + data.option+ "' has been deleted");
+          if(data){
+            console.log(data)
+            var idx = this.state.optionList.indexOf(data.option);
+           let yourArray = [...this.state.optionList]
+           if(data.option == this.state.optionList[idx]){
+              yourArray.splice(idx, 1)
+               console.log(yourArray)
+              this.setState({optionList: yourArray})
+              console.log(this.state.optionList)}}
+  
+        })
     }
+
+    
 
     // gets user keys
     db.child('Events/' + this.props.roomName).once('value', snapshot => {
@@ -265,6 +288,29 @@ export default class OptionsModal extends Component {
     }
   };
 
+  determine(item){
+    if(this.state.myList.includes(item)){
+      return true
+    }
+    
+    else {
+      return false
+    }
+
+  }
+
+  deleteOption = item => {
+    // return item
+    var index = this.state.myList.indexOf(item)
+
+    var key = this.state.myListKeys[index]
+
+    db.child('Events/' + this.props.roomName + '/optionList/'+key).remove()
+    
+    delete this.state.myList[index]
+  
+  }
+
   showOptionsWithoutVote = item => {
     return (
       <Container style={styles.container}>
@@ -277,6 +323,11 @@ export default class OptionsModal extends Component {
                 <Text>{item}</Text>
               </Left>
               <Text></Text>
+              {this.determine(item) ?
+              (
+              <Icon.Button name="trash"  backgroundColor='#3b5998'onPress={()=>this.deleteOption(item)}></Icon.Button> 
+              ) :
+              <Icon.Button disabled={true} backgroundColor='#ffffff' ></Icon.Button> } 
             </ListItem>
           )}
         />
@@ -387,6 +438,7 @@ export default class OptionsModal extends Component {
   };
 
   handleOption = text => {
+    // const nameCapitalized = text.charAt(0).toUpperCase() + text.slice(1)
     this.setState({option: text});
   };
 
@@ -396,7 +448,12 @@ export default class OptionsModal extends Component {
   };
 
   addOption = () => {
-    if (this.state.option == '') alert('Invalid Input');
+    
+    this.state.option = this.state.option.charAt(0).toUpperCase() + this.state.option.slice(1).toLowerCase()
+    if (this.state.option.match(/^\s+$/) != null || this.state.option == '') alert('Invalid Input');
+    else if(this.state.optionList.includes(this.state.option)) {
+      alert('Duplicate option.....')
+    }
     else {
       fetch(
         'https://api.yelp.com/v3/businesses/search?term=' +
@@ -424,18 +481,24 @@ export default class OptionsModal extends Component {
               image_url: responseJson.total == 0 ? '' : responseJson.businesses[0].image_url,
               votes: 0,
             })
-            .then(() => {
+            .then((snap) => {
+              this.setState(prevState => ({
+                myListKeys: [snap.key, ...prevState.myListKeys]
+                }))
               // console.log(this.state);
             })
             .catch(error => {
               //console.log(error);
             });
-          this.setState({option: ''}, function() {});
+            this.setState(prevState => ({
+              myList: [this.state.option, ...prevState.myList]
+              }))
+              console.log(this.state.myListKeys)
+            this.setState({option: ''}, function() {});
         })
         .catch(error => {
           console.error(error);
         });
-
       // console.log(this.state.location.coords.latitude);
       // console.log(this.state.location.coords.longitude);
     }
@@ -455,7 +518,7 @@ export default class OptionsModal extends Component {
           <Container style={styles.container}>
             {!this.state.formShow && !this.state.voteButton ? (
               <Text style={styles.textWrapper}>
-                Waiting for other members to finish...
+                Waiting for {this.state.users - this.state.submitted} members to finish...
               </Text>
             ) : this.state.formShow && !this.state.voteButton ? (
               <Form>
