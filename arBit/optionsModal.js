@@ -106,23 +106,26 @@ export default class OptionsModal extends Component {
           }
         },
       );
-    }
-    db.child('Events/' + this.props.roomName + '/optionList').on(
-      'child_removed',
-        snapshot => {
-        const data = snapshot.val();
-        console.log("Data '" + data.option+ "' has been deleted");
-        if(data){
-          console.log(data)
-          var idx = this.state.optionList.indexOf(data.option);
-         let yourArray = [...this.state.optionList]
-         if(data.option == this.state.optionList[idx]){
-            yourArray.splice(idx, 1)
-             console.log(yourArray)
-            this.setState({optionList: yourArray})
-            console.log(this.state.optionList)}}
 
-      })
+      db.child('Events/' + this.props.roomName + '/optionList').on(
+        'child_removed',
+          snapshot => {
+          const data = snapshot.val();
+          console.log("Data '" + data.option+ "' has been deleted");
+          if(data){
+            console.log(data)
+            var idx = this.state.optionList.indexOf(data.option);
+           let yourArray = [...this.state.optionList]
+           if(data.option == this.state.optionList[idx]){
+              yourArray.splice(idx, 1)
+               console.log(yourArray)
+              this.setState({optionList: yourArray})
+              console.log(this.state.optionList)}}
+  
+        })
+    }
+
+    
 
     // gets user keys
     db.child('Events/' + this.props.roomName).once('value', snapshot => {
@@ -287,7 +290,8 @@ export default class OptionsModal extends Component {
 
   determine(item){
     if(this.state.myList.includes(item)){
-      return true}
+      return true
+    }
     
     else {
       return false
@@ -302,6 +306,8 @@ export default class OptionsModal extends Component {
     var key = this.state.myListKeys[index]
 
     db.child('Events/' + this.props.roomName + '/optionList/'+key).remove()
+    
+    delete this.state.myList[index]
   
   }
 
@@ -432,6 +438,7 @@ export default class OptionsModal extends Component {
   };
 
   handleOption = text => {
+    // const nameCapitalized = text.charAt(0).toUpperCase() + text.slice(1)
     this.setState({option: text});
   };
 
@@ -441,7 +448,12 @@ export default class OptionsModal extends Component {
   };
 
   addOption = () => {
+    
+    this.state.option = this.state.option.charAt(0).toUpperCase() + this.state.option.slice(1).toLowerCase()
     if (this.state.option == '') alert('Invalid Input');
+    else if(this.state.optionList.includes(this.state.option)) {
+      alert('Duplicate option.....')
+    }
     else {
       fetch(
         'https://api.yelp.com/v3/businesses/search?term=' +
