@@ -3,26 +3,13 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {db} from './db';
-import {
-  Container,
-  Content,
-  Header,
-  Form,
-  Title,
-  Input,
-  Item,
-  Button,
-  Label,
-  List,
-  ListItem,
-} from 'native-base';
+import {Container, Input, Item, Button, Label} from 'native-base';
 
 export default class JoinScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       roomName: '',
-      displayName: false,
       roomList: [],
     };
   }
@@ -47,18 +34,17 @@ export default class JoinScreen extends Component {
     });
   }
 
-  toggleNameModal = () => {
-    if (this.state.roomName != '') {
-      this.setState({...this.state, displayName: !this.state.displayName});
-    } else alert('Please Enter Room Name');
-  };
   toggleJoinModal = () => {
+    const {navigate} = this.props.navigation;
     var found = this.state.roomList.includes(this.state.roomName);
 
     if (!found) {
       alert('Room has not been created yet!');
     } else {
-      this.setState({...this.state, displayName: !this.state.displayName});
+      navigate('AddPerson', {
+        roomName: this.state.roomName,
+        roomList: this.state.roomList,
+      });
     }
   };
 
@@ -80,19 +66,13 @@ export default class JoinScreen extends Component {
           </Item>
           <Button
             title="Join"
-            // onPress={() => this.toggleJoinModal()}
+            onPress={() => this.toggleJoinModal()}
             style={createModalStyle.button}
             full
             rounded
             success>
             <Text>Join</Text>
           </Button>
-          {/* <AddPersonModal
-            displayName={this.state.displayName}
-            toggleNameModal={this.toggleNameModal}
-            roomName={this.state.roomName}
-            roomList={this.state.roomList}
-          /> */}
           <Button
             style={createModalStyle.button}
             onPress={() => navigate('Home')}

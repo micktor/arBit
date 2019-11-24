@@ -1,36 +1,16 @@
 import React, {Component} from 'react';
-
 import {
-  List,
   ListItem,
   Form,
   Container,
   Item,
-  Icon,
   Input,
-  Header,
   Button,
-  Content,
-  Toast,
   Text,
   Left,
-  Center,
-  Body,
   Right,
-  Title,
-  Label,
-  Spinner,
-  Picker,
-  TouchableHighlight,
 } from 'native-base';
-import {
-  StyleSheet,
-  Modal,
-  View,
-  SafeAreaView,
-  FlatList,
-  Image,
-} from 'react-native';
+import {StyleSheet, FlatList} from 'react-native';
 import {db} from './db';
 import DisplayWinner from './DisplayWinner';
 import {Dropdown} from 'react-native-material-dropdown';
@@ -60,73 +40,75 @@ export default class OptionsScreen extends Component {
     };
   }
 
-  componentDidUpdate = prevProps => {
-    if (this.props.roomName != prevProps.roomName) {
+  componentDidUpdate(prevProps){
+    const {navigation} = this.props;
+    if (navigation.getParam('roomName', 'NO-ROOM') != prevProps.roomName) {
       Geolocation.getCurrentPosition(info => this.setState({location: info}));
 
-      db.child('Events/' + this.props.roomName + '/roominfo').on(
-        'child_changed',
-        snapshot => {
-          const data = snapshot.val();
-          const key = snapshot.key;
-          key.toString();
-          if (key === 'submitted' && data == this.state.users) {
-            this.pushUserOptionstoUsers();
-            this.setState({...this.state, voteButton: true});
-          } else if (
-            key === 'numbervoted' &&
-            data === this.state.users - 1 &&
-            !this.state.haveIvoted
-          ) {
-            this.setState({iamlast: true});
-          } else if (key === 'winner') {
-            this.setState({winner: data});
-          } else if (key == 'numbervoted' && data === this.state.users) {
-            this.setState({doneVote: true});
-          }
-        },
-      );
+      db.child(
+        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',
+      ).on('child_changed', snapshot => {
+        const data = snapshot.val();
+        const key = snapshot.key;
+        key.toString();
+        if (key === 'submitted' && data == this.state.users) {
+          this.pushUserOptionstoUsers();
+          this.setState({...this.state, voteButton: true});
+        } else if (
+          key === 'numbervoted' &&
+          data === this.state.users - 1 &&
+          !this.state.haveIvoted
+        ) {
+          this.setState({iamlast: true});
+        } else if (key === 'winner') {
+          this.setState({winner: data});
+        } else if (key == 'numbervoted' && data === this.state.users) {
+          this.setState({doneVote: true});
+        }
+      });
 
-      db.child('Events/' + this.props.roomName + '/optionList').on(
-        'child_added',
-        snapshot => {
-          const data = snapshot.val();
-          if (data) {
-            this.setState(prevState => ({
-              optionList: [data.option, ...prevState.optionList],
-            }));
-          }
-        },
-      );
+      db.child(
+        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
+      ).on('child_added', snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          this.setState(prevState => ({
+            optionList: [data.option, ...prevState.optionList],
+          }));
+        }
+      });
     }
 
     // gets user keys
-    db.child('Events/' + this.props.roomName).once('value', snapshot => {
-      snapshot.forEach(data => {
-        const currentKey = data.key;
-        if (
-          currentKey != 'optionList' &&
-          currentKey != 'roominfo' &&
-          currentKey != this.props.roomName
-        ) {
-          this.state.userSetKeys.add(currentKey);
-        }
-      });
-    });
-
-    // Obtains keys for options under optionList
-    db.child('Events/' + this.props.roomName + '/optionList/').once(
+    db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM')).once(
       'value',
       snapshot => {
         snapshot.forEach(data => {
           const currentKey = data.key;
-          this.state.optionKeys.add(currentKey);
+          if (
+            currentKey != 'optionList' &&
+            currentKey != 'roominfo' &&
+            currentKey != navigation.getParam('roomName', 'NO-ROOM')
+          ) {
+            this.state.userSetKeys.add(currentKey);
+          }
         });
       },
     );
+
+    // Obtains keys for options under optionList
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList/',
+    ).once('value', snapshot => {
+      snapshot.forEach(data => {
+        const currentKey = data.key;
+        this.state.optionKeys.add(currentKey);
+      });
+    });
   };
 
   pullVotes() {
+    const {navigation} = this.props;
     const optionVote = {};
     for (
       var it = this.state.userSetKeys.values(), val = null;
@@ -136,7 +118,9 @@ export default class OptionsScreen extends Component {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
         db.child(
-          'Events/' + this.props.roomName + `/${val}/options/${option}`,
+          'Events/' +
+            navigation.getParam('roomName', 'NO-ROOM') +
+            `/${val}/options/${option}`,
         ).once('value', function(snapshot) {
           if (optionVote[option] == null) {
             optionVote[option] = snapshot.val();
@@ -161,7 +145,9 @@ export default class OptionsScreen extends Component {
         win = option;
       }
     }
-    db.child('Events/' + this.props.roomName + '/roominfo').update({
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',
+    ).update({
       winner: win,
     });
   }
@@ -185,10 +171,13 @@ export default class OptionsScreen extends Component {
   };
 
   pushVotes() {
+    const {navigation} = this.props;
     if (this.areValidVotes()) {
       this.setState({buttonDisabled: true});
       var ref = db.child(
-        'Events/' + this.props.roomName + '/roominfo/numbervoted',
+        'Events/' +
+          navigation.getParam('roomName', 'NO-ROOM') +
+          '/roominfo/numbervoted',
       );
       ref.transaction(function(numbervoted) {
         if (numbervoted || numbervoted === 0) {
@@ -200,7 +189,9 @@ export default class OptionsScreen extends Component {
         for (i = 0; i < this.state.optionList.length; i++) {
           var option = this.state.optionList[i];
           db.child(
-            'Events/' + this.props.roomName + `/${this.props.userKey}/options`,
+            'Events/' +
+              navigation.getParam('roomName', 'NO-ROOM') +
+              `/${navigation.getParam('userKey', 'NO-ROOM')}/options`,
           ).update({
             [option]: this.state.pickers[i],
           });
@@ -304,7 +295,8 @@ export default class OptionsScreen extends Component {
   };
 
   removeRoomNamesFromUserSet() {
-    let b = new Set(this.props.roomList);
+    const {navigation} = this.props;
+    let b = new Set(navigation.getParam('roomList', 'NO-ROOM'));
     let difference = new Set(
       [...this.state.userSetKeys].filter(x => !b.has(x)),
     );
@@ -312,6 +304,7 @@ export default class OptionsScreen extends Component {
   }
 
   pushUserOptionstoUsers() {
+    const {navigation} = this.props;
     this.removeRoomNamesFromUserSet();
     for (
       var it = this.state.userSetKeys.values(), val = null;
@@ -320,7 +313,11 @@ export default class OptionsScreen extends Component {
     ) {
       for (i = 0; i < this.state.optionList.length; i++) {
         var option = this.state.optionList[i];
-        db.child('Events/' + this.props.roomName + `/${val}/options`).update({
+        db.child(
+          'Events/' +
+            navigation.getParam('roomName', 'NO-ROOM') +
+            `/${val}/options`,
+        ).update({
           [option]: 0,
         });
         if (!this.state.voteValueList.includes((i + 1).toString())) {
@@ -332,8 +329,13 @@ export default class OptionsScreen extends Component {
   }
 
   showform = () => {
+    const {navigation} = this.props;
     this.setState({formShow: !this.state.formShow});
-    var ref = db.child('Events/' + this.props.roomName + '/roominfo/submitted');
+    var ref = db.child(
+      'Events/' +
+        navigation.getParam('roomName', 'NO-ROOM') +
+        '/roominfo/submitted',
+    );
     action = this.state.formShow;
     ref.transaction(function(submitted) {
       if (submitted || submitted === 0) {
@@ -341,92 +343,82 @@ export default class OptionsScreen extends Component {
       }
       return submitted;
     });
-    db.child('Events/' + this.props.roomName + '/roominfo').on(
-      'child_added',
-      snapshot => {
-        var key = snapshot.key;
-        var val = snapshot.val();
-        this.setState({[key]: val}, function() {
-          if (
-            this.state.submitted != 0 &&
-            this.state.submitted == this.state.users
-          ) {
-            this.pushUserOptionstoUsers();
-            this.setState({...this.state, voteButton: true});
-          }
-        });
-      },
-    );
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',
+    ).on('child_added', snapshot => {
+      var key = snapshot.key;
+      var val = snapshot.val();
+      this.setState({[key]: val}, function() {
+        if (
+          this.state.submitted != 0 &&
+          this.state.submitted == this.state.users
+        ) {
+          this.pushUserOptionstoUsers();
+          this.setState({...this.state, voteButton: true});
+        }
+      });
+    });
   };
 
   handleOption = text => {
     this.setState({option: text});
   };
 
-  checkLenOfList = () => {
-    console.log('vote button is pressed');
-    console.log(this.state.optionList.length);
-  };
-
   addOption = () => {
+    const {navigation} = this.props;
     if (this.state.option == '') alert('Invalid Input');
     else {
-      fetch(
-        'https://api.yelp.com/v3/businesses/search?term=' +
-          this.state.option +
-          '&latitude=' +
-          this.state.location.coords.latitude +
-          '&longitude=' +
-          this.state.location.coords.longitude,
-        {
-          method: 'GET',
-          headers: {
-            Authorization:
-              'Bearer -zeb3KhLhUOIjLrBhRofrU45bDUlqK0Oujw_aIEIkRpBZ_3pd2uZctcumUeg_bo6zr4ygVhLTDdJNepIqSl-LqhuycwAYY3Vxgpm_e7aTZYeIxv7oeGRXgKAx_GcXXYx',
-          },
-        },
-      )
-        .then(response => response.json())
-        .then(responseJson => {
-          console.log('Total Yelp results: ' + responseJson.total);
-          db.child('Events/' + this.props.roomName + '/optionList')
-            .push({
-              option: this.state.option,
-              author: this.props.userName,
-              url:
-                responseJson.total == 0 ? '' : responseJson.businesses[0].url,
-              image_url:
-                responseJson.total == 0
-                  ? ''
-                  : responseJson.businesses[0].image_url,
-              votes: 0,
-            })
-            .then(() => {
-            })
-            .catch(error => {
-            });
-          this.setState({option: ''}, function() {});
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      //   fetch(
+      //     'https://api.yelp.com/v3/businesses/search?term=' +
+      //       this.state.option +
+      //       '&latitude=' +
+      //       this.state.location.coords.latitude +
+      //       '&longitude=' +
+      //       this.state.location.coords.longitude,
+      //     {
+      //       method: 'GET',
+      //       headers: {
+      //         Authorization:
+      //           'Bearer -zeb3KhLhUOIjLrBhRofrU45bDUlqK0Oujw_aIEIkRpBZ_3pd2uZctcumUeg_bo6zr4ygVhLTDdJNepIqSl-LqhuycwAYY3Vxgpm_e7aTZYeIxv7oeGRXgKAx_GcXXYx',
+      //       },
+      //     },
+      //   )
+      //     .then(response => response.json())
+      //     .then(responseJson => {
+      //       console.log('Total Yelp results: ' + responseJson.total);
+      db.child(
+        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
+      ).push({
+        option: this.state.option,
+        author: navigation.getParam('userName', 'NO-ROOM'),
+        // url:
+        //   responseJson.total == 0 ? '' : responseJson.businesses[0].url,
+        // image_url:
+        //   responseJson.total == 0
+        //     ? ''
+        //     : responseJson.businesses[0].image_url,
+        votes: 0,
+      });
+      //         .then(() => {})
+      //         .catch(error => {});
+      //       this.setState({option: ''}, function() {});
+      //     })
+      //     .catch(error => {
+      //       console.error(error);
+      //     });
     }
   };
 
-  static navigationOptions = ({navigation, scrrenProps }) => ({
-    // title: 'Welcome' + navigation.state.params.,
+  static navigationOptions = ({navigation}) => ({
+    title:
+      navigation.state.params.userName +
+      ' welcome to ' +
+      navigation.state.params.roomName,
   });
 
   render() {
     return (
       <Container style={styles.container}>
-        {/* <Header span>
-          <Body>
-            <Title style={styles.title}>
-              {this.props.userName}, Welcome to {this.props.roomName}
-            </Title>
-          </Body>
-        </Header> */}
         {!this.state.doneVote ? (
           <Container style={styles.container}>
             {!this.state.formShow && !this.state.voteButton ? (

@@ -11,9 +11,7 @@ export default class AddPersonScreen extends Component {
 
     this.state = {
       userName: '',
-      roomName: '',
       users: new Set(),
-      displayOptions: false,
       userKey: '',
     };
   }
@@ -26,15 +24,12 @@ export default class AddPersonScreen extends Component {
     const {navigate} = this.props.navigation;
     const {navigation} = this.props;
     if (this.state.userName != '') {
-      navigate('Options',{
+      navigate('Options', {
         userKey: this.state.userKey,
-        displayOptions: this.state.displayOptions,
-        toggleOptionsModal: this.toggleOptionsModal,
-        roomName: this.state.roomName,
+        roomName: navigation.getParam('roomName', 'NO-ROOM'),
         userName: this.state.userName,
-        roomList: this.props.roomList
-      })
-      this.setState({roomName: navigation.getParam('roomName', 'NO-ROOM')});
+        roomList: navigation.getParam('roomList', 'NO-ROOM'),
+      });
     } else {
       alert('Please enter some stuff!');
     }
@@ -114,14 +109,6 @@ export default class AddPersonScreen extends Component {
             success>
             <Text>Submit</Text>
           </Button>
-          {/* <OptionsModal
-            userKey={this.state.userKey}
-            displayOptions={this.state.displayOptions}
-            toggleOptionsModal={this.toggleOptionsModal}
-            roomName={this.state.roomName}
-            userName={this.state.userName}
-            roomList={this.props.roomList}
-          /> */}
           <Button
             style={styles.button}
             title="Cancel"

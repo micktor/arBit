@@ -48,11 +48,11 @@ export default class CreateScreen extends Component {
       );
     } else if (this.state.roomName != '') {
       this.addRoom(this.state.roomName);
-      navigate('AddPerson',{
+      navigate('AddPerson', {
         displayName: this.state.displayName,
         roomName: this.state.roomName,
-        roomList: this.state.roomList
-      })
+        roomList: this.state.roomList,
+      });
     } else alert('Please Enter Room Name');
   };
 
@@ -85,7 +85,7 @@ export default class CreateScreen extends Component {
             success>
             <Text>Enter</Text>
           </Button>
-          
+
           <Button
             style={createModalStyle.button}
             onPress={() => navigate('Home')}
