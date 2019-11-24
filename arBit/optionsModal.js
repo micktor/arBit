@@ -450,7 +450,7 @@ export default class OptionsModal extends Component {
   addOption = () => {
     
     this.state.option = this.state.option.charAt(0).toUpperCase() + this.state.option.slice(1).toLowerCase()
-    if (this.state.option == '') alert('Invalid Input');
+    if (this.state.option.match(/^\s+$/) != null || this.state.option == '') alert('Invalid Input');
     else if(this.state.optionList.includes(this.state.option)) {
       alert('Duplicate option.....')
     }
