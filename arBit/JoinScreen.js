@@ -1,7 +1,7 @@
 // DisplayModal.js
 
 import React, {Component} from 'react';
-import {Modal, View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import AddPersonModal from './addPersonModal';
 import {db} from './db';
 import {
@@ -18,7 +18,7 @@ import {
   ListItem,
 } from 'native-base';
 
-export default class JoinModal extends Component {
+export default class JoinScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,6 +27,10 @@ export default class JoinModal extends Component {
       roomList: [],
     };
   }
+
+  static navigationOptions = {
+    title: 'Login',
+  };
 
   componentDidMount() {
     db.once('value').then(snapshot => {
@@ -64,47 +68,42 @@ export default class JoinModal extends Component {
   };
 
   render() {
-    console.log(this.state.roomList);
+    const {navigate} = this.props.navigation;
     return (
-      <Modal
-        visible={this.props.displayJoin}
-        animationType="slide"
-        onRequestClose={() => console.log('closed')}>
-        <Container style={createModalStyle.container}>
-          <View>
-            <Item style={createModalStyle.bigBlack}>
-              <Label>Enter room to Join: </Label>
-              <Input
-                onChangeText={this.handleRoomName}
-                style={createModalStyle.text}
-              />
-            </Item>
-            <Button
-              title="Join"
-              onPress={() => this.toggleJoinModal()}
-              style={createModalStyle.button}
-              full
-              rounded
-              success>
-              <Text>Join</Text>
-            </Button>
-            <AddPersonModal
-              displayName={this.state.displayName}
-              toggleNameModal={this.toggleNameModal}
-              roomName={this.state.roomName}
-              roomList = {this.state.roomList}
+      <Container style={createModalStyle.container}>
+        <View>
+          <Item style={createModalStyle.bigBlack}>
+            <Label>Enter room to Join: </Label>
+            <Input
+              onChangeText={this.handleRoomName}
+              style={createModalStyle.text}
             />
-            <Button
-              style={createModalStyle.button}
-              onPress={() => this.props.toggleJoinModal()}
-              full
-              rounded
-              danger>
-              <Text>Close</Text>
-            </Button>
-          </View>
-        </Container>
-      </Modal>
+          </Item>
+          <Button
+            title="Join"
+            onPress={() => this.toggleJoinModal()}
+            style={createModalStyle.button}
+            full
+            rounded
+            success>
+            <Text>Join</Text>
+          </Button>
+          <AddPersonModal
+            displayName={this.state.displayName}
+            toggleNameModal={this.toggleNameModal}
+            roomName={this.state.roomName}
+            roomList={this.state.roomList}
+          />
+          <Button
+            style={createModalStyle.button}
+            onPress={() => navigate('Home')}
+            full
+            rounded
+            danger>
+            <Text>Close</Text>
+          </Button>
+        </View>
+      </Container>
     );
   }
 }
