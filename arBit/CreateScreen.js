@@ -49,7 +49,6 @@ export default class CreateScreen extends Component {
     } else if (this.state.roomName != '') {
       this.addRoom(this.state.roomName);
       navigate('AddPerson', {
-        displayName: this.state.displayName,
         roomName: this.state.roomName,
         roomList: this.state.roomList,
       });
