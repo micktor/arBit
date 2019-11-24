@@ -16,14 +16,22 @@ export default class AddPersonScreen extends Component {
     };
   }
 
+  static navigationOptions = ({navigation}) => ({
+    title: 'Welcome to ' + navigation.state.params.roomName,
+    headerLeft: null,
+  });
+
   handleUserName = text => {
     this.setState({userName: text});
   };
 
-  toggleOptionsModal() {
+  goToOptionsScreen() {
     const {navigate} = this.props.navigation;
     const {navigation} = this.props;
+
     if (this.state.userName != '') {
+      console.log('userKey(goToOptionsScreen): ' + this.state.userKey);
+
       navigate('Options', {
         userKey: this.state.userKey,
         roomName: navigation.getParam('roomName', 'NO-ROOM'),
@@ -52,7 +60,7 @@ export default class AddPersonScreen extends Component {
     );
   }
 
-  insertUser() {
+  insertUser = async () => {
     const {navigation} = this.props;
     this.setUserList();
 
@@ -64,10 +72,11 @@ export default class AddPersonScreen extends Component {
         .push({
           userName: this.state.userName,
         })
-        .then(snap => {
-          this.setState({userKey: snap.key});
+        .then((snap) => {
+          this.setState({userKey: snap.key}, () => {
+            console.log('userKey(insertUser): ' + this.state.userKey);
+          });
         })
-        .catch(error => {});
       var ref = db.child(
         'Events/' +
           navigation.getParam('roomName', 'NO-ROOM') +
@@ -79,8 +88,10 @@ export default class AddPersonScreen extends Component {
         }
         return users;
       });
+
+      this.goToOptionsScreen();
     }
-  }
+  };
 
   render() {
     const {navigate} = this.props.navigation;
@@ -100,9 +111,7 @@ export default class AddPersonScreen extends Component {
           </Item>
 
           <Button
-            onPress={() => {
-              if (this.insertUser() != -1) this.toggleOptionsModal();
-            }}
+            onPress={() => this.insertUser()}
             style={styles.button}
             full
             rounded

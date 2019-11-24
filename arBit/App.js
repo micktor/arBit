@@ -1,12 +1,12 @@
-import {createStackNavigator } from 'react-navigation-stack';
+import {createStackNavigator} from 'react-navigation-stack';
 
 import HomeScreen from './HomeScreen';
 import CreateScreen from './CreateScreen';
 import JoinScreen from './JoinScreen';
-import AddPersonScreen from './AddPersonScreen'
-import OptionsScreen from './OptionsScreen'
+import AddPersonScreen from './AddPersonScreen';
+import OptionsScreen from './OptionsScreen';
 
-import { createAppContainer } from 'react-navigation';
+import {createAppContainer} from 'react-navigation';
 
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},

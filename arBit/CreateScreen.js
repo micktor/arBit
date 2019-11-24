@@ -11,6 +11,7 @@ export default class CreateScreen extends Component {
 
   static navigationOptions = {
     title: 'Login',
+    headerLeft: null
   };
 
   addRoom(room) {

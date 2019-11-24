@@ -40,52 +40,45 @@ export default class OptionsScreen extends Component {
     };
   }
 
-  
-
   componentDidMount(prevProps) {
     const {navigation} = this.props;
-    console.log("current: " + this.props.navigation.getParam('roomName'))
-  
-    
-      console.log('here')
-      Geolocation.getCurrentPosition(info => this.setState({location: info}));
+    Geolocation.getCurrentPosition(info => this.setState({location: info}));
 
-      db.child(
-        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',
-      ).on('child_changed', snapshot => {
-        const data = snapshot.val();
-        const key = snapshot.key;
-        key.toString();
-        if (key === 'submitted' && data == this.state.users) {
-          this.pushUserOptionstoUsers();
-          this.setState({...this.state, voteButton: true});
-        } else if (
-          key === 'numbervoted' &&
-          data === this.state.users - 1 &&
-          !this.state.haveIvoted
-        ) {
-          this.setState({iamlast: true});
-        } else if (key === 'winner') {
-          this.setState({winner: data});
-        } else if (key == 'numbervoted' && data === this.state.users) {
-          this.setState({doneVote: true});
-        }
-      });
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',
+    ).on('child_changed', snapshot => {
+      const data = snapshot.val();
+      const key = snapshot.key;
+      key.toString();
+      if (key === 'submitted' && data == this.state.users) {
+        this.pushUserOptionstoUsers();
+        this.setState({...this.state, voteButton: true});
+      } else if (
+        key === 'numbervoted' &&
+        data === this.state.users - 1 &&
+        !this.state.haveIvoted
+      ) {
+        this.setState({iamlast: true});
+      } else if (key === 'winner') {
+        this.setState({winner: data});
+      } else if (key == 'numbervoted' && data === this.state.users) {
+        this.setState({doneVote: true});
+      }
+    });
 
-      db.child(
-        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
-      ).on('child_added', snapshot => {
-        const data = snapshot.val();
-        if (data) {
-          this.setState(prevState => ({
-            optionList: [data.option, ...prevState.optionList],
-          }));
-        }
-      });
-  
+    db.child(
+      'Events/' + navigation.getParam('roomName') + '/optionList',
+    ).on('child_added', snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        this.setState(prevState => ({
+          optionList: [data.option, ...prevState.optionList],
+        }));
+      }
+    });
 
     // gets user keys
-    db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM')).once(
+    db.child('Events/' + navigation.getParam('roomName')).once(
       'value',
       snapshot => {
         snapshot.forEach(data => {
@@ -93,7 +86,7 @@ export default class OptionsScreen extends Component {
           if (
             currentKey != 'optionList' &&
             currentKey != 'roominfo' &&
-            currentKey != navigation.getParam('roomName', 'NO-ROOM')
+            currentKey != navigation.getParam('roomName')
           ) {
             this.state.userSetKeys.add(currentKey);
           }
@@ -103,7 +96,7 @@ export default class OptionsScreen extends Component {
 
     // Obtains keys for options under optionList
     db.child(
-      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList/',
+      'Events/' + navigation.getParam('roomName') + '/optionList/',
     ).once('value', snapshot => {
       snapshot.forEach(data => {
         const currentKey = data.key;
@@ -177,6 +170,7 @@ export default class OptionsScreen extends Component {
 
   pushVotes() {
     const {navigation} = this.props;
+    console.log('userKey: ' + navigation.getParam('userKey'))
     if (this.areValidVotes()) {
       this.setState({buttonDisabled: true});
       var ref = db.child(
@@ -195,8 +189,8 @@ export default class OptionsScreen extends Component {
           var option = this.state.optionList[i];
           db.child(
             'Events/' +
-              navigation.getParam('roomName', 'NO-ROOM') +
-              `/${navigation.getParam('userKey', 'NO-ROOM')}/options`,
+              navigation.getParam('roomName', 'NO-ROOM') + '/'+
+              + navigation.getParam('userKey') + '/options'
           ).update({
             [option]: this.state.pickers[i],
           });
@@ -373,44 +367,47 @@ export default class OptionsScreen extends Component {
     const {navigation} = this.props;
     if (this.state.option == '') alert('Invalid Input');
     else {
-      //   fetch(
-      //     'https://api.yelp.com/v3/businesses/search?term=' +
-      //       this.state.option +
-      //       '&latitude=' +
-      //       this.state.location.coords.latitude +
-      //       '&longitude=' +
-      //       this.state.location.coords.longitude,
-      //     {
-      //       method: 'GET',
-      //       headers: {
-      //         Authorization:
-      //           'Bearer -zeb3KhLhUOIjLrBhRofrU45bDUlqK0Oujw_aIEIkRpBZ_3pd2uZctcumUeg_bo6zr4ygVhLTDdJNepIqSl-LqhuycwAYY3Vxgpm_e7aTZYeIxv7oeGRXgKAx_GcXXYx',
-      //       },
-      //     },
-      //   )
-      //     .then(response => response.json())
-      //     .then(responseJson => {
-      //       console.log('Total Yelp results: ' + responseJson.total);
-      db.child(
-        'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
-      ).push({
-        option: this.state.option,
-        author: navigation.getParam('userName', 'NO-ROOM'),
-        // url:
-        //   responseJson.total == 0 ? '' : responseJson.businesses[0].url,
-        // image_url:
-        //   responseJson.total == 0
-        //     ? ''
-        //     : responseJson.businesses[0].image_url,
-        votes: 0,
-      });
-      //         .then(() => {})
-      //         .catch(error => {});
-      //       this.setState({option: ''}, function() {});
-      //     })
-      //     .catch(error => {
-      //       console.error(error);
-      //     });
+      fetch(
+        'https://api.yelp.com/v3/businesses/search?term=' +
+          this.state.option +
+          '&latitude=' +
+          this.state.location.coords.latitude +
+          '&longitude=' +
+          this.state.location.coords.longitude,
+        {
+          method: 'GET',
+          headers: {
+            Authorization:
+              'Bearer -zeb3KhLhUOIjLrBhRofrU45bDUlqK0Oujw_aIEIkRpBZ_3pd2uZctcumUeg_bo6zr4ygVhLTDdJNepIqSl-LqhuycwAYY3Vxgpm_e7aTZYeIxv7oeGRXgKAx_GcXXYx',
+          },
+        },
+      )
+        .then(response => response.json())
+        .then(responseJson => {
+          console.log('Total Yelp results: ' + responseJson.total);
+          db.child(
+            'Events/' +
+              navigation.getParam('roomName', 'NO-ROOM') +
+              '/optionList',
+          )
+            .push({
+              option: this.state.option,
+              author: navigation.getParam('userName', 'NO-ROOM'),
+              url:
+                responseJson.total == 0 ? '' : responseJson.businesses[0].url,
+              image_url:
+                responseJson.total == 0
+                  ? ''
+                  : responseJson.businesses[0].image_url,
+              votes: 0,
+            })
+            .then(() => {})
+            .catch(error => {});
+          this.setState({option: ''}, function() {});
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
   };
 
@@ -419,6 +416,7 @@ export default class OptionsScreen extends Component {
       navigation.state.params.userName +
       ' welcome to ' +
       navigation.state.params.roomName,
+    headerLeft: null,
   });
 
   render() {

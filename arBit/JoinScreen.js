@@ -16,6 +16,7 @@ export default class JoinScreen extends Component {
 
   static navigationOptions = {
     title: 'Login',
+    headerLeft: null
   };
 
   componentDidMount() {
