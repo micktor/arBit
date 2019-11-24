@@ -13,6 +13,8 @@ import {
 import {StyleSheet, FlatList} from 'react-native';
 import {db} from './db';
 import {Dropdown} from 'react-native-material-dropdown';
+import Icon from 'react-native-vector-icons/FontAwesome';
+Icon.loadFont();
 import Geolocation from '@react-native-community/geolocation';
 navigator.geolocation = require('@react-native-community/geolocation');
 
@@ -28,6 +30,8 @@ export default class OptionsScreen extends Component {
       submitted: 0,
       voted: false,
       users: 0,
+      myList: [],
+      myListKeys: [],
       voteButton: false,
       userSetKeys: new Set(),
       optionKeys: new Set(),
@@ -39,9 +43,7 @@ export default class OptionsScreen extends Component {
     };
   }
 
-  componentDidMount(prevProps) {
-    console.log("winner: " + this.state.winner)
-
+  componentDidMount() {
     const {navigation} = this.props;
     Geolocation.getCurrentPosition(info => this.setState({location: info}));
 
@@ -50,6 +52,7 @@ export default class OptionsScreen extends Component {
     ).on('child_changed', snapshot => {
       const data = snapshot.val();
       const key = snapshot.key;
+      console.log(key, data);
       key.toString();
       if (key === 'submitted' && data == this.state.users) {
         this.pushUserOptionstoUsers();
@@ -67,17 +70,34 @@ export default class OptionsScreen extends Component {
       }
     });
 
-    db.child('Events/' + navigation.getParam('roomName') + '/optionList').on(
-      'child_added',
-      snapshot => {
-        const data = snapshot.val();
-        if (data) {
-          this.setState(prevState => ({
-            optionList: [data.option, ...prevState.optionList],
-          }));
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
+    ).on('child_added', snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        this.setState(prevState => ({
+          optionList: [data.option, ...prevState.optionList],
+        }));
+      }
+    });
+
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/optionList',
+    ).on('child_removed', snapshot => {
+      const data = snapshot.val();
+      console.log("Data '" + data.option + "' has been deleted");
+      if (data) {
+        console.log(data);
+        var idx = this.state.optionList.indexOf(data.option);
+        let yourArray = [...this.state.optionList];
+        if (data.option == this.state.optionList[idx]) {
+          yourArray.splice(idx, 1);
+          console.log(yourArray);
+          this.setState({optionList: yourArray});
+          console.log(this.state.optionList);
         }
-      },
-    );
+      }
+    });
 
     // gets user keys
     db.child('Events/' + navigation.getParam('roomName')).once(
@@ -237,6 +257,31 @@ export default class OptionsScreen extends Component {
     }
   };
 
+  determine(item) {
+    if (this.state.myList.includes(item)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  deleteOption = item => {
+    const {navigation} = this.props;
+    // return item
+    var index = this.state.myList.indexOf(item);
+
+    var key = this.state.myListKeys[index];
+
+    db.child(
+      'Events/' +
+        navigation.getParam('roomName', 'NO-ROOM') +
+        '/optionList/' +
+        key,
+    ).remove();
+
+    delete this.state.myList[index];
+  };
+
   showOptionsWithoutVote = item => {
     return (
       <Container style={styles.container}>
@@ -249,6 +294,16 @@ export default class OptionsScreen extends Component {
                 <Text>{item}</Text>
               </Left>
               <Text></Text>
+              {this.determine(item) ? (
+                <Icon.Button
+                  name="trash"
+                  backgroundColor="#3b5998"
+                  onPress={() => this.deleteOption(item)}></Icon.Button>
+              ) : (
+                <Icon.Button
+                  disabled={true}
+                  backgroundColor="#ffffff"></Icon.Button>
+              )}
             </ListItem>
           )}
         />
@@ -364,13 +419,20 @@ export default class OptionsScreen extends Component {
   };
 
   handleOption = text => {
+    // const nameCapitalized = text.charAt(0).toUpperCase() + text.slice(1)
     this.setState({option: text});
   };
 
   addOption = () => {
     const {navigation} = this.props;
-    if (this.state.option == '') alert('Invalid Input');
-    else {
+    this.state.option =
+      this.state.option.charAt(0).toUpperCase() +
+      this.state.option.slice(1).toLowerCase();
+    if (this.state.option.match(/^\s+$/) != null || this.state.option == '')
+      alert('Invalid Input');
+    else if (this.state.optionList.includes(this.state.option)) {
+      alert('Duplicate option.....');
+    } else {
       fetch(
         'https://api.yelp.com/v3/businesses/search?term=' +
           this.state.option +
@@ -405,13 +467,26 @@ export default class OptionsScreen extends Component {
                   : responseJson.businesses[0].image_url,
               votes: 0,
             })
-            .then(() => {})
-            .catch(error => {});
+            .then(snap => {
+              this.setState(prevState => ({
+                myListKeys: [snap.key, ...prevState.myListKeys],
+              }));
+              // console.log(this.state);
+            })
+            .catch(error => {
+              //console.log(error);
+            });
+          this.setState(prevState => ({
+            myList: [this.state.option, ...prevState.myList],
+          }));
+          console.log(this.state.myListKeys);
           this.setState({option: ''}, function() {});
         })
         .catch(error => {
           console.error(error);
         });
+      // console.log(this.state.location.coords.latitude);
+      // console.log(this.state.location.coords.longitude);
     }
   };
 
@@ -432,7 +507,8 @@ export default class OptionsScreen extends Component {
           <Container style={styles.container}>
             {!this.state.formShow && !this.state.voteButton ? (
               <Text style={styles.textWrapper}>
-                Waiting for other members to finish...
+                Waiting for {this.state.users - this.state.submitted} members to
+                finish...
               </Text>
             ) : this.state.formShow && !this.state.voteButton ? (
               <Form>
@@ -460,10 +536,10 @@ export default class OptionsScreen extends Component {
               : this.showOptionsWithVote()}
           </Container>
         ) : (
-          navigate('Winner',{
-            users : this.state.users,
-            roomName:  navigation.getParam('roomName', 'NO-ROOM'),
-            winner: this.state.winner
+          navigate('Winner', {
+            users: this.state.users,
+            roomName: navigation.getParam('roomName', 'NO-ROOM'),
+            winner: this.state.winner,
           })
         )}
 
