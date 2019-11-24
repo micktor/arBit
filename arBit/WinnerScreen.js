@@ -7,43 +7,26 @@ import {Modal, StyleSheet, Button} from 'react-native';
 export default class WinnerScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      exited: 0,
-    };
-  }
-
-  componentDidUpdate() {
-    const {navigation} = this.props;
-    db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM')).on(
-      'child_changed',
-      snapshot => {
-        const key = snapshot.key;
-        const data = snapshot.val();
-        key.toString();
-        if (key === 'exited') {
-          this.setState({exited: data});
-        }
-      },
-    );
   }
 
   clickedExit() {
     const {navigation} = this.props;
     const {navigate} = this.props.navigation;
-    
-    db.child('Events/' +  navigation.getParam('roomName', 'NO-ROOM')).remove();
+
+    db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM')).remove();
     navigate('Home');
   }
 
   render() {
     const {navigation} = this.props;
     return (
-      <Modal>
-        <Container style={styles.container}>
-          <Text>And the Winner is {navigation.getParam('winner', 'NO-WINNER')}</Text>
-        </Container>
+      <Container style={styles.container}>
+        <Text>
+          And the Winner is {navigation.getParam('winner', 'NO-WINNER')}
+        </Text>
+
         <Button onPress={() => this.clickedExit()} title="Exit" />
-      </Modal>
+      </Container>
     );
   }
 }
