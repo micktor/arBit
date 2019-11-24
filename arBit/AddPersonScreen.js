@@ -16,6 +16,12 @@ export default class AddPersonScreen extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.userKey !== prevState.userKey) {
+      this.goToOptionsScreen();
+    }
+  }
+
   static navigationOptions = ({navigation}) => ({
     title: 'Welcome to ' + navigation.state.params.roomName,
     headerLeft: null,
@@ -89,9 +95,9 @@ export default class AddPersonScreen extends Component {
         return users;
       });
 
-      this.goToOptionsScreen();
+      // this.goToOptionsScreen();
     }
-  };
+  }
 
   render() {
     const {navigate} = this.props.navigation;

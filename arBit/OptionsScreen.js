@@ -190,7 +190,7 @@ export default class OptionsScreen extends Component {
           db.child(
             'Events/' +
               navigation.getParam('roomName', 'NO-ROOM') + '/'+
-              + navigation.getParam('userKey') + '/options'
+              `/${ navigation.getParam('userKey', 'NO-ROOM')}/options`
           ).update({
             [option]: this.state.pickers[i],
           });
