@@ -257,6 +257,53 @@ export default class OptionsScreen extends Component {
     }
   };
 
+  exitButton = () => {
+    if (!this.state.doneVote) {
+      return (
+        <Button
+          style={styles.exitBottomButton}
+          disabled={this.state.buttonDisabled}
+          onPress={() => this.props.navigation.navigate('Home') && this.deleteUser()}> 
+          <Text>Exit</Text>
+        </Button>
+      );
+    }
+  };
+
+
+  deleteUser = () => {
+    const {navigation} = this.props;
+    // delete user
+    db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM') +
+        `/${navigation.getParam('userKey', 'NO-ROOM')}`,
+    ).remove();
+    
+    // update users & submitted count in roominfo 
+    var user_count = this.state.users - 1;
+    var submit_count = this.state.submitted - 1;
+    db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo',)
+      .update({
+          users: user_count,
+          submitted: submit_count,
+    });
+
+    console.log("userSetKeys before delete: ", this.state.userSetKeys)  
+    this.state.userSetKeys.delete(navigation.getParam('userKey', 'NO-ROOM'));
+    console.log("userSetKeys after delete: ", this.state.userSetKeys)  
+
+    // delete room if users = 0
+    var user_count = db.child(
+      'Events/' + navigation.getParam('roomName', 'NO-ROOM') + '/roominfo/users',);
+    user_count.transaction(function(users){
+      if(users == 0){
+        db.child('Events/' + navigation.getParam('roomName', 'NO-ROOM'),
+        ).remove();
+      }
+    })
+  };
+
+
   determine(item) {
     if (this.state.myList.includes(item)) {
       return true;
@@ -534,6 +581,11 @@ export default class OptionsScreen extends Component {
             {!this.state.voteButton
               ? this.showOptionsWithoutVote()
               : this.showOptionsWithVote()}
+
+            {!this.state.voteButton 
+              ? null
+              : this.exitButton()}
+
           </Container>
         ) : (
           navigate('Winner', {
@@ -591,6 +643,18 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginBottom: 100,
   },
+
+  exitBottomButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    height: '7.5%',
+    fontSize: 30,
+    marginBottom: -150,
+    width: '40%',
+    color: 'red',
+  },
+
   show: {
     justifyContent: 'center',
     alignItems: 'center',
