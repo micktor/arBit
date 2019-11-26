@@ -391,11 +391,11 @@ export default class OptionsScreen extends Component {
           data={this.state.optionList}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => (
-            <ListItem selected>
+            <ListItem selected onPress={ ()=> Linking.openURL(yelp_urls[item])}>
               <Left>
                 <Image source={{uri: yelp_images[item]}}
                 style={{width: 100, height: 100}} />
-              <Text style={{borderLeftWidth: 10}} onPress={ ()=> Linking.openURL(yelp_urls[item]) }>{item}</Text>
+              <Text style={{marginLeft: 10}}>{item}</Text>
               </Left>
               <Dropdown
                 containerStyle={styles.dropdown}
@@ -621,7 +621,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 30,
+    padding: 0,
   },
 
   textWrapper: {
