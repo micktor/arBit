@@ -69,8 +69,8 @@ export default class CreateScreen extends Component {
       <Container style={createModalStyle.container}>
         <View>
           <Item style={createModalStyle.bigBlack}>
-            <Label>Enter Room Name: </Label>
             <Input
+              placeholder="Enter the Room"
               onChangeText={this.handleRoomName}
               style={createModalStyle.text}
             />

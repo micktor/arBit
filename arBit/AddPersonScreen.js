@@ -105,8 +105,8 @@ export default class AddPersonScreen extends Component {
         </View>
         <Form>
           <Item>
-            <Label>Enter a Username</Label>
             <Input
+              placeholder="Enter a user name"
               autoCorrect={false}
               autoCapitalize="none"
               onChangeText={this.handleUserName}
