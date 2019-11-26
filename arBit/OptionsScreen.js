@@ -343,13 +343,16 @@ export default class OptionsScreen extends Component {
               <Text></Text>
               {this.determine(item) ? (
                 <Icon.Button
+                  style={{marginLeft:8}}
                   name="trash"
                   backgroundColor="#3b5998"
                   onPress={() => this.deleteOption(item)}></Icon.Button>
               ) : (
                 <Icon.Button
+                style={{marginLeft:8}}
+                  name="trash"
                   disabled={true}
-                  backgroundColor="#ffffff"></Icon.Button>
+                  backgroundColor="#d3d3d3"></Icon.Button>
               )}
             </ListItem>
           )}
