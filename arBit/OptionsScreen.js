@@ -526,7 +526,7 @@ export default class OptionsScreen extends Component {
                 responseJson.total == 0 ? '' : responseJson.businesses[0].url,
               image_url:
                 responseJson.total == 0
-                  ? ''
+                  ? 'https://s3-media3.fl.yelpcdn.com/assets/srv0/yelp_styleguide/fe8c0c8725d3/assets/img/default_avatars/business_90_square.png'
                   : responseJson.businesses[0].image_url,
               votes: 0,
             })
