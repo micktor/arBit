@@ -453,6 +453,10 @@ export default class OptionsScreen extends Component {
   }
 
   showform = () => {
+    if(this.state.optionList.length == 0){
+        alert("Please insert some options")
+    }
+    else{
     const {navigation} = this.props;
     this.setState({formShow: !this.state.formShow});
     var ref = db.child(
@@ -481,7 +485,7 @@ export default class OptionsScreen extends Component {
           this.setState({...this.state, voteButton: true});
         }
       });
-    });
+    });}
   };
 
   handleOption = text => {
