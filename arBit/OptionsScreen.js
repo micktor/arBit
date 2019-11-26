@@ -10,7 +10,7 @@ import {
   Left,
   Right,
 } from 'native-base';
-import {StyleSheet, FlatList} from 'react-native';
+import {StyleSheet, FlatList, Image, Linking} from 'react-native';
 import {db} from './db';
 import {Dropdown} from 'react-native-material-dropdown';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -25,6 +25,8 @@ export default class OptionsScreen extends Component {
       iamlast: false,
       haveIvoted: false,
       optionList: [],
+      optionListUrl: [],
+      optionListImage: [],
       option: '',
       formShow: true,
       submitted: 0,
@@ -77,6 +79,8 @@ export default class OptionsScreen extends Component {
       if (data) {
         this.setState(prevState => ({
           optionList: [data.option, ...prevState.optionList],
+          optionListUrl: [data.url, ...prevState.optionListUrl],
+          optionListImage: [data.image_url, ...prevState.optionListImage],
         }));
       }
     });
@@ -123,6 +127,7 @@ export default class OptionsScreen extends Component {
         snapshot.forEach(data => {
           const currentKey = data.key;
           this.state.optionKeys.add(currentKey);
+          console.log("CURRENTLEY"+data.url)
         });
       },
     );
@@ -369,21 +374,32 @@ export default class OptionsScreen extends Component {
   }
 
   showOptionsWithVote = item => {
+    console.log(this.state.optionListUrl);
     let data = [];
     for (var i = 0; i < this.state.optionList.length; i++) {
       data.push({value: i + 1});
     }
+
+    var yelp_images = {};
+    this.state.optionList.forEach((key, i) => yelp_images[key] = this.state.optionListImage[i]);
+    console.log("IMAGES: "+JSON.stringify(yelp_images));
+
+    var yelp_urls = {};
+    this.state.optionList.forEach((key, i) => yelp_urls[key] = this.state.optionListUrl[i]);
+    console.log("URL: "+JSON.stringify(yelp_urls));
+
     return (
       <Container style={styles.container}>
         <FlatList
           data={this.state.optionList}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item, index}) => (
-            <ListItem selected>
+            <ListItem selected onPress={ ()=> Linking.openURL(yelp_urls[item])}>
               <Left>
-                <Text>{item}</Text>
+                <Image source={{uri: yelp_images[item]}}
+                style={{width: 100, height: 100}} />
+              <Text style={{marginLeft: 10}}>{item}</Text>
               </Left>
-              <Text></Text>
               <Dropdown
                 containerStyle={styles.dropdown}
                 disabled={this.state.voted}
@@ -513,7 +529,7 @@ export default class OptionsScreen extends Component {
                 responseJson.total == 0 ? '' : responseJson.businesses[0].url,
               image_url:
                 responseJson.total == 0
-                  ? ''
+                  ? 'https://s3-media3.fl.yelpcdn.com/assets/srv0/yelp_styleguide/fe8c0c8725d3/assets/img/default_avatars/business_90_square.png'
                   : responseJson.businesses[0].image_url,
               votes: 0,
             })
@@ -608,7 +624,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 30,
+    padding: 0,
   },
 
   textWrapper: {
