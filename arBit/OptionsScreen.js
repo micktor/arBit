@@ -389,7 +389,7 @@ export default class OptionsScreen extends Component {
     console.log("URL: "+JSON.stringify(yelp_urls));
 
     return (
-      <Container style={styles.container}>
+      <Container style={styles.containerWithVote}>
         <FlatList
           data={this.state.optionList}
           keyExtractor={(item, index) => index.toString()}
@@ -631,6 +631,13 @@ const styles = StyleSheet.create({
     padding: 0,
   },
 
+  containerWithVote: {
+    flex: 1,
+    backgroundColor: '#fff',
+    padding: 0,
+    marginBottom: 90,
+  },
+
   textWrapper: {
     marginBottom: 30,
     fontWeight: 'bold',
@@ -664,7 +671,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '7.5%',
     fontSize: 30,
-    marginBottom: 100,
+    marginBottom: 90,
   },
 
   exitBottomButton: {
@@ -673,9 +680,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: '7.5%',
     fontSize: 30,
-    marginBottom: -150,
+    marginBottom: -130,
     width: '40%',
-    color: 'red',
   },
 
   show: {
