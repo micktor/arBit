@@ -4,7 +4,7 @@ arBit will be a mobile app built in React Native that will help a group of peopl
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -25,6 +25,18 @@ npm install
 react-native run-ios --simulator="iPhone 11"
 ```
 
+### How to use:
+
+* Create a new room or join an existing one
+* Enter a unique username
+* Submit options that you would like to do/eat/go
+* On the vote page, find more about each option by clicking it
+* Rank these options with corresponding numbers  each unique 
+* Submit votes
+* See winner after everyone is done voting
+* Go do that activity! 
+
+
 ## Built With
 
 * [NPM](https://www.npmjs.com/) - The web framework used
@@ -34,11 +46,11 @@ react-native run-ios --simulator="iPhone 11"
 
 ## Authors
 
-* Jason *
-* Veronika *
-* Alan *
-* Mark *
-* Yasin *
+* Jason 
+* Veronika 
+* Alan 
+* Mark 
+* Yasin 
 
 
 
@@ -49,7 +61,6 @@ This project is licensed under the arBit License
 ## Acknowledgments
 
 * Hat tip to anyone whose code was used
-* Inspiration
-* etc
+
 
 
