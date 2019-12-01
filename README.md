@@ -25,32 +25,6 @@ npm install
 react-native run-ios --simulator="iPhone 11"
 ```
 
-
-## Running the tests
-
-TBA
-
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-TBA
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-TBA
-```
-
-## Deployment
-
-TBA
-
 ## Built With
 
 * [NPM](https://www.npmjs.com/) - The web framework used
