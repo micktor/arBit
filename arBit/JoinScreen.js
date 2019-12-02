@@ -59,8 +59,8 @@ export default class JoinScreen extends Component {
       <Container style={createModalStyle.container}>
         <View>
           <Item style={createModalStyle.bigBlack}>
-            <Label>Enter room to Join: </Label>
             <Input
+              placeholder = "Enter room to join"
               onChangeText={this.handleRoomName}
               style={createModalStyle.text}
             />
